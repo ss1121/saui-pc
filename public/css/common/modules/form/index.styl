@@ -1,0 +1,122 @@
+@import '../../commonfunc'
+@import './_common/*'
+
+inputTipsCfg = {
+  $isShow: false
+  $isNowrap: false                   //true:强制不换行, false: 固定宽度，超过换行
+  $max-width: 100%
+}
+
+.inputGroup
+  margin-bottom: -($inputMb)
+
+.inputItem, .radioGroup,.checkboxGroup
+  ss-display-flex(row nowrap, flex-start)
+  font-size: $inputSize
+  margin-bottom: $inputMb
+  &.tb
+    flex-flow: column
+  >.fkp-input-required
+    display: inline-block
+    line-height: $inputHeight
+    &:before
+      content: '*'
+      color: $color-aux-warning
+  >.fkp-title
+    color: $inputTitleColor
+    height: $inputHeight
+    line-height: @height
+    margin-right: $inputTitleMargin
+    min-width: $inputTitleWid
+    text-align-last: justify
+  >.fkp-content
+    position: relative
+  &.fkp-content-flex1
+    .fkp-content
+      flex: 1
+  &.fkp-mb-primary
+    margin-bottom: 15px
+  &.fkp-mb-monir
+    margin-bottom: 8px
+
+
+ss-tips('.fkp-input-error', inputTipsCfg)
+    
+//输入框带有实体icon
+.inputItem-icon-x
+  ss-form-icon-x()
+  &.active
+    .item-icon-x
+      color: $inputColor
+
+//禁止操作
+.inputItem-disabled
+  color: $borderColor
+
+//自动伸缩  textarea
+.textareaItem-resize
+  .form-textarea
+    resize: auto
+
+//计数器 按钮
+.item-number
+  // absolute: top 0 right 0
+  ss-position(absolute, $top: 0, $right: 0)
+  ss-display-flex(column, center, center)
+  border-left: 1px solid $color-line-input
+  color: $color
+  width: 18px
+  height: 100%
+  >.item
+    flex: 1
+    width: 100%;
+    text-align: center;
+    position: relative
+    &:first-child
+      &:before
+        content: ''
+        position: absolute
+        bottom: 0
+        left 0
+        width: 100%
+        height 1px
+        background: $color-line-input
+    
+//计数器 按钮 左右
+.input-num
+  .item
+    box-sizing: border-box
+    ss-icon($inputMinusIcon, 12px, inherit, $isFlex: center)
+    &.disabled
+      color: $color-line-input
+      &:hover
+        cursor: default
+        color: @color
+    &:hover, &.active
+      color: $color-hover
+      cursor: pointer
+  .item-right
+    &:after
+      content: $inputAddIcon
+  &.lr
+    ss-display-flex(row nowrap, flex-start)
+    .item
+      border: 1px solid $color-line-input
+      width: $inputHeight
+      height $inputHeight
+      &:after
+        font-size: 16px
+    .item-left
+      border-right: none
+      &:after
+        content: $inputMinusIcon
+    .item-right
+      border-left: none
+      &:after
+        content: $inputAddIcon
+    .form_control
+      width: 56px
+      text-align: center
+
+input,select,textarea
+  placeholder()

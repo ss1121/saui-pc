@@ -1,0 +1,262 @@
+// rootHeadCfg = {
+//   $bgimage: '/images/saui-logo.png'
+//   // $bgimage: false
+//   $HeaderHeight: 60px
+//   $HeaderBg: #fff
+//   $HeadColor: #333
+//   $HeadSize: 12px
+//   $mWidth: 180px
+//   //缩小版
+//   $mWidth-2: 70px
+//   $lh: 50px
+// }
+
+// admin = {
+//   $routerBg: $color-bg
+//   $box-line: false
+// }
+
+// adminMenus = {
+//   $logoColor: $color-text-regular
+//   $mBg: #333
+//   $mColor:#999
+//   $mWidth: 180px
+//   $mActiveBg: #262626
+//   $mActiveItemBg: false //fade-out($color-primary, .9)
+//   $mActiveColor: #fff
+//   $mUlBg: #3C3C3C
+//   $lh: 40px
+//   $lh-title: 40px
+//   $type: 'activeline'
+//   $typeClass: '.caption'
+//   $isShowIcon: true
+//   $isAllShow: false
+//   $typeleft: true
+//   $size-title: false
+//   $space: 20px
+//   $spaceItem: 45px
+//   $mLine: false
+//   $spaceCaption: false
+
+//   $mWidth-2: 70px
+//   $lh-2: 50px
+// }
+rootHeadCfg = {
+  // $bgimage: '/images/saui-logo.png'
+  $bgimage: false
+  $HeaderHeight: 60px
+  $HeaderBg: #fff
+  $HeadColor: #333
+  $HeadSize: 12px
+  $mWidth: 260px
+  //缩小版
+  $mWidth-2: 70px
+  $lh: 50px
+}
+
+admin = {
+  $routerBg: #fff
+  $box-line: 1px solid $color-line
+}
+
+adminMenus = {
+  $logoColor: $color-text-regular
+  $mBg: #fff
+  $mColor: #666
+  $mWidth: 260px
+  $mActiveBg: #fff
+  $mActiveItemBg: #e6f7ff //fade-out($color-primary, .9)
+  $mActiveColor: $color-primary
+  $mUlBg: #fff
+  $lh: 40px
+  $lh-title: 44px
+  $type: 'activeline'
+  $typeClass: '.level1'
+  $isShowIcon: false
+  $isAllShow: true
+  $typeleft: false
+  $size-title: 13px
+  $space: 40px
+  $spaceItem: 40px
+  $mLine: 1px solid $color-line
+  $spaceCaption: 16px 0 
+
+  $mWidth-2: 70px
+  $lh-2: 50px
+}
+
+ss-admin($class= '.routerGroup', $config = admin)
+  //所有内容在一屏内显示
+  #root
+    overflow: hidden
+    flex: 1
+  {$class}
+    background: $config.$routerBg
+    height: 100%
+    ss-display-flex(row nowrap, flex-start)
+    &.active          //缩小版本的menus
+      >.routerMenus
+        width: $config.$mWidth-2
+        line-height: $config.$lh-2
+        .item-icon
+          justify-content: center
+        .item-title
+          display: none
+        .property-ul
+          position: absolute;
+          top: 0;
+          left: $config.$mWidth-2
+          padding: 0 20px;
+          white-space: nowrap;
+          z-index: 99
+        .caption
+          &.active-none
+            ~.property-ul
+              display: none
+
+    //菜单部分
+    >.routerMenus
+      ss-menus()
+      border-right: $config.$box-line  if ($config.$box-line)
+    //内容部分
+    ss-func-customscroll('>.routerBoxes', {$height: auto, $min-height: 300px})      //滚动
+    >.routerBoxes
+      flex: 1
+      padding: $space
+
+ss-menus()
+  background: adminMenus.$mBg
+  color: adminMenus.$mColor
+  width: adminMenus.$mWidth
+  transition: 250ms ease;
+  font-size: 14px
+  line-height: adminMenus.$lh
+  .itemrootCkb
+    display: none
+  .level0
+    position: relative
+  .caption
+    padding: 0 adminMenus.$space
+  .item-icon
+    line-height: adminMenus.$lh-title
+    font-size: adminMenus.$size-title
+    margin: adminMenus.$spaceCaption if adminMenus.$spaceCaption
+    if (adminMenus.$mLine)
+      border-bottom: adminMenus.$mLine
+      color: fade-out(adminMenus.$mColor, .3)
+      display: block
+  .property-ul
+    background: adminMenus.$mUlBg
+    overflow: hidden
+    li 
+      cursor: pointer
+      padding-left: adminMenus.$spaceItem
+      &:hover
+        background: adminMenus.$mActiveItemBg if (adminMenus.$mActiveItemBg)
+      &.select
+        background: adminMenus.$mActiveItemBg if (adminMenus.$mActiveItemBg)
+        color: adminMenus.$mActiveColor
+
+  if (adminMenus.$type == 'activeline') 
+    {adminMenus.$typeClass}
+      position: relative
+      &:after //线条
+        content: ''
+        width: 2px
+        height: 100%
+        background: transparent
+        position: absolute
+        if (adminMenus.$typeleft)
+          left: 0
+        else
+          right: 0
+        top: 0
+      &.select
+        background: adminMenus.$mActiveBg
+        color: adminMenus.$mActiveColor
+        &:after //线条
+          background: $color-primary
+
+  if (adminMenus.$isShowIcon == true)
+    .item-icon
+      ss-display-flex(row nowrap, flex-start)
+      &:before
+        width: 16px
+        content: '\e605'
+        font-size: 16px
+    .item-title
+      flex: 1
+      
+  if (adminMenus.$isAllShow == false)
+    .property-ul
+      height: 0
+    .item-icon
+      cursor: pointer
+    .item-title
+      ss-display-flex(row nowrap, space-between)
+      margin-left: 10px
+      &:after
+        content: '\e64e'
+        transform: rotateZ(0)
+        display: block
+        font-size: 12px
+    .caption
+      &.active
+        .item-title
+          &:after
+            transform: rotateZ(180deg)
+        ~.property-ul
+          height: auto
+
+
+
+
+
+
+
+//顶部部分 nav
+ss-root-header($class= '.root-header', $config = false)
+  cfg = merge({}, rootHeadCfg, $config)
+  {$class}
+    background: cfg.$HeaderBg
+    box-shadow: $box-shadow
+    color: cfg.$HeadColor
+    font-size: cfg.$HeadSize
+    height: cfg.$HeaderHeight
+    position: relative
+    transition: 250ms ease;
+    .admin-header
+      @extends $flex-nowrap-between-center
+      &.active
+        .item-logo
+          width: cfg.$mWidth-2
+        .item-logo-title
+          display: none
+    //logo
+    .item-logo
+      width: cfg.$mWidth
+      height: cfg.$HeaderHeight
+      if (cfg.$bgimage)
+        background-image: url(cfg.$bgimage)
+        background-repeat: no-repeat
+        background-position: center center
+        background-size: contain
+        .item-logo-title
+          display: none
+      else 
+        @extends $flex-nowrap-center-center
+        .item-logo-title
+          margin-left: 16px
+          font-size: 36px
+          color: cfg.$HeadColor
+          font-family: monospace
+      
+    .admin-content
+      padding: 0 $space
+      flex: 1
+      @extends $flex-nowrap-between-center
+    .admin-right
+      @extends $flex-nowrap
+      margin-left: auto
+    .icon-select
+      margin-left: 36px

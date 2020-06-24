@@ -1,0 +1,70 @@
+
+loginCfg = {
+  $width: 360px
+  $bg: $color-bg-primary
+  $br: $border-radius
+  $padding: $space
+  $inputHei: 40px
+  $inputBr: $inputBr
+}
+ss-login($class = '.login-form', $config = false)
+  cfg = merge({}, loginCfg, $config)
+  .pages-login
+    background: fade-out(#000, .5)
+    width: 100%
+    height: 100%
+    position: relative
+    @extends $flex-nowrap-center-center
+    .item-copyright
+      position: absolute
+      bottom: 30px
+      color: #666
+      font-size: 12px
+  {$class}
+    background: cfg.$bg
+    width: cfg.$width
+    padding: cfg.$padding
+    border-radius: cfg.$inputBr
+    .checkboxGroup
+      margin-bottom: 32px
+    .inputItem
+      margin-bottom: 15px
+      &.item-logo
+        margin-bottom:45px
+        img
+          margin: 0 auto
+      &.item-code
+        position: absolute
+        right: 0
+        bottom: 0
+        height: cfg.$inputHei
+        width: 110px
+        border-left: 1px solid $borderColor
+        cursor: pointer
+        margin: 0
+        .form-span
+          display: block
+          height: 100%
+        img
+          width: 100%
+          height: 100%
+      &.item-btn
+        font-weight: bold
+        font-size: 16px
+        margin-bottom: 0
+    .fkp-content
+      flex: 1
+      @extends $column
+      input
+        order: 2
+    button, input
+      border-radius: @border-radius
+      width: 100%
+      height: cfg.$inputHei
+    .checkboxItem
+      margin: 0
+      color: #666
+    .warning,.error
+      margin-bottom: 10px
+    
+

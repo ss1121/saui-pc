@@ -1,0 +1,187 @@
+ficonCfg = {
+  $icon: false
+  $top: calc(50% - 8px)
+  $right: 10px
+  $font-size: false
+  $color: false
+
+  $isrelative: true
+}
+
+
+placeholder($color = $placeholderColor, $font-size = $inputSize)
+  &::-webkit-input-placeholder
+    color: $color
+    font-size: $font-size
+  &:-moz-placeholder: 
+    color: $color
+    font-size: $font-size
+  &::-moz-placeholder: 
+    color: $color
+    font-size: $font-size
+  &:-ms-input-placeholder: 
+    color: $color
+    font-size: $font-size
+
+//input 带icon 公共部分
+
+ss-form-icon($config = false)
+  cfg = merge({}, ficonCfg, $config)
+  if ($isrelative == true)
+    +cache()
+      position: relative
+  &:after
+    display: block
+    color: cfg.$color if (cfg.$color)
+    if (cfg.$icon == 'default')
+      content: ''
+    else if (cfg.$icon != false)
+      content: cfg.$icon
+    font-size: cfg.$font-size if (cfg.$font-size)
+    ss-position(absolute, $top: cfg.$top, $right: cfg.$right)
+  
+ss-form_control( $height = $inputHeight, $br = $inputBr, $width = false)
+  background-color: $bgColor
+  border: 1px solid $borderColor 
+  box-sizing: border-box
+  height: $height
+  line-height: @height
+  padding: $inputPadding
+  outline: none;
+  if ($width != false)
+    width: $width
+  if ($br != 0)
+    border-radius: $inputBr
+  &:focus
+    border-color: $inputHoverColor
+    outline: none;
+  &:read-only
+    &:focus
+      box-shadow: none;
+      border-color: none
+  &:disabled
+    background-color: $disabledColorBg
+    border-color: $disabledColor
+    color: $borderColor
+    cursor: default;
+  &.noborder
+    border: none
+    height: $height - 2
+
+//自定义
+ss-custom-form()
+  ss-form_control()
+  &.i-sm
+    width: $inputWidMin
+  &.i-lg
+    width: $inputWidMax
+
+//checkbox radio
+ss-rcInput-theme()    //调用时 需要注意父级给个relative
+  input[type='radio'], input[type='checkbox']
+    cursor: pointer
+    position: absolute;
+    top: 0;
+    left: @top
+    width: 100%;
+    height: @width
+    opacity: @top
+    border: @top
+    margin: @top
+    z-index: 9;
+    &:checked
+      &+.fkp-radio-box, &+.fkp-checkbox-box
+        color: $rcCheckedColor
+        &:before
+          content: $radioChecked;
+      &+.fkp-checkbox-box
+        &:before
+          content: $checkboxChecked;
+    &:disabled
+      &+.fkp-checkbox-box
+        color: $disabledColor
+        &:before
+          background: $disabledColorBg
+          cursor: not-allowed
+  .fkp-radio-box, .fkp-checkbox-box
+    font-size: $rcSize
+    position: relative
+    display: block;
+    width: @font-size
+    height: @font-size
+    margin-right: $rcInputMr
+    color: $rcColor
+    &:before
+      content: $radio
+  .fkp-checkbox-box
+    &:before
+      content: $checkbox
+
+ss-form-checkbox-radio()
+  ss-display-flex(row nowrap, flex-start, center)
+  ss-rcInput-theme()
+  margin: $inputPadding
+  position: relative
+
+
+/*
+  输入框带icon
+*/
+
+//下拉
+ss-custom-form-select()
+  ss-pop('>.fkp-dd-list')
+
+//下拉组件调用
+ss-form-select()
+  ss-custom-form-select()
+  ss-form-icon({$icon: $inputSelect, $top: calc(50% - 6px), $font-size: 12px})
+
+//下拉 自定义下拉内容
+ss-form-destination()
+  ss-form-icon({$icon: 'default', $top: calc(100% - 8px), $right: 3px})
+  &:after
+    ss-triangle({$direction: 'rt', $type: 'second', $size: 5px})      // 8px = 5px($size) + 3px
+
+//日期
+ss-form-date()
+  ss-form-icon({$icon: $inputDate, $top: calc(50% - 10px), $font-size: 18px, $color: $borderColor})
+
+//输入框带实体icon，有点击事件等操作
+ss-form-icon-x()
+  .item-icon-x
+    ss-form-icon({$isrelative: false})
+
+
+
+//仿组件的纯结构
+likeformCfg = {
+  $bg: $color-bg
+  $space: 10px
+}
+ss-func-like-form($class ='.like-form', $config = false)
+  cfg = merge({}, likeformCfg, $config)
+  {$class}
+    background: cfg.$bg
+    padding: cfg.$space
+    margin-bottom: -(cfg.$space)
+    ss-func-absolute-triangle($absoluteCfg: {$top: -(10px * 2)}, $triangleCfg: {$size: 10px, $color: cfg.$bg})
+    &.lr
+      @extends $flex-nowrap
+      margin-bottom: 0
+      flex-flow: row wrap
+      .ss-item
+        margin-bottom: 0
+        margin-right: 24px
+    .item-title
+      margin-right: @padding
+    .ss-item
+      @extends $flex-nowrap-start-center
+      margin-bottom: @padding
+    .item-desc
+      margin: 0 @padding
+    .item-opt
+      margin-left: @padding
+    input
+      width: $inputWidMin
+

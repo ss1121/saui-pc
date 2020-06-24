@@ -1,0 +1,61 @@
+  
+/**
+ * 直接写类名就可以执行对应的样式 如: .btn-primary
+ * @type {[type]}
+ * lighten(color, 10%); /* 返回的颜色在'color'基础上变亮10%
+ * darken(color, 10%);  /* 返回的颜色在'color'基础上变暗10%
+ * saturate(color, 10%);   /* 返回的颜色在'color'基础上饱和度增加10%
+ * desaturate(color, 10%); /* 返回的颜色在'color'基础上饱和度降低10% 
+
+  注意： 配制写法与darken（$btn-bgc-default， 15%）,fade-out($btn-bgc-default, .9)不兼容，
+ */
+
+primaryCfg = {
+  $bgc: $btn-bgc-primary
+  $pcolor: $btn-bc-primary
+}
+minorCfg = {
+  $bgc: $btn-bgc-minor
+  $pcolor: $btn-bc-minor
+}
+
+greyCfg = {
+  $bgc: $btn-bgc-grey
+  $pcolor: $color-text
+}
+
+.ss-tag
+  border: 1px solid transparent
+  box-sizing: border-box
+  display: inline-block
+  vertical-align: middle
+  white-space: nowrap
+  text-align: center
+  border-radius: $btn-radius
+  // text-decoration: none
+  // font-style: normal
+  {tag-default}
+  &.larger
+    {tag-lg}
+  &.noborder
+    border: none
+  .item-title
+    &+[class^=icon-]
+      margin-left: $tips-mg-sm
+  [class^=icon-]
+    font-weight: 400
+    line-height: 1
+    vertical-align: baseline
+    // display: inline-block
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+    vertical-align: text-top
+    &+span
+      margin-left: $tips-mg-sm
+
+
+//实背景
+ss-tagFunc('.tag-default')
+ss-tagFunc('.tag-primary', primaryCfg)
+ss-tagFunc('.tag-minor', minorCfg)
+ss-tagFunc('.tag-grey', greyCfg)

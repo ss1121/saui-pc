@@ -1,0 +1,20 @@
+tabcfg = {
+  $activeClass: '.select'
+  $activeType: 'tab'
+  $itemPadding: 0 20px
+  $bg: #FAFAFA
+}
+tabsCard = {
+  $activeType: 'card'
+}
+boxCfg = {
+  $boxPadding: 20px
+}
+
+ss-tabs('.tabsGroup-tab', $menusCfg: tabcfg, $boxCfg: boxCfg)
+ss-tabs('.tabsGroup-normal', {$activeClass: '.select', $isPadding: false}, $oldMenusScroll: true)
+xx = merge({}, tabcfg, tabsCard)
+ss-tabs('.tabsGroup-card', xx, $boxCfg: boxCfg)
+
+//仿tabs的list组件
+ss-like-tabs('.likeTabsMenus')

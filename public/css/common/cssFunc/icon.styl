@@ -1,0 +1,59 @@
+iconfont()
+  +cache()
+    font-family:"iconfont" !important
+    font-style:normal
+    -webkit-font-smoothing: antialiased
+    // -webkit-text-stroke-width: 0.2px
+    -moz-osx-font-smoothing: grayscale
+    // font-size: 16px
+
+content(n, isIcfont = true)
+  //判断isIcfont是否存在，来区别如果不是iconfont的话 不需要上面的
+  if (isIcfont == true)
+    if (n != '')
+      iconfont()
+  content: n
+
+
+ss-icon($content = '\e620', $fontSize = 12px, $color = inherit, $before = false, $activeColor = false, $disabledColor = false, $isFlex = false, $space = false)
+  if ($isFlex == center)
+    ss-display-flex(row nowrap, center, center)
+  else if ($isFlex == true)
+    display: inline-flex
+    align-items: center
+  if ($before != false)
+    &:before
+      content: $content
+      color: $color
+      font-size: $fontSize
+      margin-right: $space if $space
+      if ($isFlex == false)
+        display: inline-block
+        vertical-align: middle
+    if ($activeColor)
+      &:hover
+        &:before
+          color: $activeColor
+    if ($disabledColor)
+      &.disabled
+        &:before
+          color: $disabledColor
+  else
+    &:after
+      content: $content
+      color: $color
+      font-size: $fontSize
+      margin-left: $space if $space
+      if ($isFlex == false)
+        display: inline-block
+        vertical-align: middle
+    if ($activeColor)
+      &:hover
+        &:after
+          color: $activeColor
+    if ($disabledColor)
+      &.disabled
+        &:after
+          color: $disabledColor
+
+    
