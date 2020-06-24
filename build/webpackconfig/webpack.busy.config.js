@@ -56,7 +56,7 @@ function BrowserSync(env, appConfigs) {
       notify: false,
       injectChanges: true,
       host: 'localhost',
-      port: 3000
+      port: 60100
     },
     // plugin options 
     {
