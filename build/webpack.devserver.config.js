@@ -113,7 +113,7 @@ function wpServer(configs, opts) {
     hot: true,
     inline: true,
     host: '0.0.0.0',
-    port: 3000,
+    port: 60100,
     stats: { colors: true },
     watchOptions: {
       aggregateTimeout: 300,
