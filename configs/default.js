@@ -20,7 +20,7 @@ const config = {
     * nodejs 服务端端口
     * proxyPort: webpack-dev-server 代理端口
     */
-  port: 8070,
+  port: 60100,
   proxyPort: 8300,
 
   /*
