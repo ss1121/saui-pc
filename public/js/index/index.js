@@ -20,7 +20,7 @@ import uploader from './dataEntering/uploader'
 //数据展示 
 import tag from './data/tag'
 import table from './data/table'
-import datetimepicker from './data/datetimepicker'
+import datetimepicker from './data/datetimePicker'
 //navigation
 import tabs from './navigation/tabs'
 import steps from './navigation/steps'
