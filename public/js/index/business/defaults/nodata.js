@@ -1,6 +1,6 @@
 //没有数据时显示
 const noDataConfig = (param) => {
-  const img = param.img
+  const img = param.img || '/images/saui-logo.png'
   const title = param.title
   const desc = param.desc || ''    //正常是传数据，如果不显示传false
   const showBtn = param.showBtn || false
