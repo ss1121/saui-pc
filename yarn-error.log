@@ -70,8 +70,8 @@ npm manifest:
       "marked": "^0.3.5",
       "minimist": "^1.2.0",
       "mongoose": "^4.8.1",
-      "react": "^16.3.2",
-      "react-dom": "^16.3.2",
+      "react": "^15.0.0",
+      "react-dom": "^15.0.0",
       "request": "^2.75.0",
       "socket.io": "^1.4.6",
       "socket.io-client": "^1.4.6",
@@ -2437,6 +2437,14 @@ Lockfile:
       safe-buffer "^5.0.1"
       sha.js "^2.4.8"
   
+  create-react-class@^15.6.0:
+    version "15.6.3"
+    resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
+    dependencies:
+      fbjs "^0.8.9"
+      loose-envify "^1.3.1"
+      object-assign "^4.1.1"
+  
   cross-spawn@^5.0.1:
     version "5.1.0"
     resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -3615,6 +3623,18 @@ Lockfile:
       promise "^7.1.1"
       setimmediate "^1.0.5"
       ua-parser-js "^0.7.9"
+  
+  fbjs@^0.8.9:
+    version "0.8.17"
+    resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
+    dependencies:
+      core-js "^1.0.0"
+      isomorphic-fetch "^2.1.1"
+      loose-envify "^1.0.0"
+      object-assign "^4.1.0"
+      promise "^7.1.1"
+      setimmediate "^1.0.5"
+      ua-parser-js "^0.7.18"
   
   figures@^1.3.5:
     version "1.7.0"
@@ -7446,6 +7466,14 @@ Lockfile:
     dependencies:
       asap "~2.0.3"
   
+  prop-types@^15.5.10:
+    version "15.7.2"
+    resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
+    dependencies:
+      loose-envify "^1.4.0"
+      object-assign "^4.1.1"
+      react-is "^16.8.1"
+  
   prop-types@^15.5.4:
     version "15.6.1"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
@@ -7453,14 +7481,6 @@ Lockfile:
       fbjs "^0.8.16"
       loose-envify "^1.3.1"
       object-assign "^4.1.1"
-  
-  prop-types@^15.6.2:
-    version "15.7.2"
-    resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
-    dependencies:
-      loose-envify "^1.4.0"
-      object-assign "^4.1.1"
-      react-is "^16.8.1"
   
   proxy-addr@~2.0.3:
     version "2.0.3"
@@ -7626,14 +7646,14 @@ Lockfile:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.1.1.tgz#8ea4263cd6455a050b37445b3f08fd839d86e909"
   
-  react-dom@^16.3.2:
-    version "16.13.1"
-    resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
+  react-dom@^15.0.0:
+    version "15.6.2"
+    resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
     dependencies:
+      fbjs "^0.8.9"
       loose-envify "^1.1.0"
-      object-assign "^4.1.1"
-      prop-types "^15.6.2"
-      scheduler "^0.19.1"
+      object-assign "^4.1.0"
+      prop-types "^15.5.10"
   
   react-hot-loader@^3.0.0:
     version "3.1.3"
@@ -7655,13 +7675,15 @@ Lockfile:
     dependencies:
       lodash "^4.6.1"
   
-  react@^16.3.2:
-    version "16.13.1"
-    resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
+  react@^15.0.0:
+    version "15.6.2"
+    resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
     dependencies:
+      create-react-class "^15.6.0"
+      fbjs "^0.8.9"
       loose-envify "^1.1.0"
-      object-assign "^4.1.1"
-      prop-types "^15.6.2"
+      object-assign "^4.1.0"
+      prop-types "^15.5.10"
   
   read-only-stream@^2.0.0:
     version "2.0.0"
@@ -8174,13 +8196,6 @@ Lockfile:
   sax@^1.2.4, sax@~1.2.1:
     version "1.2.4"
     resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
-  
-  scheduler@^0.19.1:
-    version "0.19.1"
-    resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
-    dependencies:
-      loose-envify "^1.1.0"
-      object-assign "^4.1.1"
   
   schema-utils@^0.3.0:
     version "0.3.0"
@@ -9215,6 +9230,10 @@ Lockfile:
     version "0.7.17"
     resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
   
+  ua-parser-js@^0.7.18:
+    version "0.7.21"
+    resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
+  
   ua-parser-js@^0.7.9:
     version "0.7.18"
     resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.18.tgz#a7bfd92f56edfb117083b69e31d2aa8882d4b1ed"
@@ -9976,7 +9995,7 @@ Trace:
   Exit code: 1
   Command: sh
   Arguments: -c node index.js -d --clean
-  Directory: /Users/Shared/Previously Relocated Items/Security/lgh/aotoo-O
+  Directory: /Users/Shared/Previously Relocated Items/Security/lgh/saui-pc
   Output:
   
       at ProcessTermError.MessageError (/usr/local/lib/node_modules/yarn/lib/cli.js:186:110)

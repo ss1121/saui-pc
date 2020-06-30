@@ -1,4 +1,6 @@
 import 'component/modules/customScroll'
+//需要与lib/common/time,public/js/_init/index配合
+
 
 function mHeader(opts){
   let { type, startDate, endDate, currentMonth, dislodge, disabledSelect } = opts

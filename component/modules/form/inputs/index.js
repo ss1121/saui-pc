@@ -207,6 +207,7 @@ function mkAttributs(p){
       if (typeof pval == 'number') pval = pval.toString()
       attrs['defaultValue'] = pval
     }else if (attr == 'attrs') {
+      let prohibitKeys = ['itemClass', 'itemStyle', 'desc', 'title', 'readOnly']
       var $attrs = p['attrs']||p['attr']
       if ($attrs) {
         for (var $atr in $attrs) {
@@ -214,13 +215,17 @@ function mkAttributs(p){
             let textVal = p['text'] || $attrs['text']
             if (typeof textVal == 'number') textVal = textVal.toString()
             attrs['defaultValue'] = textVal
-            attrs[('data-' + $atr)] = textVal
+            if (prohibitKeys.indexOf($atr)===-1) {
+              attrs[('data-' + $atr)] = textVal
+            }
           // } else if (accessAttrs.indexOf($atr) > -1 && ($attrs[$atr] || $attrs[$atr] == 0)) {
           } else if ($attrs[$atr] || $attrs[$atr] == 0) {
             let attrVal = $attrs[$atr]
             if (typeof attrVal == 'number') attrVal = attrVal.toString()
             if (attrVal) {
-              attrs[('data-' + $atr)] = attrVal
+              if (prohibitKeys.indexOf($atr)===-1) {
+                attrs[('data-' + $atr)] = attrVal
+              }
             }
           }
         }
@@ -390,7 +395,7 @@ function mk_element(item, _i, ctx) {
       _desc,
       _class,
       _union,
-      lableObj,
+      labelObj,
       P,
       index = _i,
       key
@@ -430,7 +435,7 @@ function mk_element(item, _i, ctx) {
     const resault = rcbox(P)
     const clsName = state.show ? resault.groupClass : resault.groupClass + ' disN'
     return (
-      <div ref={resault.superID} key={"lable" + _i} className={clsName}>
+      <div ref={resault.superID} key={"label" + _i} className={clsName}>
         {P.profile.required ? <span className="fkp-input-required" /> : ''}
         {resault.title ? <span className="fkp-title">{resault.title}</span> : ''}
         <div className='fkp-content'>
@@ -446,7 +451,7 @@ function mk_element(item, _i, ctx) {
     const myClsName = _class + ' for-' + (P.id||P.name||'')
     const clsName = state.show ? myClsName : myClsName + ' disN'
     return (
-      <lable ref={(P.id||P.name)} key={"lable"+_i} className={clsName}>
+      <label ref={(P.id||P.name)} key={"label"+_i} className={clsName}>
         {P.profile.required ? <span className="fkp-input-required" /> : ''}
         {_title ? <span className="fkp-title">{_title}</span> : ''}
         <div className='fkp-content'>
@@ -454,7 +459,7 @@ function mk_element(item, _i, ctx) {
           <span className="fkp-input-error" />
           {_desc ? <span className="fkp-desc">{_desc}</span> : ''}
         </div>
-      </lable>
+      </label>
     )
   })()
 }
@@ -882,14 +887,14 @@ function FormInputX(config) {
       }
       const theInput = this.elements(id)
       if (theInput) {
-        const lable = this.elements(id, 'lable')
+        const label = this.elements(id, 'label')
         if (message) {
           $(theInput).addClass(dftItemClsName)
           if (React.isValidElement(message)) {
-            const errDom = $(lable).find('>.fkp-content >.fkp-input-error').addClass(dftClsName)[0]
+            const errDom = $(label).find('>.fkp-content >.fkp-input-error').addClass(dftClsName)[0]
             React.render(message, errDom)
           } else {
-            $(lable).find('>.fkp-content >.fkp-input-error').addClass(dftClsName).html(message)
+            $(label).find('>.fkp-content >.fkp-input-error').addClass(dftClsName).html(message)
           }
         } else {
           $(theInput).addClass(dftItemClsName)
@@ -900,13 +905,13 @@ function FormInputX(config) {
     addTips(id, message) {
       const theInput = this.elements(id)
       if (theInput) {
-        const lable = this.elements(id, 'lable')
+        const label = this.elements(id, 'label')
         if (message) {
           if (React.isValidElement(message)) {
-            const errDom = $(lable).find('>.fkp-content >.fkp-input-error')[0]
+            const errDom = $(label).find('>.fkp-content >.fkp-input-error')[0]
             React.render(message, errDom)
           } else {
-            $(lable).find('>.fkp-content >.fkp-input-error').addClass('warning').html(message)
+            $(label).find('>.fkp-content >.fkp-input-error').addClass('warning').html(message)
           }
         }
       }
@@ -915,18 +920,18 @@ function FormInputX(config) {
     removeWarn(id, message) {
       const theInput = this.elements(id)
       if (theInput) {
-        const lable = this.elements(id, 'lable')
+        const label = this.elements(id, 'label')
         if (message) {
           $(theInput).removeClass('itemError')
           if (React.isValidElement(message)) {
-            const errDom = $(lable).find('>.fkp-content >.fkp-input-error')
+            const errDom = $(label).find('>.fkp-content >.fkp-input-error')
             React.render(message, errDom)
           } else {
-            $(lable).find('>.fkp-content >.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').html(message)
+            $(label).find('>.fkp-content >.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').html(message)
           }
         } else {
           $(theInput).removeClass('itemError').next().removeClass('warning').removeClass('error').addClass('success')
-          $(lable).find('>.fkp-content >.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').empty()
+          $(label).find('>.fkp-content >.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').empty()
         }
       }
     },

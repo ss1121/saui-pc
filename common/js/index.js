@@ -8,10 +8,10 @@
  */
 const aotoo_enveriment = require('aotoo-common')
 const isClient = Aotoo.isClient
-const context = Aotoo.context
-const libs = require('./libs')
-context.ajax = libs.ajax
+const context  = Aotoo.context
 const pagelife = SAX('PAGELIFE')
+React.render = ReactDom.render
+React.findDOMNode = ReactDom.findDOMNode
 try {
   require('public/js/_init')
 } catch (error) {
@@ -23,6 +23,9 @@ try {
   页面初始化的相关方法
   `);
 }
+
+const libs = require('./libs')
+context.ajax = libs.ajax
 
 $.fn.once = function (type, tgt, fn) {
   this.off(type, fn)

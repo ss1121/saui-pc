@@ -10,7 +10,7 @@ function pages() {
       { title: '文件上传', idf: 'btn2', itemClass: 'item-list' },
       { title: upld2.render(), parent: 'btn2', itemClass: '' },
     ],
-    footer: <hr data-content='查看代码' className='demo-code-line click-lookCode'/>
+    footer: <hr data-content='点击查看代码' className='demo-code-line click-lookCode'/>
   })
 
   const Pages = Aotoo.wrap(

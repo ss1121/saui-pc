@@ -113,10 +113,10 @@ function defMenthod(ctx){
         const dft = ctx.config
         ctx.ipt = dom
         let elements = this.refs
-        ctx.elements = function(id, lable){
+        ctx.elements = function(id, label){
           if (id == 'all') return elements
           if (id.charAt(0) == '#' || id.charAt(0) == '+') return elements[id]
-          return lable ? elements[id] : elements['#'+id]||elements[id]
+          return label ? elements[id] : elements['#'+id]||elements[id]
         }
         ctx.getElements = function(id){
           if (!id) return elements
@@ -140,10 +140,10 @@ function defMenthod(ctx){
     // const dft = ctx.config
     // ctx.ipt = dom
     // let elements = this.refs
-    // ctx.elements = function(id, lable){
+    // ctx.elements = function(id, label){
     //   if (id == 'all') return elements
     //   if (id.charAt(0) == '#' || id.charAt(0) == '+') return elements[id]
-    //   return lable ? elements[id] : elements['#'+id]
+    //   return label ? elements[id] : elements['#'+id]
     // }
     // ctx.getElements = function(id){
     //   if (!id) return elements
@@ -276,14 +276,14 @@ class FormInput extends BaseClass{
     }
     const theInput = this.elements(id)
     if (theInput) {
-      const lable = this.elements(id, 'lable')
+      const label = this.elements(id, 'label')
       if (message) {
         $(theInput).addClass(dftItemClsName)
         if (React.isValidElement(message)) {
-          const errDom = $(lable).find('.fkp-input-error').addClass(dftClsName)[0]
+          const errDom = $(label).find('.fkp-input-error').addClass(dftClsName)[0]
           React.render(message, errDom)
         } else {
-          $(lable).find('.fkp-input-error').addClass(dftClsName).html(message)
+          $(label).find('.fkp-input-error').addClass(dftClsName).html(message)
         }
       } else {
         $(theInput).addClass(dftItemClsName)
@@ -294,13 +294,13 @@ class FormInput extends BaseClass{
   addTips(id, message){
     const theInput = this.elements(id)
     if (theInput) {
-      const lable = this.elements(id, 'lable')
+      const label = this.elements(id, 'label')
       if (message) {
         if (React.isValidElement(message)) {
-          const errDom = $(lable).find('.fkp-input-error')[0]
+          const errDom = $(label).find('.fkp-input-error')[0]
           React.render(message, errDom)
         } else {
-          $(lable).find('.fkp-input-error').addClass('warning').html(message)
+          $(label).find('.fkp-input-error').addClass('warning').html(message)
         }
       }
     }
@@ -309,18 +309,18 @@ class FormInput extends BaseClass{
   removeWarn(id, message){
     const theInput = this.elements(id)
     if (theInput) {
-      const lable = this.elements(id, 'lable')
+      const label = this.elements(id, 'label')
       if (message) {
         $(theInput).removeClass('itemError')
         if (React.isValidElement(message)) {
-          const errDom = $(lable).find('.fkp-input-error')
+          const errDom = $(label).find('.fkp-input-error')
           React.render(message, errDom)
         } else {
-          $(lable).find('.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').html(message)
+          $(label).find('.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').html(message)
         }
       } else {
         $(theInput).removeClass('itemError').next().removeClass('warning').removeClass('error').addClass('success')
-        $(lable).find('.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').empty()
+        $(label).find('.fkp-input-error').removeClass('warning').removeClass('error').addClass('success').empty()
       }
     }
   }

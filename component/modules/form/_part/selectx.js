@@ -82,8 +82,8 @@ function select(_intent, ctx){
 
   function dealRcbox(item){
     const _name = getrcBoxName(item)
-    const lable = elements[_name]
-    const thisInput = $(lable).find('input[name='+_name+']')
+    const label = elements[_name]
+    const thisInput = $(label).find('input[name='+_name+']')
     $(thisInput).change(function(){
       if (item.type == 'checkbox') {
         let cbVal = []
@@ -145,7 +145,7 @@ function select(_intent, ctx){
     const itMtd = item.itemMethod || item.attr.itemMethod
 
     let thisInput
-    let lable
+    let label
     let bindBodyClick = false
     switch (item.type) {
       case 'span':
@@ -171,7 +171,7 @@ function select(_intent, ctx){
       case 'select':
         const watch = item.profile.watch || item.watch
         thisInput = elements['#'+item.id]
-        lable = elements[item.id]
+        label = elements[item.id]
         const ddMenu = elements['+'+item.id]  //下拉菜单容器
         let change = true
 
@@ -254,7 +254,7 @@ function select(_intent, ctx){
             forceDealWithUnion(item)
           }
         })
-        $(lable).find('.fkp-dd').off('click').on('click', function(e){
+        $(label).find('.fkp-dd').off('click').on('click', function(e){
           e.stopPropagation()
           // $('.fkp-dd-list').hide()
           // $(this).siblings().find('.fkp-dd-list').hide()

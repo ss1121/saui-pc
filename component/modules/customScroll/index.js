@@ -23,7 +23,7 @@ let Customscroll = function (element, opts){
     top: this.element.position().top + 3,
     left: this.element.outerWidth() - 9,
     width: 6,
-    height: elementHeight - 6,
+    maxHeight: elementHeight - 6,
     zIndex: 3
   })
   let max = elementHeight - 6 - scrollHeight
@@ -33,7 +33,7 @@ let Customscroll = function (element, opts){
     position: 'absolute',
     top: initTop < 0 ? 0 : initTop > max ? max : initTop,
     width: 6,
-    height: scrollHeight,
+    maxHeight: scrollHeight,
     borderRadius: 3,
     background: 'rgba(153, 153, 153, .35)',
     cursor: 'pointer',

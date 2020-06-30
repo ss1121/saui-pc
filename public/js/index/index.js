@@ -20,6 +20,7 @@ import uploader from './dataEntering/uploader'
 //数据展示 
 import tag from './data/tag'
 import table from './data/table'
+import datetimepicker from './data/datetimepicker'
 //navigation
 import tabs from './navigation/tabs'
 import steps from './navigation/steps'
@@ -44,6 +45,7 @@ const tmpRouter = {
 
   tag: tag,
   table: table,
+  datetimepicker: datetimepicker,
   
   tabs: tabs,
   steps: steps,

@@ -892,7 +892,7 @@ Slip.prototype = {
             return false;
         }
 
-        //check for a scrollable parent
+        //check for a scrollabel parent
         var scrollContainer = targetNode.parentNode;
         while (scrollContainer) {
             if (scrollContainer == document.body) break;
@@ -968,7 +968,7 @@ Slip.prototype = {
             time: e.timeStamp,
         });
 
-        // In Apple's touch model only the first move event after touchstart can prevent scrolling (and event.cancelable is broken)
+        // In Apple's touch model only the first move event after touchstart can prevent scrolling (and event.cancelabel is broken)
         this.canPreventScrolling = false;
     },
 
@@ -1012,12 +1012,12 @@ Slip.prototype = {
         var triggerOffset = 40,
             offset = 0;
 
-        var scrollable = this.target.scrollContainer,
-            containerRect = scrollable.getBoundingClientRect(),
+        var scrollabel = this.target.scrollContainer,
+            containerRect = scrollabel.getBoundingClientRect(),
             targetRect = this.target.node.getBoundingClientRect(),
             bottomOffset = Math.min(containerRect.bottom, window.innerHeight) - targetRect.bottom,
             topOffset = targetRect.top - Math.max(containerRect.top, 0),
-            maxScrollTop = this.target.origScrollHeight - Math.min(scrollable.clientHeight, window.innerHeight);
+            maxScrollTop = this.target.origScrollHeight - Math.min(scrollabel.clientHeight, window.innerHeight);
 
         if (bottomOffset < triggerOffset) {
           offset = Math.min(triggerOffset, triggerOffset - bottomOffset);
@@ -1026,7 +1026,7 @@ Slip.prototype = {
           offset = Math.max(-triggerOffset, topOffset - triggerOffset);
         }
 
-        scrollable.scrollTop = Math.max(0, Math.min(maxScrollTop, scrollable.scrollTop + offset));
+        scrollabel.scrollTop = Math.max(0, Math.min(maxScrollTop, scrollabel.scrollTop + offset));
     },
 
     dispatch: function(targetNode, eventName, detail) {

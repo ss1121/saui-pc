@@ -1,10 +1,9 @@
 import {form} from 'component/client'
 import list from 'component/modules/list'
+
 import inputNum from "./inputNum";
-
 import inputPop from "./input-pop";
-import {dataTier3, dataTier2, dataTierHot,} from './destination/data-destination'
-
+import {dataTier3, dataTier2, dataTierHot} from './destination/data-destination'
 
 /**
  * 表单内容
@@ -121,12 +120,13 @@ const FormData = [
     }
   },
   {
-    title: '选择日期',
+    title: '选择日期 Boostrap版本',
     input:{
       type: 'date', 
       id: 'date', 
       readOnliy: 'readOnly',
       placeholder: '请选择日期',
+      autocomplete: 'off',
       assets: {
         startDate: "2000-01-01",
         endDate: new Date().Format("yyyy-MM-dd")

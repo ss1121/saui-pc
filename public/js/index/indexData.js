@@ -118,6 +118,15 @@ export default [
       "targetUrl": "table",
   },
   {
+      "defaultIco": "",
+      "id": 1870,
+      "parentId": 186,
+      "preCode": "datetimepicker",
+      "sourceName": "日历控件",
+      "systemCode": "9",
+      "targetUrl": "datetimepicker",
+  },
+  {
       "id": 1860,
       "parentId": 178,
       "preCode": "formx",

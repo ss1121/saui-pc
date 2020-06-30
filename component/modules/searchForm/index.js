@@ -115,17 +115,17 @@ class SearchForm extends React.Component {
     return (
       <div className={this.props.containerClass}>
         <div className="inputGroup">
-          <lable className="inputItem input-search">
+          <label className="inputItem input-search">
             {myinput}
             <span className="fkp-input-error"></span>
             <span className="fkp-desc">
               <div className="list-container" style={{visibility: this.state.showDropdown ? '' : 'hidden', height: this.state.showDropdown ? '' : '0'}}>{this.dropdown}</div>
             </span>
-          </lable>
+          </label>
           {this.props.searchBtn&&(
-          <lable className="inputItem btn-search">
+          <label className="inputItem btn-search">
             <input type="button" className="btn" value={this.props.searchBtnName} ref={(btn)=>{this.searchBtn=btn}} onClick={(e)=>this.props.onSearchConfirm.call(this,this.state.value, e)}/>
-          </lable>
+          </label>
           )}
         </div>
         {this.state.historyData ? <div>{this.state.historyData}</div> : ''}

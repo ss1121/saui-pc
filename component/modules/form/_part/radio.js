@@ -21,8 +21,8 @@ function rcbox(pdata, opts) {
     
 
   const itemClass = pdata.attr.itemClass ? pdata.attr.itemClass : ''
-  // const lableClass = pdata.type ==='radio' ? 'radioItem '+itemClass : 'checkboxItem '+itemClass
-  const lableClass = pdata.type === 'radio' ? 'radioItem' : 'checkboxItem'
+  // const labelClass = pdata.type ==='radio' ? 'radioItem '+itemClass : 'checkboxItem '+itemClass
+  const labelClass = pdata.type === 'radio' ? 'radioItem' : 'checkboxItem'
   const _cls = pdata.type === 'radio' ? 'fkp-radio-box' : 'fkp-checkbox-box';
   const len = values.length
 
@@ -92,7 +92,7 @@ function rcbox(pdata, opts) {
     }
 
     return (
-      <lable key={'rcbox' + ii} className={lableClass}>
+      <label key={'rcbox' + ii} className={labelClass}>
         {resault.title ? <span className="fkp-title">{resault.title}</span> : ''}
         <div className='fkp-content'>
           {
@@ -107,7 +107,7 @@ function rcbox(pdata, opts) {
           <span className={_cls} />
           {resault.desc ? <span className="fkp-desc">{resault.desc}</span> : ''}
         </div>
-      </lable>
+      </label>
     )
   })
 
