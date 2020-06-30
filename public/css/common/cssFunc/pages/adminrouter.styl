@@ -135,6 +135,13 @@ ss-menus()
     display: none
   .level0
     position: relative
+    &:last-child
+      .property-ul
+        padding-bottom: 30px
+        li
+          &:last-child
+            margin-bottom: @padding-bottom
+        
   .caption
     padding: 0 adminMenus.$space
   .item-icon

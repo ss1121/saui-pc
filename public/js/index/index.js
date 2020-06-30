@@ -1,4 +1,5 @@
-import 'aotoo-react-router'
+// import 'aotoo-react-router'
+require('common/js/libs/router')
 import item from 'component/modules/item'
 import { adapterfilterRouterData, adapterIdNav } from "../_common/util";
 
@@ -101,7 +102,7 @@ router.rendered = function(dom) {
     const toWhere = $(this).attr('data-path')
     if (toWhere) router.goto(toWhere)
     // const xx = $('.mulitple .select').offset().top
-    // console.log(xx)
+    console.log($('.routerMenus .select'), router)
     // window.scrollTo(0, target_top)
   })
 }
