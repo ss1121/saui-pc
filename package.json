@@ -52,7 +52,7 @@
     "lodash.uniqueid": "^4.0.1",
     "lru-cache": "^4.0.1",
     "marked": "^0.3.5",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.3",
     "mongoose": "^4.8.1",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
