@@ -5,6 +5,7 @@ module.exports = {
   libs: path.join(__dirname, '../libs'),
   component: path.join(__dirname, '../component'),
   common: path.join(__dirname, '../common'),
+  commonjs: path.resolve(path.join(__dirname, '../public/js/_common')),
   public: path.resolve(path.join(__dirname, '../public'))
 }
 
