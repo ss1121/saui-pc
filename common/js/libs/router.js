@@ -325,7 +325,8 @@ Aotoo.extend('router', function (opts, utile) {
       routerClass: 'routerGroup',
       mulitple: false
     },
-    iscrollConfig: {}  // 导航栏的iscroll滚动参数设置
+    iscrollConfig: {},  // 导航栏的iscroll滚动参数设置
+    iscroll: null
   }
   opts = utile.merge(dft, opts)
   __opts = opts
@@ -339,7 +340,7 @@ Aotoo.extend('router', function (opts, utile) {
   class Router extends Tabs {
     constructor(props) {
       super(props)
-      this.iscroll = null
+      // this.iscroll = null
       this.state = utile.merge(this.state, {
         flag: this.props.flag || '#',
         rootUrl: this.props.rootUrl || rootUrl,
@@ -669,7 +670,7 @@ Aotoo.extend('router', function (opts, utile) {
         <div className='routerMenus'>{props.treeHeader}{jsxMenu}{props.treeFooter}</div>, 
         opts.iscrollConfig,
         function(res) {
-          that.iscroll = res.iscr
+          opts.iscroll = res.iscr
           // console.log(that.iscroll,'============aaa')
         }
       )

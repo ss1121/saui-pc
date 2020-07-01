@@ -101,10 +101,12 @@ router.rendered = function(dom) {
     e.stopPropagation()
     const toWhere = $(this).attr('data-path')
     if (toWhere) router.goto(toWhere)
-    // const xx = $('.mulitple .select').offset().top
-    console.log($('.routerMenus .select'), router)
-    // window.scrollTo(0, target_top)
   })
+  if ($obj.offset().top > router.config.iscroll.wrapperHeight) {
+    // const xx = -($obj.offset().top - router.config.iscroll.wrapperHeight)
+    const xx = router.config.iscroll.maxScrollY
+    router.config.iscroll.scrollTo(0, xx)
+  }
 }
 
 router.render('root')
