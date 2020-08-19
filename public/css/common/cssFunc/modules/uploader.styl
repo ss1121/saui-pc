@@ -10,11 +10,15 @@ ss-uploader($class = '.uploader-wrapper',  $type = 'default', $config = false)
     .upload-imglist
       >li
         border: 1px dashed $color-line-input
-        border-radius: $border-radius
+        border-radius: $br
         display: inline-flex
         position: relative
+        color: $color-text
         &:hover
           border-color: $color-primary
+          color: $color-aux-fail
+          .webuploader-button
+            color: $color-text
           [class^=icon-]
             &:before
               color: $color-primary
@@ -37,8 +41,11 @@ ss-uploader($class = '.uploader-wrapper',  $type = 'default', $config = false)
       opacity: 0
     .updelete
       position: absolute
-      top: 0
-      right: 0
+      top: -8px
+      right: @top
+      font-size: 16px
+      &:before
+        content: '\e7b8'
     .upload-img, .upimg-wrap
       height: 100%
     .upimg-wrap

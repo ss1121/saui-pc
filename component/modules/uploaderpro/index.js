@@ -96,7 +96,7 @@ class Uploader extends React.Component {
                 <div className="upimg-wrap">
                   <img className={ btnType == 'default' ? imgclass : btnType == 'logo' ? '' : 'perwidth100' } draggable="false" src={ min } />
                 </div>
-                <button className="updelete">删除</button>
+                <a href='javascript:;' className="updelete"></a>
                 { hasDesc ? <div className="upload-desc-wrap">
                   <input type="text" className={ "upload-desc" + (descWarning[i] || descError[i] ? ' upload-desc-input-error' : '')} value={ desc[i] || '' } onChange={this.handleChange.bind(this,i)} placeholder="图片描述20字内" maxLength="20"/>
                   { descWarning[i] ? <span className="upload-desc-warning modu-wraning">{ descWarningText[i] }</span> : '' }

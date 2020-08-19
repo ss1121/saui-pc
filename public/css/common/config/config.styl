@@ -10,54 +10,53 @@
 
 
 //zindex
-$zidx-h = 99    //tip,屏幕垂直居中
-$zidx-m = 88    // fixed层
-$zidx-l = 77    //modal?
+$zidx-h                   = 99    //tip,屏幕垂直居中
+$zidx-m                   = 88    // fixed层
+$zidx-l                   = 77    //modal?
 
-$zidx-ft = 20    // form 提示语，下拉
+$zidx-ft                  = 20    // form 提示语，下拉
 
 
 //色值分类
 
 //backgroundColor
-$color-bg = #f5f5f5
-$color-bg-primary = #fff
+$color-bg               = #F0F2F5
+$color-bg-special       = #F5F6FA                           //特殊背景
+$color-bg-primary       = #fff
 
 //borderColor
-$color-line = #e5e5e5                           //下划线
-$color-line-secondary = #b2b2b2                 //边框线
-$color-line-input  = #ccc                       //input边线
+$color-line             = #E5E6ED                           //下划线
+$color-line-secondary   = $color-line                         //边框线
+$color-line-input       = #CFD2D6                           //input边线
 
 //textColor
-$color-text = #666                                   //默认色
-$color-text-regular = #333                           //标题色
-$color-text-info = #999                              //说明信息
-$color-text-disabled = #ccc                          //说明信息
-$color-text-placeholder = #b2b2b2
+$color-text             = #777D8D                           //默认色
+$color-text-title       = #272E40                           //标题色
+// $color-text-info        = #999                              //说明信息
+$color-text-disabled    = $color-line-input                   //禁止色
+$color-text-placeholder = $color-line-input                  //input placeholder
 
 //网站主色调
-$color-primary = #227ce1                              //品牌色
-$color-success = #68BF7B                             //功能色
-$color-fail = #FF4C29                             //功能色
-$color-warning = #FF7E11                             //功能色
-$color-info = $color-bg                             //功能色
+$color-primary          = #0076FF                           //品牌色
 
 //辅助色，
-$color-aux-primary = #4B9AFC                      // 用于辅助及搜索按钮 提示性文字链/按钮
-$color-aux-warning = #FF5552                       //用于网站价格显示
-$color-aux-info = #AED2FA                          //用于页面特殊文字/图标样式
+$color-aux-primary      = #4B9AFC                           // 用于辅助及搜索按钮 提示性文字链/按钮
+$color-aux-success      = #68BF7B                           // 用于保存提交成功性提示
+$color-aux-warning      = #FF7400                           // 用于副按钮，特殊按钮 提示性ICON/文字
+$color-aux-fail         = #FC3230                           // 用于网站价格显示
 
+                                
 
 //鼠标经常效果
-$color-hover = $color-primary
+$color-hover            = $color-primary
 
 //字体大小
-$size-sm = 12px
-$size = 14px    //用于网站整体字体的大小
-$size-lg = 20px
-$size-title-sm = 16px
-$size-title = 18px
-$size-title-lg = 24px   //特殊
+$size-sm                = 12px
+$size                   = 14px    //用于网站整体字体的大小
+$size-info              = 18px    //适用于重要文字信息，特殊标签页
+$size-title-sm          = 16px    //小标题
+$size-title             = 20px    //大标题
+$size-title-lg          = 24px    //特殊
 
 
 
@@ -66,28 +65,29 @@ $size-title-lg = 24px   //特殊
   距离
 */
 $space = 30px
-$space-minor = 20px      //比如目的地地区之间
+$space-minor = 20px      //比如
 $space-small = 10px      //比如按钮之间
-//扣掉文字的行高后
-// $space-spc = 24px
-//演变
-$dit-lr = 0 30px
-$dit-tb = 30px 0
 
 $space-dispaly = 10px 20px  //文字 上下左右 比如层里的
 
 $icon-dist = 8px                      //文字与图标之前的距离
 
-//padding
+//padding  用于框框包住的文字...
 $padding = 6px 20px
 $padding-sm = 6px $space-small
+
+/*
+  圆角
+*/
+$br = 3px
+$br-lg = 10px       //列表 modal
 
 
 /*
   按钮   色值, 大小
 */
-$btn-radius = 3px
-$btn-radius-lg = 20px
+$btn-radius = $br
+$btn-radius-lg = $br-lg
 
 //失效
 $btn-dislabel-color = #ccc
@@ -102,14 +102,14 @@ $btn-bgc-primary = $color-aux-primary     //背景色
 $btn-bc-primary = $color-aux-primary      //边线
 // $btn-c-primary = #fff       //文字色
 
-$btn-bgc-minor = $color-fail     //背景色
-$btn-bc-minor = $color-fail      //边线
+$btn-bgc-minor = $color-aux-warning     //背景色
+$btn-bc-minor = $color-aux-warning      //边线
 // $btn-c-minor = #fff       //文字色
 
 
 //背景是白色    默认背景统一白色  因为色值跟同上 所以无需再写
-$btn-bgc-grey = $color-line-secondary      //边线
-$btn-bc-grey = $color-text       //文字色
+$btn-bgc-grey = $color-text      //边线
+$btn-bc-grey = #fff      //文字色
 
 
 btn-default = {
@@ -147,13 +147,7 @@ tag-lg = {
 }
 
 
-//列表圆角
-$list-br = 8px
-//modal圆角
-$modal-radius = 12px
-//普通圆角
-$border-radius = 3px
-$border-radius-small = 6px
+
 
 //图片大小
 pic-default = {
@@ -205,7 +199,7 @@ $br-circle = 100%
 
 $tag-br = 4px
 $tag-default-color = #4b9afc
-$tag-primary-color = #ff7e11
+$tag-primary-color = #FF7400
 $tag-minor-color = #ff5552
 $tag-special-color = #68BF7B
 
@@ -230,7 +224,7 @@ $arrow-default-color = #ccc
 
 
 //阴影
-$box-shadow = 0px 10px 12px 0px rgba(21,61,106,0.03)
+$box-shadow = 0px 5px 15px 0px rgba(38,47,64,0.15);         //四周
 $box-shadow-tips = 0px 3px 15px 0px rgba(0, 0, 0, 0.1);      //适用于tips modal
 $box-shadow-pop = 0px 4px 15px 0px rgba(0, 0, 0, 0.1);      //适用于pop
 // $box-shadow-top = 0px -10px 12px 0px rgba(0, 0, 0, 0.04)
@@ -244,16 +238,16 @@ $mask-bg = fade-out(#000, .5)
   tips
 */
 $tips-icon = $icon-warning
-$tips-icon-color = $color-warning
+$tips-icon-color = $color-aux-warning
 $tips-icon-sucess = '\e654'
-$tips-icon-sucess-color = $color-success 
+$tips-icon-sucess-color = $color-aux-success 
 $tips-icon-fail = '\e648'
-$tips-icon-fail-color = $color-fail 
+$tips-icon-fail-color = $color-aux-fail 
 $tips-icon-size = 24px
 $tips-icon-size-sm = 16px   //表单性提示
 $tips-size = $size 
 $tips-size-sm = $size-sm      //表单性提示
-$tips-color = $color-text-regular
+$tips-color = $color-text-title
 $tips-mg = 12px     //icon与文字之间的间距
 $tips-mg-sm = 6px     //icon与文字之间的间距
 
@@ -270,8 +264,11 @@ tips-form = {
 $tips-arrow-size = 10px
 $tips-arrow-size-sm = 5px
 
-$tips-bg = lighten($color-fail, 90%)
-$tips-bc = lighten($color-fail, 70%)
+$tips-bg = lighten($color-aux-fail, 90%)
+$tips-bc = lighten($color-aux-fail, 70%)
+
+$tipsx-bg-2 = #fff
+$tipsx-bc-2 = $color-line-input
 
 //背景白色
 $tipsx-bg = #fff

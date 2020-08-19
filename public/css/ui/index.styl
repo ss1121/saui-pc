@@ -1,34 +1,258 @@
-// @import '../index'
-// @import '../_commonpages/steps'
-
-// //头部
-// .s-header
-//   height: 64px 
-//   ss-box-shadow()
-//   .logo
-//     display: block
-//     padding: 0 40px 
-//     height: 50px
-//     img 
-//       width: auto
-//       height: 100%
-
-// //中部内容
-// .s-body
-//   margin: 40px 0 0
-// .sb-content
-//   padding: 0 40px
+@import '../common/css/index'
+@import '../common/css/icon'
+@import '../common/css/button'
+@import '../common/css/tag'
+@import '../common/css/width'
+@import '../common/css/padding'
+@import '../common/css/margin'
+@import '../common/css/pages/margin'
+@import '../common/css/nodata'
 
 
-// //块层  卡片式
-// .item-card
-//   border: 1px solid #eee;
-//   border-radius: 6px;
-//   margin-bottom: 20px;
-//   position: relative;
-//   transition: all .2s ease-in-out;
-//   min-height: 180px
-//   .item-card-li
-//     border-right: 1px dashed #eee;
-//     &:last-child
-//       border-right: none
+//form表单
+@import '../common/modules/form/index'
+//modal
+@import '../common/modules/modal/index'
+//加载动画
+@import '../common/modules/load/index'
+//tabs组件
+@import '../common/modules/tabs/index'
+//upload上传组件
+@import '../common/modules/uploader/index'
+//日历控件
+@import '../common/modules/datetimepicker/index'
+
+//路由 布局
+html, body, .wrap
+  height: 100%
+ss-admin()
+.wrap
+  ss-display-flex(column)
+  ss-root-header()
+  #root
+    height: calc(100% - 60px)
+    position: relative
+    z-index: 1
+  .root-header
+    z-index: 2
+//路由 end
+
+//徽标数
+ss-func-badge()
+
+//pop层
+ss-pop('.ss-pop-normal', {$item: false, $scrollCfg: false})
+
+
+ss-loading-func()
+
+
+//tabs
+tabshead2 = {
+  $bg: #f5f5f5
+  $activeType: 'normal'
+  $activebg: #fff
+  $listWrap: true     //treeFooter treeHeader存在时
+}
+
+tabshead3 = {
+  $activeType: 'border'
+  $activebg: #fff
+  $activeBColor: #f5f5f5
+}
+//目的地
+ss-tabs('.destination-tabs', $menusScroll: true,  $width: 500px)      //$width : 控件1，控件2 是500 控件2是840px    
+ss-func-destination($class: '.ss-destination', $type: 'row', $tier: 2, $rhlConfing: rhlConfig-Mdd)    
+ss-func-destination($class: '.ss-destination-title', $tier: 3, $rhlConfing: rhlConfig-Mdd)    
+// ss-func-destination($class: '.ss-destination-x', $type: 'row', $tier: 2, $rhlConfing: rhlConfig-Mdd, $rlConfig: rowListConfig-Mdd-kj3)    
+// ss-func-destination('.ss-destination-title-two', 'row', 3, rhlConfig-Mdd, rowListConfig-Mdd-title-kj2)    
+
+em 
+  font-style: normal
+
+.ss-hidden
+  visibility: hidden
+
+/********demo 样式 *************/
+// .adminDiv
+//   ss-func-display-div()
+ss-func-grid('.demo-icon-list', {$num: 8, $spacing: 10px})
+.demo-icon-list
+  .ss-col
+    &:before
+      content: var(--icon, '')
+
+.item-title-lg
+  color: $color-primary
+  font-size: $size-title-lg
+  margin-bottom: 40px
+
+.item-list
+  margin-bottom: 30px
+  font-size: 14px
+  &.flex
+    .property-ul
+      ss-display-flex(row wrap)
+  .itemrootCkb~.caption
+    font-size: 16px
+    color: #333
+    margin-bottom: 20px
+  .property-ul
+    >li
+      margin-right: 20px
+      margin-bottom: 10px
+
+.item-list-2
+  margin-bottom: 30px
+  font-size: 14px
+  .itemrootCkb~.caption
+    font-size: 16px
+    color: #333
+    margin-bottom: 20px
+
+.font-list
+  color: #333
+  >li
+    ss-display-flex(row nowrap, flex-start)
+    margin-bottom: 20px
+    >label
+      width: 50%
+    small
+      color: #999
+      display: block
+      font-size: 12px
+
+ss-hr-text('.demo-code-line', {$color: #000, $bg: #fff, $pointer: true})
+
+.demo-display
+  width: 80px
+  height: 80px
+  position: relative
+
+
+/********demo 样式 *************/
+
+
+
+//TIPS 部分
+ss-tips-system(tipsSysCfg)
+//模拟表单提示
+ss-tips-form('.form-tips')
+//文字提示
+abc = {
+  $color: #ff7e11
+  $size: 6px
+  $arrowBc: lighten(#ff7e11, 70%)
+  $arrowBg: lighten(#ff7e11, 90%)
+  $spc: false
+}
+ss-tips-arrow('.wz-tips', abc)
+// ss-tips-arrow($tips-size-sm, $tips-padding-sm, $tips-icon-color, lighten($tips-icon-color, 90%), lighten($tips-icon-color, 70%), $tips-arrow-size-sm)
+ss-tips-arrow('.ss-tips-fff')
+
+// absolute层里的，是无法根据内容的长度来撑开的 有两个办法，第一种 强制不换行，第二种，父级的宽度一定要足够的宽
+xx = {
+  $isNowrap: false
+}
+ss-tips-arrow('.ss-tips-widp100', xx)
+
+//组件 提示框
+popConfig =  {
+  $icon: false
+  $isNowrap: false
+  $spc: true
+}
+.pop-title-arrow
+  position: relative
+  &:hover, &.active
+    ss-arrow-direction(top, 6px, $tipsx-bc, $tipsx-bg, calc(100% - 3px))
+  &.arrow-bottom
+    &:before
+      transform: rotateZ(135deg);
+      top: inherit
+      bottom: calc(100%)
+
+ss-tips('.popup-box', popConfig)
+
+
+//色块
+.demo-bg-primary span
+  background: $color-primary
+
+.demo-bg-aux-primary span
+  background: $color-aux-primary
+.demo-bg-aux-success span
+  background: $color-aux-success
+.demo-bg-aux-warning span
+  background: $color-aux-warning
+.demo-bg-aux-fail span
+  background: $color-aux-fail
+.demo-bg-aux-info span
+  background: $color-aux-info
+
+
+.demo-bg-text span
+  background: $color-text
+.demo-bg-text-title span
+  background: $color-text-title
+
+
+.demo-bg-color span
+  background: $color-bg
+.demo-bg-color-special span
+  background: $color-bg-special
+  
+.demo-bg-border span
+  background: $color-line
+.demo-bg-border-secondary span
+  background:$color-line-secondary
+.demo-bg-border-input span
+  background:$color-line-input
+
+//grid
+.demo-grid
+  ss-func-grid('.property-ul', {$num: 5, $spacing: 10px})
+  .caption
+    font-size: $size-title-sm
+    color: $color-text-title
+    margin-top: 20px
+  span
+    height: 100px
+    padding: 30px
+    border-radius: $br-lg
+    color: #fff
+    ss-display-flex(column, center, center)
+  i
+    font-style: normal
+    display: block
+    font-size: 12px
+
+
+//login
+ss-login()
+//demo login
+.pages-login
+  height: calc(100% - 100px);
+
+//仿form
+ss-func-like-form()
+
+
+//tag 文字
+.tag-list-wz
+  .property-ul
+    @extends $flex-nowrap
+    padding: 0 10px
+    line-height: 60px
+    .ss-tag
+      margin: 0
+      &:hover
+        {bgActive}
+
+.ml14
+  margin-left: 14px
+
+ss-func-steps-list-column-dot()
+
+//自定义表格
+ss-table('.ss-table')

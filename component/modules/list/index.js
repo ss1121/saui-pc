@@ -67,10 +67,9 @@ const Actions = {
   DELETE: function (ostate, id, ctx) {
     let that = this
     let curState = this.curState
-    // curState.data.splice(id, 1)
     let newData = []
     curState.data.forEach((item, ii) => {
-      if (ii !== id) {
+      if (item.attr.idx !== id) {
         newData.push(item)
       }
     })

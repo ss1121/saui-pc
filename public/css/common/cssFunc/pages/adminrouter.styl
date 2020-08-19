@@ -1,89 +1,5 @@
-// rootHeadCfg = {
-//   $bgimage: '/images/saui-logo.png'
-//   // $bgimage: false
-//   $HeaderHeight: 60px
-//   $HeaderBg: #fff
-//   $HeadColor: #333
-//   $HeadSize: 12px
-//   $mWidth: 180px
-//   //缩小版
-//   $mWidth-2: 70px
-//   $lh: 50px
-// }
 
-// admin = {
-//   $routerBg: $color-bg
-//   $box-line: false
-// }
-
-// adminMenus = {
-//   $logoColor: $color-text-regular
-//   $mBg: #333
-//   $mColor:#999
-//   $mWidth: 180px
-//   $mActiveBg: #262626
-//   $mActiveItemBg: false //fade-out($color-primary, .9)
-//   $mActiveColor: #fff
-//   $mUlBg: #3C3C3C
-//   $lh: 40px
-//   $lh-title: 40px
-//   $type: 'activeline'
-//   $typeClass: '.caption'
-//   $isShowIcon: true
-//   $isAllShow: false
-//   $typeleft: true
-//   $size-title: false
-//   $space: 20px
-//   $spaceItem: 45px
-//   $mLine: false
-//   $spaceCaption: false
-
-//   $mWidth-2: 70px
-//   $lh-2: 50px
-// }
-rootHeadCfg = {
-  // $bgimage: '/images/saui-logo.png'
-  $bgimage: false
-  $HeaderHeight: 60px
-  $HeaderBg: #fff
-  $HeadColor: #333
-  $HeadSize: 12px
-  $mWidth: 260px
-  //缩小版
-  $mWidth-2: 70px
-  $lh: 50px
-}
-
-admin = {
-  $routerBg: #fff
-  $box-line: 1px solid $color-line
-}
-
-adminMenus = {
-  $logoColor: $color-text-regular
-  $mBg: #fff
-  $mColor: #666
-  $mWidth: 260px
-  $mActiveBg: #fff
-  $mActiveItemBg: #e6f7ff //fade-out($color-primary, .9)
-  $mActiveColor: $color-primary
-  $mUlBg: #fff
-  $lh: 40px
-  $lh-title: 44px
-  $type: 'activeline'
-  $typeClass: '.level1'
-  $isShowIcon: false
-  $isAllShow: true
-  $typeleft: false
-  $size-title: 13px
-  $space: 40px
-  $spaceItem: 40px
-  $mLine: 1px solid $color-line
-  $spaceCaption: 16px 0 
-
-  $mWidth-2: 70px
-  $lh-2: 50px
-}
+@import './routerconfig/routerStyle2'
 
 ss-admin($class= '.routerGroup', $config = admin)
   //所有内容在一屏内显示
@@ -93,57 +9,84 @@ ss-admin($class= '.routerGroup', $config = admin)
   {$class}
     background: $config.$routerBg
     height: 100%
+    padding: $config.$space
     ss-display-flex(row nowrap, flex-start)
     &.active          //缩小版本的menus
       >.routerMenus
-        width: $config.$mWidth-2
+        width: $config.$min-width
         line-height: $config.$lh-2
         .item-icon
           justify-content: center
-        .item-title
-          display: none
+        if (!$min-titleShow)
+          .item-title
+            display: none
         .property-ul
           position: absolute;
           top: 0;
-          left: $config.$mWidth-2
-          padding: 0 20px;
+          left: ($config.$min-width - 5px)
+          padding: 10px 0;
           white-space: nowrap;
-          z-index: 99
-        .caption
-          &.active-none
-            ~.property-ul
-              display: none
+          z-index: $zidx-h
+          display: none
+          border: 1px solid $tipsx-bc-2
+          ss-arrow-direction(right, $tips-arrow-size, $tipsx-bc-2, $tipsx-bg-2, 20%, -($tips-arrow-size - 4px))
 
     //菜单部分
     >.routerMenus
       ss-menus()
       border-right: $config.$box-line  if ($config.$box-line)
+      z-index: 2
     //内容部分
     ss-func-customscroll('>.routerBoxes', {$height: auto, $min-height: 300px})      //滚动
     >.routerBoxes
+      z-index: 1
       flex: 1
       padding: $space
+      background: $config.$mBg if $config.$mBg
+      border-radius: $config.$br  if $config.$br
+      margin-left: 30px
 
+
+/***************路由菜单部分*********************/
 ss-menus()
-  background: adminMenus.$mBg
-  color: adminMenus.$mColor
-  width: adminMenus.$mWidth
-  transition: 250ms ease;
-  font-size: 14px
-  line-height: adminMenus.$lh
+  {adminMenus.$class}
+    background: adminMenus.$mBg if adminMenus.$mBg
+    border-radius: adminMenus.$br  if adminMenus.$br
+    box-shadow: adminMenus.$bs  if adminMenus.$bs
+    color: adminMenus.$mColor   if adminMenus.$size
+    transition: 250ms ease;
+    font-size: adminMenus.$size if adminMenus.$size
+    line-height: adminMenus.$lh if adminMenus.$lh
+    padding: adminMenus.$space-b if adminMenus.$space-b
+    if (adminMenus.$mWidth != false)
+      width: adminMenus.$mWidth 
+    else 
+      width: adminMenus.$min-width
   .itemrootCkb
     display: none
-  .level0
-    position: relative
-    &:last-child
-      .property-ul
-        padding-bottom: 30px
-        li
-          &:last-child
-            margin-bottom: @padding-bottom
-        
+  // .level0
+  //   position: relative
+  //   &:last-child
+  //     .property-ul
+  //       padding-bottom: 30px
+  //       li
+  //         &:last-child
+  //           margin-bottom: @padding-bottom
+  .itemCategory
+    position: relative 
   .caption
-    padding: 0 adminMenus.$space
+    padding: adminMenus.$space
+    &.select-none
+      ~.property-ul
+        display: none
+    &.select
+      .item-title
+        &:after
+          transform: rotateZ(180deg)
+      ~.property-ul
+        height: auto
+        display: block
+
   .item-icon
     line-height: adminMenus.$lh-title
     font-size: adminMenus.$size-title
@@ -154,17 +97,22 @@ ss-menus()
       display: block
   .property-ul
     background: adminMenus.$mUlBg
-    overflow: hidden
+    border-radius: adminMenus.$br  if adminMenus.$br
+    box-shadow: adminMenus.$bs  if adminMenus.$bs
+    // overflow: hidden
+    min-width: 140px
     li 
       cursor: pointer
       padding-left: adminMenus.$spaceItem
-      &:hover
-        // background: adminMenus.$mActiveItemBg if (adminMenus.$mActiveItemBg)
-        color: adminMenus.$mActiveColor
-      &.select
+      &:hover, &.select
         background: adminMenus.$mActiveItemBg if (adminMenus.$mActiveItemBg)
-        color: adminMenus.$mActiveColor
-
+        color: $color-primary
+      &[data-path*='item-title']
+        color: $color-text-title
+        font-size: 16px
+        font-weight: bold
+        &:hover
+          color: $color-text-title
   if (adminMenus.$type == 'activeline') 
     {adminMenus.$typeClass}
       position: relative
@@ -179,15 +127,16 @@ ss-menus()
         else
           right: 0
         top: 0
-      &.select
-        background: adminMenus.$mActiveBg
-        color: adminMenus.$mActiveColor
+      &.select, &.select-none
+        background: fade-out(adminMenus.$mActiveBg, .9)
+        color: adminMenus.$mActiveBg
         &:after //线条
-          background: $color-primary
+          background: adminMenus.$mActiveBg
 
-  if (adminMenus.$isShowIcon == true)
+  if (adminMenus.$isShowIcon)
     .item-icon
-      ss-display-flex(row nowrap, flex-start)
+      ss-display-flex(adminMenus.$isShowIcon)
+      align-items: center if adminMenus.$isShowIcon == column
       &:before
         width: 16px
         content: '\e605'
@@ -197,32 +146,23 @@ ss-menus()
       
   if (adminMenus.$isAllShow == false)
     .property-ul
-      height: 0
+      display: none
     .item-icon
       cursor: pointer
     .item-title
       ss-display-flex(row nowrap, space-between)
-      margin-left: 10px
-      &:after
-        content: '\e64e'
-        transform: rotateZ(0)
-        display: block
-        font-size: 12px
-    .caption
-      &.active
-        .item-title
-          &:after
-            transform: rotateZ(180deg)
-        ~.property-ul
-          height: auto
+      margin-left: 10px   if adminMenus.$isShowIcon == row
+      margin-top: 7px   if adminMenus.$isShowIcon == column
+      if (adminMenus.$isShowIconRight)
+        &:after
+          content: '\e64e'
+          transform: rotateZ(0)
+          display: block
+          font-size: 12px
+/***************路由菜单部分 end*********************/
 
 
-
-
-
-
-
-//顶部部分 nav
+/***************路由顶部部分*********************/
 ss-root-header($class= '.root-header', $config = false)
   cfg = merge({}, rootHeadCfg, $config)
   {$class}
@@ -234,15 +174,16 @@ ss-root-header($class= '.root-header', $config = false)
     position: relative
     transition: 250ms ease;
     .admin-header
-      @extends $flex-nowrap-between-center
-      &.active
+      >.inner
+        @extends $flex-nowrap-between-center
+      &.select
         .item-logo
-          width: cfg.$mWidth-2
+          width: cfg.$logoWidth-2
         .item-logo-title
           display: none
     //logo
     .item-logo
-      width: cfg.$mWidth
+      width: cfg.$logoWidth
       height: cfg.$HeaderHeight
       if (cfg.$bgimage)
         background-image: url(cfg.$bgimage)
@@ -259,7 +200,7 @@ ss-root-header($class= '.root-header', $config = false)
           color: cfg.$HeadColor
           font-family: monospace
       
-    .admin-content
+    .hbody
       padding: 0 $space
       flex: 1
       @extends $flex-nowrap-between-center
@@ -268,3 +209,4 @@ ss-root-header($class= '.root-header', $config = false)
       margin-left: auto
     .icon-select
       margin-left: 36px
+/***************路由顶部部分 end*********************/

@@ -1,16 +1,16 @@
 @font-face {
-  font-family: 'iconfont';  /* project id 1759290 */
-  src: url('//at.alicdn.com/t/font_1759290_ff41gtvgg4.eot');
-  src: url('//at.alicdn.com/t/font_1759290_ff41gtvgg4.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1759290_ff41gtvgg4.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1759290_ff41gtvgg4.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1759290_ff41gtvgg4.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1759290_ff41gtvgg4.svg#iconfont') format('svg');
+  font-family: 'iconfont';  /* project id 1946381 */
+  src: url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.eot');
+  src: url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.svg#iconfont') format('svg');
 }
 
 $iconColor = $color-text-info
 $iconColor2 = $color-line-input
-$iconActiveColor = $color
+$iconActiveColor = $color-text-title
 
 //nav  三横杆
 .icon-nav
@@ -26,15 +26,17 @@ $iconActiveColor = $color
 //del 
 .icon-del-primary
   ss-icon($icon-del, 12px)
+.icon-del-small
+  ss-icon($icon-del-s, 12px)
 //圆圈中间带叉叉
 .icon-del
   ss-icon('\e648', 16px, $iconColor2, $activeColor: $iconActiveColor)
 
 
 .icon-arrow-left
-  ss-icon($arrow-left, $color: $iconActiveColor, $disabledColor: $iconColor2)
+  ss-icon($arrow-left, $color: $iconActiveColor, $activeColor: $color-primary, $disabledColor: $iconColor2)
 .icon-arrow-right
-  ss-icon($arrow-right, $color: $iconActiveColor, $disabledColor: $iconColor2)
+  ss-icon($arrow-right, $color: $iconActiveColor, $activeColor: $color-primary, $disabledColor: $iconColor2)
 
 .icon-warning
   ss-icon($icon-warning, 16px, $color-warning, true, $space: $tips-mg-sm)

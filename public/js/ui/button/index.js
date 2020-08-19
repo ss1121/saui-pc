@@ -2,13 +2,13 @@ function pages() {
   const data = [
     { title: ' ', idf: 'btn1', itemClass: 'item-list' },
     { title: '默认', parent: 'btn1', itemClass: 'ss-button btn-default' },
-    { title: '默认', parent: 'btn1', itemClass: 'ss-button btn-primary' },
+    // { title: '默认', parent: 'btn1', itemClass: 'ss-button btn-primary' },
     { title: '默认', parent: 'btn1', itemClass: 'ss-button btn-minor' },
     { title: '禁止', parent: 'btn1', itemClass: 'ss-button disabled' },
 
     { title: ' ', idf: 'btn2', itemClass: 'item-list' },
     { title: '圆角', parent: 'btn2', itemClass: 'ss-button round btn-default plain' },
-    { title: '圆角', parent: 'btn2', itemClass: 'ss-button round btn-primary plain' },
+    // { title: '圆角', parent: 'btn2', itemClass: 'ss-button round btn-primary plain' },
     { title: '圆角', parent: 'btn2', itemClass: 'ss-button round btn-minor plain' },
     { title: '圆角', parent: 'btn2', itemClass: 'ss-button round btn-grey plain' },
 

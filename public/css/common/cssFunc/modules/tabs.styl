@@ -1,5 +1,6 @@
 //tabs Menus
 listTabsCfg = {
+  $showAni: false
   $activeClass: '.active'
   $bg: #fff
   $height: 40px
@@ -9,11 +10,16 @@ listTabsCfg = {
   $activeFw: bold
   $isPadding: true
   $itemLine: 1px solid $color-line
-  $activeType: 'line'       //line单线条样式， card卡片化样式  tab选项卡样式
+  $activeType: 'line'       //line单线条样式， card卡片化样式  tab选项卡样式  lr左右结构带有footer或header
   //line时，下面的参数才生效
   $activeLine: 2px
   $activebg: #000
   $activeBr: 3px
+  //lr时，下面的参数才生效
+  $listMl: 40px
+  $listMW: 55vw
+  $listBtnsWidth: 24px
+  // $itemMg: 40px
 }
 //tabs内容
 boxTabCfg = {
@@ -37,27 +43,21 @@ ss-border-ani($class = '.item', $config = false)
     &:after
       content: ''
       position: absolute
-      
       bottom: cfg.$lineBot
       height: cfg.$lineHei
       border-radius: (@height / 2)
       width: cfg.$lineWid
-      // right: 0
-      // transition: left .08s, width .08s
-      transform: translateX(100%);
+      transform: translateX(@width);
       transition: transform .5s
-      // transform: translateX(0);
-
   {cfg.$activeClass}
     &:after
       left: 0
-      // right: 0
       transform: translateX(0);
       background: cfg.$lineColor
     ~.item
       &:after
-        left: -100%
-        transform: translateX(-100%)
+        left: -(cfg.$lineWid)
+        transform: translateX(@left)
 
 ss-like-tabs($class = '.hlist', $config = {})
   cfg = merge({}, listTabsCfg, $config)
@@ -67,7 +67,7 @@ ss-like-tabs($class = '.hlist', $config = {})
     if (cfg.$activeType == 'tab' || cfg.$activeType == 'card')     //选项卡样式
       border: cfg.$itemLine
       border-bottom: none
-      border-radius: $border-radius
+      border-radius: $br
       margin-bottom: -1px;
       .item
         border-bottom: cfg.$itemLine
@@ -90,6 +90,44 @@ ss-like-tabs($class = '.hlist', $config = {})
           border-left: none
     else 
       ss-display-flex(row nowrap, flex-start, center)
+    //带footer结构
+    if (cfg.$activeType == 'lr')
+      justify-content: space-between
+      margin-left: cfg.$listMl
+      max-width: cfg.$listMW
+      overflow: hidden
+      >.hlist
+        @extends $flex-nowrap-start-center
+        position: relative
+        z-index: 1
+        width: "calc(100% - %s)" % cfg.$listBtnsWidth
+        overflow: hidden
+        >.item
+          // margin-right: cfg.itemMg
+          position: relative
+          cursor: pointer
+          white-space: nowrap;
+          &:hover
+            .item-icon
+              display: inline-block
+              color: cfg.$activeColor
+              &:hover
+                color: $color-aux-fail
+        .item-icon
+          display: none
+          position: absolute
+          right: -12px
+          color: @color
+          cursor: pointer
+          
+      .item-btns
+        background: #fff;
+        box-shadow: 0px 0px 6px 12px #fff;
+        width: cfg.$listBtnsWidth;
+        flex: 0 0 auto
+        position: relative;
+        z-index: 2;
+
     a
       color: @color
     .item
@@ -107,14 +145,14 @@ ss-like-tabs($class = '.hlist', $config = {})
         cursor: not-allowed
         color: cfg.$itemLine
         
-    {cfg.$activeClass}
+    {cfg.$activeClass}, .item:hover
       background: #fff
       color: cfg.$activeColor
-      font-weight: cfg.$activeFw
+      font-weight: cfg.$activeFw if cfg.$activeFw
       a
         color: @color
-    if (cfg.$activeType == 'line')
-      ss-border-ani($config: {$activeClass: cfg.$activeClass})
+    if (cfg.$activeType == 'line' || cfg.$showAni)
+      ss-border-ani($config: cfg.$likeTabsAniCfg)
       
 
 // $menusScroll treeFooter 或 treeHeader存在时

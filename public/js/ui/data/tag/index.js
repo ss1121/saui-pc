@@ -4,6 +4,7 @@ function pages() {
     { title: '默认', parent: 'btn1', itemClass: 'ss-tag tag-default' },
     { title: '默认', parent: 'btn1', itemClass: 'ss-tag tag-primary' },
     { title: '默认', parent: 'btn1', itemClass: 'ss-tag tag-minor' },
+    { title: '默认', parent: 'btn1', itemClass: 'ss-tag tag-grey' },
 
     { title: ' ', idf: 'btn2', itemClass: 'item-list' },
     { title: '默认', parent: 'btn2', itemClass: 'ss-tag plain tag-default' },
@@ -16,6 +17,10 @@ function pages() {
     { title: ' ', idf: 'btn4', itemClass: 'item-list tag-list-wz' },
     { title: <div className='ss-tag noborder larger'><span className='item-title'>文字标签</span><i className='icon-del-primary'></i></div>, parent: 'btn4'},
     { title: <div className='ss-tag noborder larger'><span className='item-title'>文字标签2</span><i className='icon-del-primary'></i></div>, parent: 'btn4'},
+
+    { title: '悬浮标题', idf: 'btn5', itemClass: 'item-list' },
+    { title: <div className='demo-display'><span className='ss-tag tag-grey ab-l sc-r'>封面</span></div>, parent: 'btn5'},
+    { title: <div className='demo-display'><span className='ss-tag tag-default ab-l sc-r'>免费视频</span></div>, parent: 'btn5'},
   ]
 
   const tree = Aotoo.tree({

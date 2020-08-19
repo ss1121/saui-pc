@@ -39,9 +39,9 @@ const util = {
     }
   },
   //处理过滤后的菜单接口数据，来适用于router组件
-  adapterIdNav(res, code) {
+  adapterIdNav(res, code, status) {
     let childData = []
-     if (res.length) {
+    if (res.length) {
        const newData = _.sortBy(res, function(data) {    //倒序
          return - data.sortIndex;
        });
@@ -67,9 +67,17 @@ const util = {
               title: <label className={'item-icon item-icon-'+(item.defaultIco || item.preCode)}><span className='item-title'>{item.sourceName}</span></label>,
               idf: item.id
             })
+            //子菜单 需要有一个主菜单来当标题
+            if (status) {
+              childData.push({
+                title: item.sourceName,
+                parent: item.id,
+                attr: {path: 'item-title'}
+              })
+            }
           }
         }
-        else{
+        else {
           childData.push({
             // title:  <a href={'#'+item.targetUrl}>{item.sourceName}</a>,
             title:  item.sourceName,
@@ -81,6 +89,7 @@ const util = {
         }
       })
     }
+    console.log(childData)
     return childData
   },
   // 计算日期

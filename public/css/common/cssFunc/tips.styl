@@ -51,7 +51,7 @@ ss-tips($class = '.ss-tips', $config = false)
     if (cfg.$spc == true )       
       background-color: $tipsx-bg
       border-color: $tipsx-bc
-      color: $color-text-regular
+      color: $color-text-title
     else 
       border-color: lighten(cfg.$icon-color, 70%)
       background-color: lighten(cfg.$icon-color, 90%)
@@ -123,12 +123,12 @@ ss-tips-form($class= '.form-tips', $config = false)
 
 
 //箭头的方向
-ss-arrow-direction($direction = top, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2, $top = calc(100%))
+ss-arrow-direction($direction = top, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2, $top = calc(100%), $left = 45%)
   &:before
     content: ''
     position: absolute
     top: $top
-    left: 45%
+    left: $left
     z-index: $zidx-h + 1
     ss-triangle-hollow($direction, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2)
 //没有icon，但是有箭头  白色背景，灰色边框
