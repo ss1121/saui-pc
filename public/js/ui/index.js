@@ -116,7 +116,7 @@ router.rendered = function(dom) {
 
 const routerHeader = item({
   data: {
-    title: <div className='item-logo'><img src='./images/saui-logo.png' className=''/><span className='item-logo-title'>SAUI</span></div>,
+    title: <div className='item-logo'><img src='./images/ui/saui-logo.png' className=''/><span className='item-logo-title'>SAUI</span></div>,
     body: [
       {
         k: '欢迎页',

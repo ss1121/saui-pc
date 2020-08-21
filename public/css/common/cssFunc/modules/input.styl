@@ -1,9 +1,11 @@
 ficonCfg = {
+  $display: block
   $icon: false
   $top: calc(50% - 8px)
   $right: 10px
   $font-size: false
   $color: false
+  $pseudo: after
 
   $isrelative: true
 }
@@ -24,23 +26,16 @@ placeholder($color = $placeholderColor, $font-size = $inputSize)
     font-size: $font-size
 
 //input 带icon 公共部分
-
 ss-form-icon($config = false)
   cfg = merge({}, ficonCfg, $config)
-  if ($isrelative == true)
+  if (cfg.$isrelative == true)
     +cache()
       position: relative
-  &:after
-    display: block
-    color: cfg.$color if (cfg.$color)
-    if (cfg.$icon == 'default')
-      content: ''
-    else if (cfg.$icon != false)
-      content: cfg.$icon
-    font-size: cfg.$font-size if (cfg.$font-size)
+  ss-icon(cfg.$icon, cfg.$font-size, cfg.$color,  $isFlex: cfg.$display, $pseudo: cfg.$pseudo)
+  &:{cfg.$pseudo}
     ss-position(absolute, $top: cfg.$top, $right: cfg.$right)
   
-ss-form_control( $height = $inputHeight, $br = $inputBr, $width = false)
+ss-form_control( $height = $inputHeight, $br = $inputBr, $width = 100%)
   background-color: $bgColor
   border: 1px solid $borderColor 
   box-sizing: border-box
@@ -48,8 +43,7 @@ ss-form_control( $height = $inputHeight, $br = $inputBr, $width = false)
   line-height: @height
   padding: $inputPadding
   outline: none;
-  if ($width != false)
-    width: $width
+  width: $width if ($width != false)
   if ($br != 0)
     border-radius: $inputBr
   &:focus
@@ -135,7 +129,10 @@ ss-custom-form-select()
 //下拉组件调用
 ss-form-select()
   ss-custom-form-select()
-  ss-form-icon({$icon: $inputSelect, $top: calc(50% - 6px), $font-size: 12px})
+  // ss-form-icon({$icon: $inputSelect, $top: calc(50% - 6px), $font-size: 12px})
+  ss-form-icon({$icon: 'default', $top: calc(50% - 1px), $right: 10px})
+  &:after
+    ss-triangle({$direction: 'bottom', $size: 5px})  
 
 //下拉 自定义下拉内容
 ss-form-destination()
@@ -146,11 +143,6 @@ ss-form-destination()
 //日期
 ss-form-date()
   ss-form-icon({$icon: $inputDate, $top: calc(50% - 10px), $font-size: 18px, $color: $borderColor})
-
-//输入框带实体icon，有点击事件等操作
-ss-form-icon-x()
-  .item-icon-x
-    ss-form-icon({$isrelative: false})
 
 
 

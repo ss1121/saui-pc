@@ -13,17 +13,20 @@ rootHeadCfg = {
 }
 
 admin = {
-  $routerBg: $color-bg
+  $scrollBox: false
+  $routerBg: false
   $box-line: false
   $br: $br-lg
   $mBg: #fff,
   $space: 30px
+  $boxSpace: 0
   $mWidth: false
   $min-width: 80px        //缩小版
   $min-titleShow: true
 }
 
 adminMenus = {
+  $iconName: false
   $class: '>.hlist',
   $size: 14px,
   $space-b: 11px 0,
@@ -54,3 +57,6 @@ adminMenus = {
   $min-width: 80px,
   $lh-2: 50px
 }
+
+html, body
+  height 100%

@@ -1,45 +1,39 @@
 
-loginCfg = {
+defaultCfg = {
   $width: 300px
-  $bg: $color-bg-primary
+  $bg: fade-out(#000, .5)
+  $bg2: $color-bg-primary
   $br: $br
   $padding: $space
   $inputHei: 40px
   $br: $br-lg
+  $formMl: 80px
 }
 ss-login($class = '.login-form', $config = false)
-  cfg = merge({}, loginCfg, $config)
+  cfg = merge({}, defaultCfg, $config)
   .pages-login
-    background: fade-out(#000, .5)
+    background: cfg.$bg
     width: 100%
     height: 100%
     position: relative
     @extends $column-center-center
-    // .item-header
-    //   // position: absolute
-    //   // bottom: 30px
-    //   color: $color-text-disabled
-    //   font-size: $size-sm
     .item-copyright
-      // position: absolute
-      // bottom: 30px
       margin-top: 40px
       color: $color-text-disabled
       font-size: $size-sm
   .pages-login-logo
     position: absolute
-    top: -64px
+    top: -60px
     left: 0
   .pages-login-body
     @extends $flex-nowrap
-    background: $br-lg
-    background: cfg.$bg
+    background: cfg.$bg2
     border-radius: cfg.$br
     padding: cfg.$padding
     position: relative
   {$class}
     width: cfg.$width
-    margin-left: 80px
+    margin-left: cfg.$formMl if cfg.$formMl
     margin-bottom: -15px
     .checkboxGroup
       margin-bottom: 32px
@@ -80,5 +74,5 @@ ss-login($class = '.login-form', $config = false)
         flex: inherit
     .warning,.error
       margin-bottom: 10px
-    
-
+    .ss-button
+      box-shadow:1px 5px 10px 0px rgba(0,118,255,0.3);

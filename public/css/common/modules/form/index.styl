@@ -1,4 +1,4 @@
-@import '../../commonfunc'
+@import '../../config/config'
 @import './_common/*'
 
 inputTipsCfg = {
@@ -10,12 +10,18 @@ inputTipsCfg = {
 .inputGroup
   margin-bottom: -($inputMb)
 
+//多数组
+.inputMultiply
+  >.inputItem:not(:first-child)
+    .fkp-title
+      opacity 0
+  &[class*='flex']
+    ss-display-flex()
+
 .inputItem, .radioGroup,.checkboxGroup
   ss-display-flex(row nowrap, flex-start)
   font-size: $inputSize
   margin-bottom: $inputMb
-  &.tb
-    flex-flow: column
   >.fkp-input-required
     display: inline-block
     line-height: $inputHeight
@@ -28,25 +34,39 @@ inputTipsCfg = {
     line-height: @height
     margin-right: $inputTitleMargin
     min-width: $inputTitleWid
-    text-align-last: justify
+    // text-align-last: justify
   >.fkp-content
     position: relative
+  &.tb
+    flex-flow: column
   &.fkp-content-flex1
     .fkp-content
       flex: 1
   &.fkp-mb-primary
     margin-bottom: 15px
   &.fkp-mb-monir
-    margin-bottom: 8px
-
+    margin-bottom: 10px
+  &.input-w-lg
+    input
+      width: 380px
+  &[class*='striping']
+    margin-left: 20px
+    .fkp-content
+      &:before
+        content: '-'
+        color: $borderColor
+        position: absolute
+        left: -15px
+        top: calc(50% - 12px)
 
 ss-tips('.fkp-input-error', inputTipsCfg)
     
-//输入框带有实体icon
-.inputItem-icon-x
-  ss-form-icon-x()
+//输入框带实体icon，有点击事件等操作
+.inputItem-icon-del
+  .item-icon-del
+    ss-form-icon({$display: false, $icon: $icon-fail, $color: $borderColor,  $isrelative: false})
   &.active
-    .item-icon-x
+    .item-icon-del
       color: $inputColor
 
 //禁止操作
@@ -86,7 +106,7 @@ ss-tips('.fkp-input-error', inputTipsCfg)
 .input-num
   .item
     box-sizing: border-box
-    ss-icon($inputMinusIcon, 12px, inherit, $isFlex: center)
+    ss-icon(false, 12px, inherit, $isFlex: center)
     &.disabled
       color: $color-line-input
       &:hover
@@ -98,6 +118,9 @@ ss-tips('.fkp-input-error', inputTipsCfg)
   .item-right
     &:after
       content: $inputAddIcon
+  .item-left
+    &:after
+      content: $inputMinusIcon
   &.lr
     ss-display-flex(row nowrap, flex-start)
     .item

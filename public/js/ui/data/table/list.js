@@ -1,4 +1,4 @@
-import customTable from '../../../_common/customTable'
+import customTable from 'commonjs/customTable'
 
 const bodyDataFunc = (res) =>{
   return res.map(item => {

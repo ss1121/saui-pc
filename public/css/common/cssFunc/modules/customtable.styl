@@ -1,8 +1,9 @@
 listTableCfg = {
   $min-width:     60px 
   $text-align:    center 
+  $paddingTthead: 10px
   $padding:       10px
-
+  $headFw:        false
   $headBg:        $color-bg
   $headColor:     $color-text
   $headHeight:    45px
@@ -24,12 +25,13 @@ ss-table($class = '.ss-table', $config= false)
     .ss-table-tthead
       background: cfg.$headBg
       color: cfg.$headColor
-      height: cfg.$headHeight
-      line-height: @height
       display: inline-table
-      width: 100%
+      font-weight: bold if cfg.$headFw
+      line-height: $headHeight if cfg.$headHeight
+      .ss-table-td
+        padding: cfg.$paddingTthead
     .ss-table-sx
-      display: inline-table
+      display: table-row-group
       width: 100%
     .ss-table-tr
       display: table-row;
@@ -65,19 +67,17 @@ ss-table-hover($bg = #e6f7ff)
 
 
 // //控制border
-ss-table-border($border-color = #eee, $bottomBorder = false)
+ss-table-border($border-color = #eee, $bottomBorder = false, $direction = top)
   if ($bottomBorder == true)
     border-bottom: 1px solid $border-color
   else
     border: 1px solid $border-color
+    border-top: none if $direction == top
     // .ss-table-tthead
     //   border-bottom: @border
-    .ss-table-sx
-      border-top: @border
-      &:last-child
-        border-bottom: none
     .ss-table-td
       border-left: @border
+      border-{$direction}: @border
       &:first-child
         border-left: none
 

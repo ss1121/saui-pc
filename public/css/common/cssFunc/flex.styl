@@ -102,7 +102,7 @@ ss-row-list($class = '.hlist', $rlCfg = false)
   cfg = merge({}, rowListCfg, $rlCfg)
   if ($class != false)
     {$class}
-      @extends $flex-wrap
+      ss-display-flex(row wrap)
       ss-com-row-list(cfg)
   else 
     ss-com-row-list(cfg)

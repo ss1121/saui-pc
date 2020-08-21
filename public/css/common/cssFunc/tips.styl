@@ -4,15 +4,14 @@
 */
 //提示框
 tipsCfg = {
-  $isShow: false
-  $icon: 'normal'                    //icon是都否存在 存在时分两种情况，一，normal是提示框的定死的，用于表单验证，系统提示，二自定义
   $padding: $tips-padding-sm
   $size: $tips-size-sm
   $color: $tips-color
   $isNowrap: true                   //true:强制不换行, false: 固定宽度，超过换行
   $max-width: 480px
-  $spc: false                     //是否特殊，为true时白色背景，灰色边框，且没有icon，false时，背景与边框由iconColor演变 true时，下面的参数都无效
+  $spc: false                     //是否特殊，为true时白色背景，灰色边框，且没有icon，[下面的参数都无效]; false时，背景与边框由iconColor演变 
 
+  $icon: 'normal'                    //icon是都否存在 存在时分两种情况，一，normal是提示框的定死的，用于表单验证，系统提示，二自定义
   $icon-color: $tips-icon-color
   $isFlex: true
   $icon-size: $tips-icon-size-sm
@@ -57,11 +56,11 @@ ss-tips($class = '.ss-tips', $config = false)
       background-color: lighten(cfg.$icon-color, 90%)
       color: cfg.$color
       if (cfg.$icon == 'normal')     //写死提示框的三种状态
-        ss-icon($tips-icon, cfg.$icon-size, $tips-icon-color, cfg.$mg, $isFlex: cfg.$isFlex, $space: cfg.$mg)
+        ss-icon(false, cfg.$icon-size, false, $isFlex: none, $space: cfg.$mg)
         &.error
           background-color: lighten($tips-icon-fail-color, 90%)
           border-color: lighten($tips-icon-fail-color, 70%)
-          if (cfg.$isFlex == true && !cfg.$isShow)
+          if (cfg.$isFlex == true)
             display: flex
           else 
             display: block
@@ -71,7 +70,7 @@ ss-tips($class = '.ss-tips', $config = false)
         &.warning
           background-color: lighten($tips-icon-color, 90%)
           border-color: lighten($tips-icon-color, 70%)
-          if (cfg.$isFlex == true && !cfg.$isShow)
+          if (cfg.$isFlex == true)
             display: flex
           else 
             display: block
@@ -81,7 +80,7 @@ ss-tips($class = '.ss-tips', $config = false)
         &.success
           background-color: lighten($tips-icon-sucess-color, 90%)
           border-color: lighten($tips-icon-sucess-color, 70%)
-          if (cfg.$isFlex == true && !cfg.$isShow)
+          if (cfg.$isFlex == true)
             display: flex
           else 
             display: block
@@ -90,7 +89,7 @@ ss-tips($class = '.ss-tips', $config = false)
             color: $tips-icon-sucess-color
       else if (cfg.$icon != false)
         ss-icon(cfg.$icon, cfg.$icon-size, cfg.$icon-color, cfg.$mg, $isFlex: cfg.$isFlex, $space: cfg.$mg)
-      display: none if (!cfg.$isShow)
+
   // else 
   //   background-color: lighten($color, 90%)
   //   border: 1px solid lighten($color, 70%)

@@ -21,49 +21,39 @@ ss-bg-opacity($background = #333, $height = 54px, $opacity = 0.6, $abs = bottom)
 customScrollCfg = {
   $height: 300px
   $scrollbar: 5px
+  $scrollbarHei: 1px
   $br: 3px
   $hoverbg: fade-out(#999, .7)
   $min-height: false
+  $scroll: y
 }
 ss-func-customscroll($class = '.hlist', $config = false)
   cfg = merge({}, customScrollCfg, $config)
-  if ($class != false)
-    {$class}
+  {$class}
+    if (cfg.$scroll == x)
+      overflow-x: auto
+      width: 100%
+    else
+      overflow-y: auto
       if (cfg.$height != false)
         if (cfg.$min-height != false)
           min-height: cfg.$min-height
           max-height: cfg.$height
         else 
           height: cfg.$height
-      overflow-y: auto
-      &::-webkit-scrollbar      /*滚动条整体样式*/
-        width: cfg.$scrollbar    /*高宽分别对应横竖滚动条的尺寸*/
-        height: 1px;
-      &::-webkit-scrollbar-thumb        /*滚动条里面小方块*/
-        border-radius: cfg.$br 
-      &::-webkit-scrollbar-track        /*滚动条里面轨道*/
-        border-radius: cfg.$br 
-      &:hover
-        &::-webkit-scrollbar-thumb 
-          background: cfg.$hoverbg
-  else
-    if (cfg.$height != false)
-      if (cfg.$min-height != false)
-        min-height: cfg.$min-height
-        max-height: cfg.$height
-      else 
-        height: cfg.$height
-    overflow-y: auto
+    
     &::-webkit-scrollbar      /*滚动条整体样式*/
       width: cfg.$scrollbar    /*高宽分别对应横竖滚动条的尺寸*/
-      height: 1px;
+      height: cfg.$scrollbarHei
     &::-webkit-scrollbar-thumb        /*滚动条里面小方块*/
       border-radius: cfg.$br 
+      background: rgba(153,153,153, .5)
+      &:hover
+        background: rgba(153,153,153, 1)
+        cursor: pointer
+        // background: cfg.$hoverbg       //色值不对，
     &::-webkit-scrollbar-track        /*滚动条里面轨道*/
       border-radius: cfg.$br 
-    &:hover
-      &::-webkit-scrollbar-thumb 
-        background: cfg.$hoverbg
 
 //块状
 ss-func-display-div($displayDivCfg = displayDivCfg)

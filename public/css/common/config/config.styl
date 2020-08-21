@@ -51,12 +51,12 @@ $color-aux-fail         = #FC3230                           // 用于网站价�
 $color-hover            = $color-primary
 
 //字体大小
-$size-sm                = 12px
-$size                   = 14px    //用于网站整体字体的大小
-$size-info              = 18px    //适用于重要文字信息，特殊标签页
-$size-title-sm          = 16px    //小标题
-$size-title             = 20px    //大标题
-$size-title-lg          = 24px    //特殊
+$size-sm                = 12px    // 行高 18
+$size                   = 14px    //用于网站整体字体的大小 行高 20
+$size-info              = 18px    //适用于重要文字信息，特殊标签页 行高 24
+$size-title-sm          = 16px    //小标题 行高 26
+$size-title             = 20px    //大标题 行高 28
+$size-title-lg          = 24px    //特殊 行高 32
 
 
 
@@ -87,7 +87,7 @@ $br-lg = 10px       //列表 modal
   按钮   色值, 大小
 */
 $btn-radius = $br
-$btn-radius-lg = $br-lg
+$btn-radius-lg = 20px
 
 //失效
 $btn-dislabel-color = #ccc
@@ -227,7 +227,7 @@ $arrow-default-color = #ccc
 $box-shadow = 0px 5px 15px 0px rgba(38,47,64,0.15);         //四周
 $box-shadow-tips = 0px 3px 15px 0px rgba(0, 0, 0, 0.1);      //适用于tips modal
 $box-shadow-pop = 0px 4px 15px 0px rgba(0, 0, 0, 0.1);      //适用于pop
-// $box-shadow-top = 0px -10px 12px 0px rgba(0, 0, 0, 0.04)
+$box-shadow-top = 0px 0px 15px 0px rgba(38,48,64,0.15);
 // $box-shadow-bottom = 0px 10px 12px 0px rgba(0, 0, 0, 0.05);
 // $box-shadow-btn = 0px 0px 12px 0px rgba(0,69,186,0.5)
 //透明层
@@ -239,9 +239,9 @@ $mask-bg = fade-out(#000, .5)
 */
 $tips-icon = $icon-warning
 $tips-icon-color = $color-aux-warning
-$tips-icon-sucess = '\e654'
+$tips-icon-sucess = $icon-sucess
 $tips-icon-sucess-color = $color-aux-success 
-$tips-icon-fail = '\e648'
+$tips-icon-fail = $icon-fail
 $tips-icon-fail-color = $color-aux-fail 
 $tips-icon-size = 24px
 $tips-icon-size-sm = 16px   //表单性提示

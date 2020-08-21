@@ -1,13 +1,3 @@
-@font-face {
-  font-family: 'iconfont';  /* project id 1946381 */
-  src: url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.eot');
-  src: url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1946381_unk3jmzfzbn.svg#iconfont') format('svg');
-}
-
 $iconColor = $color-text-info
 $iconColor2 = $color-line-input
 $iconActiveColor = $color-text-title
@@ -30,7 +20,10 @@ $iconActiveColor = $color-text-title
   ss-icon($icon-del-s, 12px)
 //圆圈中间带叉叉
 .icon-del
-  ss-icon('\e648', 16px, $iconColor2, $activeColor: $iconActiveColor)
+  ss-icon($icon-fail, 16px, $iconColor2, $activeColor: $iconActiveColor)
+//搜索
+.icon-search
+  ss-icon($icon-search, 16px, false, $activeColor: false)
 
 
 .icon-arrow-left

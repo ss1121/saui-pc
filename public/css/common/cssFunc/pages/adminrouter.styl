@@ -1,5 +1,5 @@
 
-@import './routerconfig/routerStyle2'
+// @import './routerconfig/routerStyle2'
 
 ss-admin($class= '.routerGroup', $config = admin)
   //所有内容在一屏内显示
@@ -7,7 +7,7 @@ ss-admin($class= '.routerGroup', $config = admin)
     overflow: hidden
     flex: 1
   {$class}
-    background: $config.$routerBg
+    background: $config.$routerBg if $config.$routerBg
     height: 100%
     padding: $config.$space
     ss-display-flex(row nowrap, flex-start)
@@ -37,14 +37,15 @@ ss-admin($class= '.routerGroup', $config = admin)
       border-right: $config.$box-line  if ($config.$box-line)
       z-index: 2
     //内容部分
-    ss-func-customscroll('>.routerBoxes', {$height: auto, $min-height: 300px})      //滚动
     >.routerBoxes
       z-index: 1
       flex: 1
-      padding: $space
+      padding: $config.$boxSpace
       background: $config.$mBg if $config.$mBg
       border-radius: $config.$br  if $config.$br
       margin-left: 30px
+      overflow: hidden
+    ss-func-customscroll('>.routerBoxes', {$height: auto, $min-height: 300px}) if $config.$scrollBox     //滚动
 
 
 /***************路由菜单部分*********************/
@@ -130,6 +131,7 @@ ss-menus()
       &.select, &.select-none
         background: fade-out(adminMenus.$mActiveBg, .9)
         color: adminMenus.$mActiveBg
+      &.select-none
         &:after //线条
           background: adminMenus.$mActiveBg
 
@@ -139,7 +141,7 @@ ss-menus()
       align-items: center if adminMenus.$isShowIcon == column
       &:before
         width: 16px
-        content: '\e605'
+        content: adminMenus.$iconName if adminMenus.$iconName
         font-size: 16px
     .item-title
       flex: 1

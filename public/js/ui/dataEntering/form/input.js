@@ -198,11 +198,11 @@ const FormData = [
       type: 'text',
       id: 'search',
       placeholder: '默认',
-      itemClass: 'inputItem-icon-x pages-search',
+      itemClass: 'inputItem-icon-del pages-search',
       // desc: <i className='item-icon-x icon-del'></i>
       desc: (
         <div className='item-pop-wrap'>
-          <i className='item-icon-x icon-del'></i>
+          <i className='item-icon-del'></i>
           {searchPopList.render()}
         </div>
       )

@@ -53,14 +53,14 @@ body
     text-decoration: underline
 
 //文字链接
-[class*='ss-link']
+[class*='link']
   cursor: pointer
   &:hover
-    $color-primary
-.ss-link
-  color: $color-text-title
-.ss-link-primary
-  color: $color-aux-primary
+    color: $color-aux-fail
+[class*='link-primary']
+  cursor: pointer
+  &:hover
+    color: $color-primary
 
 .ss-relative
   position: relative
