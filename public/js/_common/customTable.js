@@ -30,23 +30,16 @@ class CustomSsTable extends React.Component {
       }
       return output
     }
-    const newBodyData = this.state.bdData.map( (item, ii) => {
+    let newBodyData = this.state.bdData.map( (item, ii) => {
       return {
         li: bdlist(item, ii),
         liClassName: 'ss-table-tr',
         itemClass: 'ss-table-sx'
       }
     })
+    newBodyData.unshift({li: newHeadData, liClassName: 'ss-table-tr', itemClass: 'ss-table-sx ss-table-tthead'})
     return Aotoo.list({
-      header: Aotoo.item({
-        data: {
-          li: newHeadData,
-          liClassName: 'ss-table-tr'
-        },
-        itemClass: 'ss-table-tthead ' + this.state.headClass
-      }),
       data: newBodyData,
-      // listClass: 'ss-table-body ' + this.state.bodyClass,
       itemClass: this.state.bodyItemClass,
       listClass: this.state.tableClass
     })

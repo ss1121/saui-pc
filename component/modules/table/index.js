@@ -84,6 +84,7 @@ function myTables(config) {
 }
 
 export function BTable(opts){
+  console.log(opts, 'optsoptsoptsoptsopts')
   let dft = {
     container: '',
     bstable:{
@@ -230,7 +231,6 @@ export function BTable(opts){
 
   if (objtypeof(opts) == 'object') dft = _.merge(dft, opts)
   // return new _BoostrapTbale(dft)
-  console.log(dft, 'dft')
   return myTables(dft)
 }
 

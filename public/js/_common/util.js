@@ -11,6 +11,7 @@ const util = {
         sourceName: item.sourceName,
         targetUrl: item.targetUrl,
         defaultIco: item.defaultIco,
+        abc: item.abc,
       }
     })
   },
@@ -40,29 +41,21 @@ const util = {
   },
   //处理过滤后的菜单接口数据，来适用于router组件
   adapterIdNav(res, code, status) {
+    //status 是否子列表需要包含父标题
     let childData = []
     if (res.length) {
-       const newData = _.sortBy(res, function(data) {    //倒序
-         return - data.sortIndex;
-       });
+      const newData = _.sortBy(res, function(data) {    //倒序
+        return - data.sortIndex;
+      });
       newData.map( (item, ii)=> {
-        if (item.targetUrl == '#') {
-          if (item.preCode == 'shopIndex') {          //我是供应商 店铺首页，作特殊处理
-            // childData.unshift(
-            //   {
-            //     title: <span className='disN'>{item.sourceName}</span>,
-            //     idf: item.id
-            //   },
-            //   {
-            //     title:  <span className='disN'>{item.sourceName}</span>,
-            //     parent: item.id,
-            //     content: code['shopIndex'],
-            //     path: 'shopIndex',
-            //     attr: {path: 'shopIndex'}
-            //   }
-            // )
-          }
-          else {
+        if (item.preCode == 'index') {          //首页，作特殊处理
+          childData.unshift({
+            title: <span className='disN'>{item.sourceName}</span>,
+            idf: item.id,
+          })
+        }
+        else {
+          if (item.targetUrl == '#') {
             childData.push({
               title: <label className={'item-icon item-icon-'+(item.defaultIco || item.preCode)}><span className='item-title'>{item.sourceName}</span></label>,
               idf: item.id
@@ -76,20 +69,19 @@ const util = {
               })
             }
           }
-        }
-        else {
-          childData.push({
-            // title:  <a href={'#'+item.targetUrl}>{item.sourceName}</a>,
-            title:  item.sourceName,
-            parent: item.parentId,
-            content: code[item.targetUrl] || '',
-            path: item.targetUrl,
-            attr: {path: item.targetUrl},
-          })
+          else {
+            childData.push({
+              // title:  <a href={'#'+item.targetUrl}>{item.sourceName}</a>,
+              title:  item.abc ? <span className='disN'>{item.sourceName}</span> : item.sourceName,
+              parent: item.parentId,
+              content: code[item.targetUrl] || '',
+              path: item.targetUrl,
+              attr: {path: item.targetUrl},
+            })
+          }
         }
       })
     }
-    console.log(childData)
     return childData
   },
   // 计算日期
