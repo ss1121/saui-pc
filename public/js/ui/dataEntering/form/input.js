@@ -140,6 +140,7 @@ const FormData = [
       id: 'textarea', 
       placeholder: '请输入',
       maxLength: '200',
+      itemClass: 'fkp-content-flex1',
       desc: <p className="textarea-count"><span className="countName">0</span>/200</p>
     },
     required: true
@@ -160,7 +161,7 @@ const FormData = [
       id: 'textarea2', 
       placeholder: '请输入',
       maxLength: '200',
-      itemClass: 'ss-form-textarea-single',
+      itemClass: 'ss-form-textarea-single fkp-content-flex1',
       desc: <p className="textarea-count"><span className="countName">0</span>/50</p>
     }
   },

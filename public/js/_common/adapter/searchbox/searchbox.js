@@ -6,7 +6,7 @@ function searchbox(params) {
   
   const formWrap = form({
     data: data, 
-    listClass: 'searchbox-form ' +listClass,
+    listClass: 'item-column searchbox-form ' +listClass,
     itemClass: 'inputItem-column'
   })
 

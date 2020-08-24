@@ -12,3 +12,11 @@
 
 
 ss-func-customscroll('.fixed-table-body', {$scroll: x, $scrollbarHei: 6px})
+
+.fixed-table-container, .fixed-table-container 
+  .tbody
+    tr
+      &:hover
+        box-shadow: $box-shadow
+  td, th
+    min-width: 45px

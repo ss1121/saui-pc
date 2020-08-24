@@ -28,7 +28,7 @@ ss-modal-tips($config = false)
   max-width: cfg.$maxWid
   .modal-header
     line-height: cfg.$lineHeight    //32 - 18 = 14 /2 = 7
-    text-align: center
+    justify-content: center
   .modal-body
     {config-content}
   .modal-footer
@@ -52,9 +52,11 @@ ss-modal($class = '.modal', $type = 'tips', $config = false, $config2 = false)
   {$class}
     background: #fff
     box-shadow: $box-shadow-tips
+    border-radius:$br-lg
     max-height: $modalMaxHei
     min-height: 140px
     .modal-header
+      ss-display-flex(row nowrap, space-between, center)
       {config-title}
     // .modal-scroll
     //   ss-func-customscroll($height: 706px, $min-height: 100px) //820 - 114 = 706
@@ -69,7 +71,7 @@ ss-modal($class = '.modal', $type = 'tips', $config = false, $config2 = false)
         ss-modal-options($config)
     else if ($type == 'tips')
       &.tips
-        ss-modal-tips( $config)
+        ss-modal-tips($config)
     else 
       &.tips
         ss-modal-tips($config)
@@ -106,8 +108,8 @@ popCfg = {
   $item: true    //为true时，下面的参数才生效
 
   $padding: $inputSelectItemPadding     //height=>32
-  $activeBgColor: $inputSelectItemHover
-  $activeColor: $color-hover
+  $activeBgColor: $color-bg-special
+  $activeColor: $color-primary
 }
 
 

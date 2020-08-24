@@ -1,5 +1,5 @@
 import {tabsWrap, tabsWrap2,tabsWrap3, LikeTabs} from "./tabs";
-import {tagList} from '../../../adapter/list/taglist'
+import {tagList} from 'commonjs/adapter/list/taglist'
 
 const taglistData = [
   {title:'攻略列表1', id: '1'},

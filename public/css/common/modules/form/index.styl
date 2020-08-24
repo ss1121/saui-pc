@@ -9,25 +9,37 @@ inputTipsCfg = {
 
 .inputGroup
   margin-bottom: -($inputMb)
+  &[class*='column']
+    >.inputItem, >.inputMultiply>.inputItem
+      flex-flow: column
+  &[class*='content-p100']
+    >.inputItem, >.inputMultiply>.inputItem
+      >.fkp-content
+        width: 100%
+  
 
 //多数组
 .inputMultiply
-  >.inputItem:not(:first-child)
-    .fkp-title
-      opacity 0
+  &.item-only-title
+    >.inputItem:not(:first-child)
+      .fkp-title
+        opacity 0
   &[class*='flex']
     ss-display-flex()
+    &.between
+      justify-content: space-between
 
 .inputItem, .radioGroup,.checkboxGroup
-  ss-display-flex(row nowrap, flex-start)
+  ss-display-flex(row wrap, flex-start)
   font-size: $inputSize
   margin-bottom: $inputMb
   >.fkp-input-required
     display: inline-block
     line-height: $inputHeight
+    margin-right: 2px
     &:before
       content: '*'
-      color: $color-aux-warning
+      color: $color-aux-fail
   >.fkp-title
     color: $inputTitleColor
     height: $inputHeight
@@ -42,10 +54,20 @@ inputTipsCfg = {
   &.fkp-content-flex1
     .fkp-content
       flex: 1
+  &.fkp-desc-order
+    .fkp-content
+      ss-display-flex(column)
+      >span 
+        order: 2
+        &.fkp-desc
+          order: 1
   &.fkp-mb-primary
     margin-bottom: 15px
   &.fkp-mb-monir
     margin-bottom: 10px
+  &.input-w
+    input
+      width: 180px
   &.input-w-lg
     input
       width: 380px

@@ -49,10 +49,10 @@ const util = {
       });
       newData.map( (item, ii)=> {
         if (item.preCode == 'index') {          //首页，作特殊处理
-          childData.unshift({
-            title: <span className='disN'>{item.sourceName}</span>,
-            idf: item.id,
-          })
+          // childData.unshift({
+          //   title: <span className='disN'>{item.sourceName}</span>,
+          //   idf: item.id,
+          // })
         }
         else {
           if (item.targetUrl == '#') {
@@ -92,12 +92,36 @@ const util = {
     const M = (today.getMonth() + 1) < 10 ? "0" + (today.getMonth() + 1) : (today.getMonth() + 1) //获取当前月份的日期，不足10补0
     const d = today.getDate() < 10 ? "0" + today.getDate() : today.getDate() //获取当前几号，不足10补0
     return (y + "-" + M + "-" + d)
+  },
+  checkTextareaNum(inputForm, inputId, inputnum, cls) {         //限制textarea的字数
+    function getLength(str) {//处理输入的内容是文字还是字母的函数
+      return String(str).replace(/[^\x00-\xff]/g, 'aa').length;
+    };
+    setTimeout(() => {
+      const explain = !cls || '#' + inputForm.allocation[inputId].id
+      $(explain).off('keyup').on('keyup', function () {
+        let curLenght = Math.ceil(getLength($(explain).val()) / 2)
+        if (curLenght > inputnum) {
+          let num = $(explain).val().substr(0, inputnum);
+          $(explain).val(num);
+        } else {
+          if (cls) {
+            $(cls).next(".countName").text($(explain).val().length)
+          }
+          else {
+            $(explain).parents('.fkp-content').find(".countName").text($(explain).val().length)
+          }
+        }
+      })
+    }, 200)
   }
+  
 }
 
 module.exports = { 
   adapterfilterRouterData: util.adapterfilterRouterData,
   ifSession: util.ifSession,
   adapterIdNav: util.adapterIdNav,
-  getDateStr: util.getDateStr
+  getDateStr: util.getDateStr,
+  checkTextareaNum: util.checkTextareaNum
 }
