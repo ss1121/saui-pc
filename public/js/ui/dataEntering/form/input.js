@@ -20,6 +20,7 @@ const searchList = (data) => {
     }
   })
 }
+
 //输入框加减
 let iNum = inputNum({count: 0, min: 0, max: 5})
 let iNum2 = inputNum({count: 2, min: 0, max: 5, type: 'lr'})

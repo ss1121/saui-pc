@@ -27,7 +27,7 @@ let boostrapTable = (data) =>{
   const inst =  BTable({
     // container: 'btTable',
     bstable:{
-      data: data,
+      data: [],
       columns: [
         {
             checkbox: true,
@@ -75,6 +75,9 @@ let boostrapTable = (data) =>{
       },
       onUncheckSome: function (rows) {
         return false;
+      },
+      formatNoMatches: function () {  //没有匹配的结果
+        return `<div>无符合条件的记录-自定义</div>`;
       },
     }
   })

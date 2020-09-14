@@ -121,20 +121,29 @@ ss-pop($class = '.ss-popwrap', $config = false)
     background: #fff
     box-shadow: $box-shadow-pop
     border: 1px solid $borderColor
+    border-radius: $br
     min-width: cfg.$minwidth
     position: absolute
     left: 0;
     z-index: $zidx-ft
+    margin-top: 1px
+    ss-func-customscroll('&', {$height: 286px, $min-height: 32px})
+    &.nodata
+      line-height: 32px
+      color: $color-aux-warning
     if (cfg.$item != false)
       display: none
       .item
         padding: cfg.$padding
+        line-height: 32px
         &:hover, &.activated
           background: cfg.$activeBgColor
           cursor: pointer
           color: cfg.$activeColor
       &.active
         display: block
+      .hasVal
+        color: $color-primary 
     else 
       visibility: hidden      //替换display: none, 否则会影响计算width等
       &.active

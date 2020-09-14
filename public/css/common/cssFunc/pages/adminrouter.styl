@@ -6,6 +6,8 @@ ss-admin($class= '.routerGroup', $config = admin)
   #root
     overflow: hidden
     flex: 1
+  /html, body
+    height 100%
   {$class}
     background: $config.$routerBg if $config.$routerBg
     height: 100%
@@ -46,6 +48,7 @@ ss-admin($class= '.routerGroup', $config = admin)
       margin-left: 30px
       overflow: hidden
     ss-func-customscroll('>.routerBoxes', {$height: auto, $min-height: 300px}) if $config.$scrollBox     //滚动
+    
 
 
 /***************路由菜单部分*********************/
@@ -63,6 +66,7 @@ ss-menus()
       width: adminMenus.$mWidth 
     else 
       width: adminMenus.$min-width
+
   .itemrootCkb
     display: none
   // .level0

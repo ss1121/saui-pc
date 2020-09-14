@@ -154,6 +154,15 @@ export default [
       "targetUrl": "uploader",
   },
   {
+      "defaultIco": "",
+      "id": 187000,
+      "parentId": 1860,
+      "preCode": "dropdown",
+      "sourceName": "下拉控件",
+      "systemCode": "9",
+      "targetUrl": "dropdown",
+  },
+  {
       "id": 1920,
       "parentId": 178,
       "preCode": "navigation",

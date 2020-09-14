@@ -17,6 +17,7 @@ import icon from './icon'
 //数据录入
 import form from './dataEntering/form'
 import uploader from './dataEntering/uploader'
+import dropdown from './dataEntering/dropdown'
 
 //数据展示 
 import tag from './data/tag'
@@ -43,6 +44,7 @@ const tmpRouter = {
   
   form: form,
   uploader: uploader,
+  dropdown: dropdown,
 
   tag: tag,
   table: table,
@@ -64,7 +66,7 @@ let eventHover = false      //通过这个参数来判断，用点击事件展�
 const router = Aotoo.router({
   props: {
     // animate: false,
-    scrollMenu: true,         //开启 srcoll
+    scrollMenu: false,         //开启 srcoll
     showMenu: true,
     data: adapterIdNav(adapterfilterRouterData(indexData), tmpRouter),
     // treeHeader: <a href='#' className='item-logo'><img src='/images/saui-logo.png' /><b>SAUI</b></a>,

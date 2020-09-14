@@ -45,9 +45,29 @@ const Actions = {
   RESET: function (ostate, param){
     return ostate
   },
+  UPDATE: function(ostate, param) {
+    let curState = this.curState;
+    if (typeof param === 'object' && param.length >= 0) {
+      curState.data = data
+    }
+    else {
+      param.data ? curState.data = param.data : ''
+      param.listClass ? curState.listClass = param.listClass : ''
+      param.itemClass ? curState.itemClass = param.itemClass : ''
+    }
+    param.data && param.data.length > 0 ? curState.data = curState.data.map(item =>{
+      _id(item)
+      return item
+    }) : ''
+    return curState;
+  },
   UPLIST: function (ostate, data) {
     let curState = this.curState;
     curState.data = data
+    curState.data = curState.data.map(item =>{
+      _id(item)
+      return item
+    })
     return curState;
   },
   UPCLASS: function (ostate, className) {
