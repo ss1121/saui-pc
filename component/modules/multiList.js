@@ -50,25 +50,30 @@ class MultiDropDown extends React.Component {
     const id       = state.cid
     const cidx     = state.cidx
     const checked  = state.checked    //是否有选中值
+    const clicked  = state.clicked    //存储点击记录
     const storeIdx = this._storeIdx(cidx, id)
     return data.map((item, ii) => {
       if (cidx >= ii) {
-        
         item = _.filter(item, o => {
+          o.itemClass = ''
+          o.iconClass = ''
           if (cidx == ii && id) {
             //获取下一级的数据
             if (o.parentId === id) {
+              if (o.isSelectedPoi === 1 && _.findIndex(checked, k => k.id === o.id) >= 0) {
+                o.iconClass += ' active'
+              }
               return o
             }
           }
           else {
             //other 上n层数据
             if (!storeIdx[ii].id || o.parentId === storeIdx[ii].id) {
-              o.itemClass = ' '   // clicked 单选，点击状态，非赋值
-              o.id === id ? o.itemClass += ' clicked' : ''
               if (o.isSelectedPoi === 1 && _.findIndex(checked, k => k.id === o.id) >= 0) {
-                o.itemClass += ' active'
-                console.log('============ abc')
+                o.iconClass += ' active'
+              }
+              if ( _.findIndex(clicked, k => k.id === o.id) >= 0) {
+                o.itemClass += ' clicked'
               }
               return o 
             }
@@ -78,9 +83,18 @@ class MultiDropDown extends React.Component {
           <ul key={ii} className={data.length == (ii + 1) ? 'item last ' : 'item ' + this.state.itemClass} data-idx={ii} >
             {
               item.map((itemx, jj) => {
-                let itc = itemx.isSelectedPoi === 1 ? itemx.itemClass ? 'item-li check' + itemx.itemClass : 'item-li check' : itemx.itemClass ? 'item-li' + itemx.itemClass : 'item-li'
+                let itc =  itemx.itemClass ? 'item-li' + itemx.itemClass : 'item-li'
+                let ic  =  itemx.iconClass ? 'item-icon' + itemx.iconClass : 'item-icon'
+                // let itc =  ? itemx.itemClass ? 'item-li check' + itemx.itemClass : 'item-li check' : itemx.itemClass ? 'item-li' + itemx.itemClass : 'item-li'
                 return (
-                  <li key={_.uniqueId('d-item-item')} className={itc} data-id={itemx.id} data-parentId={itemx.parentId}>{itemx.navTitle}</li>
+                  <li key={_.uniqueId('d-item-item')} className={itc} data-id={itemx.id} data-parentId={itemx.parentId}>
+                    {
+                      itemx.isSelectedPoi === 1 ? 
+                        <span className={ic}></span>
+                      : ''
+                    }
+                    {itemx.navTitle}
+                  </li>
                 )
               })
             }
@@ -96,14 +110,22 @@ class MultiDropDown extends React.Component {
 }
 
 const Actions = {
+  RESET(ostate, data) {
+    return ostate
+  },
   CHANGE(ostate, param) {
     const curState = this.curState
     curState.cid = param.id
-    curState.checked = param.checked
     curState.cidx = param.cidx + 1
+    curState.clicked = param.clicked
     return curState
   },
-  SETVALUES(ostate, data) {
+  CHANGEVAL(ostate, param) {
+    const curState = this.curState
+    curState.checked = param.checked
+    return curState
+  },
+  SETVALUE(ostate, data) {
     const curState = this.curState
     curState.checked = data
     return curState
@@ -115,23 +137,39 @@ export default function(params) {
   const instance = Aotoo(MultiDropDown, Actions)
   let dft = {
     checked: [],        //[{id: 28131}, {id: 28132}]
-    max: 4
+    max: 4,
+    storeClickedLevel: [],      //用来记录点击过的层级，
   }
   let opts = Object.assign(dft, params)
   instance.setProps(opts)
   instance.rendered = function(dom) {
-    $(dom).off('click').on('click', '.item-li', function(e) {
+    $(dom).off('click').on('click', '.item-li, .item-icon', function(e) {
       e.stopPropagation()
-      const id = parseInt($(this).attr('data-id'))
-      const cidx = parseInt($(this).parents('.item').attr('data-idx'))
-      if ($(this).hasClass('check')) {
+      if (e.target.className === 'item-li') {
+        const id = parseInt($(this).attr('data-id'))
+        const cidx = parseInt($(this).parents('.item').attr('data-idx'))
+        if ($(this).siblings().hasClass('clicked')){
+          const ii = _.findIndex(opts.storeClickedLevel, o => o.cidx === cidx)
+          if (ii > -1 ) {
+            opts.storeClickedLevel.splice(ii, 1)
+            opts.storeClickedLevel.push({id: id, cidx: cidx})
+          }
+        }
+        else {
+          opts.storeClickedLevel.push({id: id, cidx: cidx})
+        }
+        instance.$change({id: id, cidx: cidx, clicked: opts.storeClickedLevel})
+      }
+      else if (e.target.className === 'item-icon' || e.target.className === 'item-icon active') {
+        const id = parseInt($(this).parent('.item-li').attr('data-id'))
+        const val = $(this).parent().text()
         if (opts.checked.length < opts.max) {
           if ($(this).hasClass('active')){
             const ii = _.findIndex(opts.checked, o => o.id === id)
             opts.checked.splice(ii, 1)
           }
           else {
-            opts.checked.push({id: id, title: $(this).text()})
+            opts.checked.push({id: id, title: val})
           }
           typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
         }
@@ -142,8 +180,8 @@ export default function(params) {
             typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
           }
         }
+        instance.$changeval({checked: opts.checked})
       }
-      instance.$change({id: id, cidx: cidx, checked: opts.checked})
     })
   }
   return instance

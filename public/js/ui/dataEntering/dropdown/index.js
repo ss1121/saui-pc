@@ -10,7 +10,6 @@ import {multiListData} from './data'
   const searchPopList0 = dropdownList({
     isHideChecked: true,
     max: 1,
-    isRadio: true,
     itemClick: function(val) {
       if (val.length <= 1) {
         search.setValue(val)
@@ -31,23 +30,27 @@ import {multiListData} from './data'
 /**关联POI */
   let dpop = null
   const searchPopList = dropdownList({
-    isHideChecked: true,
+    // isHideChecked: true,
     max: 4,
-    checked: [{id: 27958, title: '广州'}],
+    isRadio: false,
+    checked: [{id: 27958, title: '广州'}],      //用来过滤已经存在的问题
     itemClick: function(val) {
       if (val.length <= 4) {
-        dpop.setValue(val)
+        dpop.setValue(val, true)
         dpop.clearInput('.xx')
+        dpop.hide()
       }
     }
   })
   dpop = drop({
+    onlyInput: true,
     dropdownClass: 'xx',
     value: [{id: 27958, title: '广州'}],
     popContent: searchPopList.inst.render(),
     keyupFunc: function(val) {
       console.log('返回输入的值:', val)
-      searchPopList.inst.$uplist(searchPopList.adapterPoi(multiListData.data.slice(0, 20)))
+      const valed = dpop.getValue()
+      searchPopList.inst.$uplist(searchPopList.adapterPoi(multiListData.data.slice(0, 20), valed))
       // searchPopList.$uplist([{title: '找不到： abc', itemClass: 'nofind'}])
       // searchPopList.$uplist([{title: '暂无任何目的城市', itemClass: 'nodata'}])
     }
@@ -58,7 +61,8 @@ import {multiListData} from './data'
   const searchPopList2 = dropdownList({
     data: multiListData.data.slice(0, 20),
     max: 4,
-    isCheckedStatus: true,
+    isShowRight: true,
+    isRadio: false,
     listClass: 'checkRight',
     itemClick: function(val) {
       if (val.length <= 4) {
@@ -96,9 +100,12 @@ import {multiListData} from './data'
     isInput: false,
     popContent: levels.render(),
     dropdownClass: 'pop-noscroll-width',
+    updateInitFunc: function() {
+      levels.$reset(multiListData.data)
+    },
     delVals: function(val){
       //删除上面的选中值，pop层里的层级组件要跟着更新
-      levels.setValue(val)
+      levels.$setvalue(val)
     }
   })
 /**目的地控件 end*/

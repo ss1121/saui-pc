@@ -53,7 +53,6 @@
     >.item-close
       ss-icon($icon-del, false, $borderColor, $isFlex: inline-block, $pseudo: after)
       ss-position(absolute, $top: calc(50% - 8px), $right: 10px)
-      display: none
       &.active
         display: block
   .dropdown-pop
@@ -126,6 +125,15 @@
       .item-li
         &:after
           display: none
+  .item-icon
+    &:before
+      content: $checkbox
+      color: $color-line-input
+      margin-right: 5px
+    &.active
+      &:before
+        content: $checkboxChecked
+        color: $color-primary
   .item-li
     padding: 0 10px
     display: flex
@@ -136,12 +144,3 @@
     &:after
       content: $arrow-right
       margin-left: auto
-    &.check
-      &:before
-        content: $checkbox
-        color: $color-line-input
-        margin-right: 5px
-      &.active
-        &:before
-          content: $checkboxChecked
-          color: $color-primary 

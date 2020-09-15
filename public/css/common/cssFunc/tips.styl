@@ -61,7 +61,7 @@ ss-tips($class = '.ss-tips', $config = false)
           background-color: lighten($tips-icon-fail-color, 90%)
           border-color: lighten($tips-icon-fail-color, 70%)
           if (cfg.$isFlex == true)
-            display: flex
+            ss-display-flex(row, flex-start, center)
           else 
             display: block
           &:before
@@ -71,7 +71,7 @@ ss-tips($class = '.ss-tips', $config = false)
           background-color: lighten($tips-icon-color, 90%)
           border-color: lighten($tips-icon-color, 70%)
           if (cfg.$isFlex == true)
-            display: flex
+            ss-display-flex(row, flex-start, center)
           else 
             display: block
           &:before
@@ -81,7 +81,7 @@ ss-tips($class = '.ss-tips', $config = false)
           background-color: lighten($tips-icon-sucess-color, 90%)
           border-color: lighten($tips-icon-sucess-color, 70%)
           if (cfg.$isFlex == true)
-            display: flex
+            ss-display-flex(row, flex-start, center)
           else 
             display: block
           &:before

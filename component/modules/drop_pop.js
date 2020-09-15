@@ -10,12 +10,6 @@ class DropPop extends React.Component {
       })
     }
   }
-  handleChange(e) {
-    //为了能修改input里的值
-    this.setState({
-      value: e.target.value
-    })
-  }
   render() {
     const state = this.state
     const disableds = (!state.inputVals && state.value && state.value.length >= state.max) || !state.isInput ? true : false
@@ -27,16 +21,19 @@ class DropPop extends React.Component {
           {
             !state.inputVals ?
               <input type='text' className='form_control' maxLength='200' disabled={disableds} placeholder={!disableds ? state.placeholder : ''}/>
-            : <input type='text' className='form_control' maxLength='200' disabled={disableds} placeholder={state.placeholder} value={state.value} onChange={(e) => this.handleChange(e)} />
+            : <input type='text' className='form_control' maxLength='200' disabled={disableds} placeholder={state.placeholder} key={state.value} defaultValue={state.value} />
           }
-          {state.inputVals ? <i className='item-close'></i> : ''}
+          {state.inputVals && state.value != '' ? <i className='item-close'></i> : ''}
         </div>
-        <div data-class={popClass} className={popClass}>{state.popContent}</div>
+        <div className={popClass}>{state.popContent}</div>
       </div>
     )
   }
 }
 const Action = {
+  RESET(ostate) {
+    return ostate
+  },
   SHOW(ostate) {
     let curState = this.curState
     curState.show = true
@@ -81,6 +78,7 @@ function drop (params) {
     max: 4,
     popContent: '请输入关键字查询',
     isInput: true,               //是否允许输入
+    onlyInput: false,              //只允许输入弹出
     keyupFunc: null,            //function 通过keyup，与业务配合，比如每输入一下，请求一次接口
     updateInitFunc: null,       //function 默认点击pop有数据，需要对数据作处理
     value: [],                  //赋值 [{title: '广州', id: 1554}]
@@ -99,7 +97,10 @@ function drop (params) {
       let val = curState && curState.value ? curState.value : opts.value
       return val
     },
-    setValue: function(val) {
+    setValue: function(val, states) {
+      // states 代表有默认值，用于编辑时
+      let curState = this.curState
+      val = states ? _.concat(curState.value, val) : val
       this.$setvalues(val)
     },
     clearInput: function(dom) {
@@ -116,9 +117,11 @@ function drop (params) {
         e.stopPropagation()
         if (e.currentTarget.className == 'dropdown-head-input') {
           //点击input 弹出弹出层
-          ctx.hide()
-          ctx.$show()
-          typeof opts.updateInitFunc === 'function' ? opts.updateInitFunc.call(this) : ''
+          if (!opts.onlyInput) {
+            ctx.hide()
+            ctx.$show()
+            typeof opts.updateInitFunc === 'function' ? opts.updateInitFunc.call(this) : ''
+          }
         }
         else if (e.currentTarget.className == 'item-close') {
           //点击删除
@@ -138,16 +141,21 @@ function drop (params) {
       if (isInput) {
         $(dom).find('.form_control').keyup(function(e){
           // e.stopPropagation()
-          const vals = $(this).val()
-          ctx.curState && !ctx.curState.show ? ctx.$show() : ''
-          if (vals != '') {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(function () {
-              typeof opts.keyupFunc === 'function' ? opts.keyupFunc.call(this, vals) : ''
-            }, 500)
-          }
-          else {
-            ctx.hide()
+          if ($(this).prop("disabled") !== true) {
+            if ((ctx.curState && !ctx.curState.show) || opts.onlyInput) {
+              ctx.hide()
+              ctx.$show()
+            }
+            const vals = $(this).val()
+            if (vals != '') {
+              clearTimeout(timeoutId);
+              timeoutId = setTimeout(function () {
+                typeof opts.keyupFunc === 'function' ? opts.keyupFunc.call(this, vals) : ''
+              }, 500)
+            }
+            else {
+              ctx.hide()
+            }
           }
         })
       }

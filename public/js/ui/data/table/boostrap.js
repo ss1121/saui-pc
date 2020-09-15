@@ -1,4 +1,6 @@
 import { BTable } from 'component/modules/table'
+import { noDataConfig } from 'commonjs/nodata'
+
 /**
  * 以下是表格里的数据，参数、及方法
  *
@@ -23,6 +25,7 @@ let actionEvents = {
     modal(<ModalDel />)
   }
 };
+const noDataTable = noDataConfig({desc: '暂无发布供应信息', itemClass: 'mb', isJsx: false})
 let boostrapTable = (data) =>{
   const inst =  BTable({
     // container: 'btTable',
@@ -77,7 +80,7 @@ let boostrapTable = (data) =>{
         return false;
       },
       formatNoMatches: function () {  //没有匹配的结果
-        return `<div>无符合条件的记录-自定义</div>`;
+        return noDataTable;
       },
     }
   })

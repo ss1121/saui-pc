@@ -1,7 +1,7 @@
-import { noDataConfig } from './nodata'
+import { noDataConfig } from 'commonjs/nodata'
 function pages() {
   const data = [
-    { title: noDataConfig({title: '很抱歉，没有找到符合您条件的酒店', desc: '您可以尝试更换搜索条件，如目的地/酒店名称', showBtn: true, }) },
+    { title: noDataConfig({img: '/images/ui/no-content.png',title: '很抱歉，没有找到符合您条件的酒店', desc: '您可以尝试更换搜索条件，如目的地/酒店名称', showBtn: true, }) },
   ]
 
   const tree = Aotoo.tree({
