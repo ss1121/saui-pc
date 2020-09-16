@@ -13,7 +13,6 @@ class DropPop extends React.Component {
   render() {
     const state = this.state
     const disableds = state.isInput === false ? true : !state.inputVals && state.value && state.value.length >= state.max ? true : false
-    console.log(state.isInput, !state.inputVals && state.value && state.value.length >= state.max)
     const popClass = state.show ? 'dropdown-pop active' : 'dropdown-pop'
     return (
       <div id={_.uniqueId('dropdown')} className={'dropdown ' + this.state.dropdownClass}>
@@ -113,12 +112,9 @@ function drop (params) {
       let isInput = opts.isInput
       let timeoutId = 0
       //点击输入框 弹出pop
-      console.log('=============== start')
       $(dom).off('click', '.dropdown-head-input, .dropdown-pop, .item-close').on('click', '.dropdown-head-input, .dropdown-pop, .item-close', function(e){
         e.stopPropagation()
-        console.log(e, 'click')
         if (e.currentTarget.className == 'dropdown-head-input') {
-          console.log('=============')
           //点击input 弹出弹出层
           if (!opts.onlyInput) {
             ctx.hide()
