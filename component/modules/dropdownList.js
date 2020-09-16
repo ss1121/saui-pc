@@ -33,12 +33,16 @@ export default function (params) {
       const id = parseInt($(this).attr('data-ids'))
       const title = $(this).attr('data-title')
       const idx = _.findIndex(opts.checked, item => {return item.id === id})
+      
       if (opts.checked.length >= 0 && !opts.isRadio) {
         if (opts.checked.length < opts.max) {
           //通过findindex来判断是否选中过，从而来判断是否来选中还是取消
           if (idx >= 0) {
-            opts.checked.splice(idx, 1)
-            $(this).removeClass('active')
+            if (opts.isShowRight) {
+              opts.checked.splice(idx, 1)
+              $(this).removeClass('active')
+            }
+            
           }
           else {
             $(this).addClass('active')

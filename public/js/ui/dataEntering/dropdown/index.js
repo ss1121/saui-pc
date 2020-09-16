@@ -36,7 +36,7 @@ import {multiListData} from './data'
     checked: [{id: 27958, title: '广州'}],      //用来过滤已经存在的问题
     itemClick: function(val) {
       if (val.length <= 4) {
-        dpop.setValue(val, true)
+        dpop.setValue(val)
         dpop.clearInput('.xx')
         dpop.hide()
       }

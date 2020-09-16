@@ -18,11 +18,11 @@ class MultiDropDown extends React.Component {
     this.state = {
       // data: newData(this.props.data),
       data: adapterData(this.props.data),
-      listClass: this.props.listClass || '',
-      itemClass: this.props.itemClass || '',
-      cid: null,
-      cidx: 0,
-      storeIdx: [],
+      listClass: this.props.listClass,
+      itemClass: this.props.itemClass,
+      cid: this.props.cid,
+      cidx: this.props.cidx,
+      storeIdx: this.props.storeIdx,
       checked: this.props.checked
     }
   }
@@ -113,6 +113,17 @@ const Actions = {
   RESET(ostate, data) {
     return ostate
   },
+  UPDATE(ostate, param) {
+    let curState = this.curState
+    if (typeof param === 'object' && param.length > 0) {
+      curState.data = adapterData(param)
+    }
+    else {
+      curState.data = adapterData(param.data)
+      param.listClass ? curState.listClass = param.listClass : ''
+    }
+    return curState
+  },
   CHANGE(ostate, param) {
     const curState = this.curState
     curState.cid = param.id
@@ -139,6 +150,11 @@ export default function(params) {
     checked: [],        //[{id: 28131}, {id: 28132}]
     max: 4,
     storeClickedLevel: [],      //用来记录点击过的层级，
+    listClass: '',
+    itemClass: '',
+    cid: null,
+    cidx: 0,
+    storeIdx: []
   }
   let opts = Object.assign(dft, params)
   instance.setProps(opts)

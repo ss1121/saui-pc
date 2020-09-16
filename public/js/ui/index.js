@@ -2,7 +2,7 @@
 require('common/js/libs/router')
 import item from 'component/modules/item'
 import list from 'component/modules/list'
-import { adapterfilterRouterData, adapterIdNav } from "../_common/util";
+import { adapterfilterRouterData, adapterIdNav } from "./adapterrouter";
 
 const indexData = require('./indexData')
 //页面

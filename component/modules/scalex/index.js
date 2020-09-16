@@ -184,9 +184,9 @@ function index(opts){
   return instance
 }
 export default function calendar(options){
-  Aotoo.inject.css([
-    `/css/m/scalex`
-  ])
+  // Aotoo.inject.css([
+  //   `/css/m/scalex`
+  // ])
   let dft = {
     data: []
   }

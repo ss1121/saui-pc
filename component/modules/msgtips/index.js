@@ -1,10 +1,17 @@
 import {objtypeof, inject} from 'libs'
 import PopClass from 'component/class/poper'
 
+<<<<<<< Updated upstream
 // Aotoo.inject.css([
 //   '/css/t/animate.css',
 //   '/css/m/msgtips.css'
 // ])
+=======
+Aotoo.inject.css([
+  '/css/t/animate.css',
+  // '/css/m/msgtips.css'
+])
+>>>>>>> Stashed changes
 
 class Tips extends PopClass {
   constructor(){
