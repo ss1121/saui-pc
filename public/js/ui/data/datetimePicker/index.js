@@ -19,7 +19,7 @@ function pages() {
     { title: jsxFun("cdatex5", '', '请选择时间'), parent: 'picker4' },
 
     { title: '时间', idf: 'picker5', itemClass: 'item-list' },
-    { title: jsxFun("cdatex6", '', '请选择时间'), parent: 'picker5' },
+    { title: jsxFun("cdatex6", '', '请选择时间',  'time'), parent: 'picker5' },
   ]
 
   const tree = Aotoo.tree({

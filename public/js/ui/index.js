@@ -31,6 +31,7 @@ import steps from './navigation/steps'
 //与业务挂钩页面 business
 import defaults from './business/defaults'
 import login from './business/login'
+import pricestock from './business/pricestock'
 
 
 const tmpRouter = {
@@ -55,6 +56,7 @@ const tmpRouter = {
 
   defaults: defaults,
   login: login,
+  pricestock: pricestock,
 }
 const getHash = location.hash.slice(1)
 let eventHover = false      //通过这个参数来判断，用点击事件展开

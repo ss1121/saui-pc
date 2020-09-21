@@ -195,7 +195,16 @@ export default [
       "sourceName": "业务",
       "defaultIco": "",
       "targetUrl": "#",
-  },
+	},
+	{
+    "defaultIco": "",
+    "id": 193000,
+    "parentId": 192,
+    "preCode": "pricestock",
+    "sourceName": "价格库存",
+    "systemCode": "9",
+    "targetUrl": "pricestock",
+	},
   {
     "defaultIco": "",
     "id": 1930,
@@ -204,7 +213,7 @@ export default [
     "sourceName": "缺省页",
     "systemCode": "9",
     "targetUrl": "defaults",
-},
+	},
   {
     "defaultIco": "",
     "id": 19300,
@@ -213,7 +222,7 @@ export default [
     "sourceName": "登录页",
     "systemCode": "9",
     "targetUrl": "login",
-},
+	},
 ]
 // export default [
 //   {

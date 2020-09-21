@@ -1,8 +1,9 @@
 import 'component/modules/datetimepicker/jq'
 
 const util = {
-    jsxFun: function (id, val, placeholder) {
-        return  <label className="form-datepicker ss-display">
+    jsxFun: function (id, val, placeholder, type = '') {
+        const cls = type == 'time' ? ' time' : ' '
+        return  <label className={"form-datepicker ss-display" + cls}>
                     <input id={id} className="form_control" type="text" placeholder={placeholder || ''} defaultValue={val} readOnly />
                     <span className="fkp-input-error"></span>
                 </label>

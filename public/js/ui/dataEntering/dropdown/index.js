@@ -91,12 +91,14 @@ import {multiListData} from './data'
 /**目的地控件 */
   let dpop3 = null
   const levels = multiList({
+    checked: [{id: 28131, title: '龙岗'}, {id: 28132, title: '盐田'}],
     data: multiListData.data,
     itemClick: function(val) {
       if (val.length <= 4) dpop3.setValue(val)
     }
   })
   dpop3 = drop({
+    value: [{id: 28131, title: '龙岗'}, {id: 28132, title: '盐田'}],
     isInput: false,
     popContent: levels.render(),
     dropdownClass: 'pop-noscroll-width',
