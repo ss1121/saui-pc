@@ -93,7 +93,7 @@
     &:hover
       background: $color-bg-special
       color: $color-primary
-  &:not(.checkRight)
+  &.item-poi
     >.item-li
       &:after
         content: attr(data-name)
@@ -144,3 +144,9 @@
     &:after
       content: $arrow-right
       margin-left: auto
+     &.disabled
+       color: $color-text-disabled
+       .item-icon
+         &:before
+           color: $color-line
+           background: $color-bg-special

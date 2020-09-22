@@ -109,16 +109,19 @@ ss-tips-system($config = false)
       &:before
         font-weight: normal
 
-
-ss-tips-form($class= '.form-tips', $config = false)
+ss-tips-form($class= '.ss-form-tips', $config = false)
+  cfg = merge({}, tipsCfg, $config)
+  ss-tips($class, cfg)
+  {$class}
+    {tips-form}
+    line-height: initial
+    z-index: $zidx-ft
+    white-space: nowrap
+ss-tips-like-form($class= '.form-tips', $class2 = '.ss-form-tips', $config = false)
   cfg = merge({}, tipsCfg, $config)
   {$class}
     position relative 
-    ss-tips('.ss-form-tips', cfg)
-    .ss-form-tips
-      {tips-form}
-      line-height: initial
-      z-index: $zidx-ft
+    ss-tips-form($class2, cfg)
 
 
 //箭头的方向

@@ -12,16 +12,17 @@ class DropPop extends React.Component {
   }
   render() {
     const state = this.state
-    const disableds = state.isInput === false ? true : !state.inputVals && state.value && state.value.length >= state.max ? true : false
+    const isRead = state.type === 'onlyClick' ? 'readOnly' : state.value && state.value.length >= state.max ? 'readOnly' : false
     const popClass = state.show ? 'dropdown-pop active' : 'dropdown-pop'
+    const noPopCls = !state.inputVals && state.value && state.value.length >= state.max  ? ' disabled' : ''
     return (
       <div id={_.uniqueId('dropdown')} className={'dropdown ' + this.state.dropdownClass}>
         <div className='dropdown-head-input'>
           {!state.inputVals ? this.mapGetVals(state.value) : ''}
           {
             !state.inputVals ?
-              <input type='text' className='form_control' maxLength='200' disabled={disableds} placeholder={!disableds ? state.placeholder : ''}/>
-            : <input type='text' className='form_control' maxLength='200' disabled={disableds} placeholder={state.placeholder} key={state.value} defaultValue={state.value} />
+              <input type='text' className={'form_control' + noPopCls} maxLength='200' readOnly={isRead} placeholder={!noPopCls ? state.placeholder : ''}/>
+            : <input type='text' className='form_control' maxLength='200' disabled={isRead} placeholder={state.placeholder} key={state.value} defaultValue={state.value} />  //用于纯搜索
           }
           {state.inputVals && state.value != '' ? <i className='item-close'></i> : ''}
         </div>
@@ -71,14 +72,12 @@ const Action = {
 
 function drop (params) {
   let dft = {
-    type: 'keyup',
+    type: 'normal',             //有三种情况，默认能点击，输入弹出，一种是只能点击（onlyClick） 一种是只能输入（onlyInput）
     inputVals: false,            //为true时，选中的值赋在input value
     show: false,
     placeholder: '请选择',
     max: 4,
     popContent: '请输入关键字查询',
-    isInput: true,               //是否允许输入
-    onlyInput: false,             //只允许输入弹出
     keyupFunc: null,            //function 通过keyup，与业务配合，比如每输入一下，请求一次接口
     updateInitFunc: null,       //function 默认点击pop有数据，需要对数据作处理
     value: [],                  //赋值 [{title: '广州', id: 1554}]
@@ -109,14 +108,14 @@ function drop (params) {
   instance.on('rendered', function(options) {
     if (status) {
       const {dom, _opts, ctx} = options
-      let isInput = opts.isInput
       let timeoutId = 0
       //点击输入框 弹出pop
-      $(dom).off('click', '.dropdown-head-input, .dropdown-pop, .item-close').on('click', '.dropdown-head-input, .dropdown-pop, .item-close', function(e){
+      $(dom).off('click', '.form_control, .dropdown-pop, .item-close').on('click', '.form_control, .dropdown-pop, .item-close', function(e){
         e.stopPropagation()
-        if (e.currentTarget.className == 'dropdown-head-input') {
+        if (e.currentTarget.className == 'form_control') {
           //点击input 弹出弹出层
-          if (!opts.onlyInput) {
+          if (!$(this).hasClass('disabled') && opts.type !== 'onlyInput') {
+            console.log(opts.type);
             ctx.hide()
             ctx.$show()
             typeof opts.updateInitFunc === 'function' ? opts.updateInitFunc.call(this) : ''
@@ -137,11 +136,11 @@ function drop (params) {
         //dropdown-pop 阻止点击弹出层内容关闭弹出层
       })
       //允许输入
-      if (isInput) {
+      if ( opts.type !== 'onlyClick') {
         $(dom).find('.form_control').keyup(function(e){
           // e.stopPropagation()
           if ($(this).prop("disabled") !== true) {
-            if ((ctx.curState && !ctx.curState.show) || opts.onlyInput) {
+            if ((ctx.curState && !ctx.curState.show) || opts.type === 'onlyInput') {
               ctx.hide()
               ctx.$show()
             }

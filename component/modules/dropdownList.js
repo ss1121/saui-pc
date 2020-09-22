@@ -1,17 +1,8 @@
 import list from 'component/modules/list'
 
 export default function (params) {
-  let dft = {
-    data: [],             
-    max: 10,                    //最大能选中值的数量
-    checked: [],                //选中的值
-    isShowRight: false,         //true时，选中值需要有状态，打勾  且再点击一次能取消选中值。类似多选  false时，选中值需要隐藏
-    isHideChecked: false,       //是否隐藏选中过的值
-    isRadio: true,             //是否隐藏选中过的值
-  }
-  let opts = Object.assign(dft, params)
-  //关联poi方法
-  const adapterPoi = (data, checked) => {
+  //默认适配方法，关联poi方法，可传入
+  const adapterPoi = (data, checked, type) => {
     data = data || ['abc', 'bcs', 'bsam', 'ssss']
     let checkedIds = checked || opts.checked
     return data.map((item, ii) => {
@@ -25,8 +16,19 @@ export default function (params) {
       }
     })
   }
+  let dft = {
+    data: [],             
+    listClass: '',
+    max: 10,                    //最大能选中值的数量
+    checked: [],                //选中的值
+    isShowRight: false,         //true时，选中值需要有状态，打勾  且再点击一次能取消选中值。类似多选  false时，选中值需要隐藏
+    isHideChecked: false,       //是否隐藏选中过的值
+    isRadio: true,             //是否隐藏选中过的值
+    adapter: adapterPoi
+  }
+  let opts = Object.assign(dft, params)
   //弹出层内容-列表
-  const listInst = list({data: opts.data.length > 0 ? adapterPoi(opts.data) : [{title: '请输入'}], listClass: 'pop-list ' + opts.listClass || ''})
+  const listInst = list({data: opts.data.length > 0 ? opts.adapter(opts.data) : [{title: '请输入'}], listClass: 'pop-list ' + opts.listClass})
   listInst.rendered = function(dom) {
     $(dom).off().on('click', '.item-li', function(e) {
       e.stopPropagation()
@@ -38,21 +40,19 @@ export default function (params) {
         if (opts.checked.length < opts.max) {
           //通过findindex来判断是否选中过，从而来判断是否来选中还是取消
           if (idx >= 0) {
-            if (opts.isShowRight) {
-              opts.checked.splice(idx, 1)
-              $(this).removeClass('active')
-            }
-            
+            opts.checked.splice(idx, 1)
+            opts.checked.push({id: id, title: title})
+            // $(this).removeClass('active')
           }
           else {
-            $(this).addClass('active')
+            // $(this).addClass('active')
             opts.checked.push({id: id, title: title})
           }
         }
       } 
       else {
         if (idx < 0){
-          $(this).addClass('active')
+          // $(this).addClass('active')
           opts.checked.push({id: id, title: title})
         }
       }

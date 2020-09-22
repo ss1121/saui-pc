@@ -29,27 +29,37 @@ function pages() {
     </div>
     , function(dom) {
       //多行文本
-      checkTextareaNum(formWrap, 'textarea', 200)
-      $(document).click(function () {
-        $(".item-pop-list").removeClass('active');
-      });
-      //搜索框
-      $(dom).find('.pages-search .form_control').keyup(function(e){
-        e.stopPropagation()
-        if ($(this).val() != '') {
-          $(this).parents('.pages-search').find(".item-pop-list").addClass('active')
-          searchPopList.$uplist(searchList())
-        }
-        else {
-          searchPopList.$uplist([]).$upclass('')
-        }
-      })
+      // checkTextareaNum(formWrap, 'textarea', 200)
+      // $(document).click(function () {
+      //   $(".item-pop-list").removeClass('active');
+      // });
+      // //搜索框
+      // $(dom).find('.pages-search .form_control').keyup(function(e){
+      //   e.stopPropagation()
+      //   if ($(this).val() != '') {
+      //     $(this).parents('.pages-search').find(".item-pop-list").addClass('active')
+      //     searchPopList.$uplist(searchList())
+      //   }
+      //   else {
+      //     searchPopList.$uplist([]).$upclass('')
+      //   }
+      // })
       //自定义表单提示语
-      $('.like-form .form_control').focus(function(){
-        $(this).parent('.form-tips').find('.ss-form-tips').addClass('warning').text('请输入正确的内容')
+      $('.like-form .form_control').focus(function(e){
+        e.stopPropagation()
+        $(this).next('.ss-form-tips').removeClass('warning').text('')
+      }).blur(function(e){
+        e.stopPropagation()
+        $(this).next('.ss-form-tips').addClass('warning').text('请输入正确的内容')
       })
-      .blur(function(){
-        $(this).parent('.form-tips').find('.ss-form-tips').removeClass('warning').text('')
+      $('#tt').focus(function (e) {
+        e.stopPropagation()
+        console.log('============ abc');
+        formWrap.removeWarn('tt')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+      }).blur(function (e) {
+        e.stopPropagation()
+        const val = $(this).val()
+        !val ? formWrap.addWarn('tt', '请输入', {class: 'error'}) : ''
       })
       formWrap.values({'tt': '111'})
     }

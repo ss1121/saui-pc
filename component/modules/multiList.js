@@ -23,7 +23,8 @@ class MultiDropDown extends React.Component {
       cid: this.props.cid,
       cidx: this.props.cidx,
       storeIdx: this.props.storeIdx,
-      checked: this.props.checked
+      checked: this.props.checked,
+      max: this.props.max
     }
   }
   _storeIdx(cidx, id) {
@@ -60,8 +61,15 @@ class MultiDropDown extends React.Component {
           if (cidx == ii && id) {
             //获取下一级的数据
             if (o.parentId === id) {
-              if (o.isSelectedPoi === 1 && _.findIndex(checked, k => k.id === o.id) >= 0) {
-                o.iconClass += ' active'
+              if (o.isSelectedPoi === 1) {
+                if (_.findIndex(checked, k => k.id === o.id) >= 0) {
+                  o.iconClass += ' active'
+                }
+                else {
+                  if (checked.length >= this.state.max) {
+                    o.itemClass += ' disabled'
+                  }
+                }
               }
               return o
             }
@@ -69,8 +77,15 @@ class MultiDropDown extends React.Component {
           else {
             //other 上n层数据
             if (!storeIdx[ii].id || o.parentId === storeIdx[ii].id) {
-              if (o.isSelectedPoi === 1 && _.findIndex(checked, k => k.id === o.id) >= 0) {
-                o.iconClass += ' active'
+              if (o.isSelectedPoi === 1) {
+                if (_.findIndex(checked, k => k.id === o.id) >= 0) {
+                  o.iconClass += ' active'
+                }
+                else {
+                  if (checked.length >= this.state.max) {
+                    o.itemClass += ' disabled'
+                  }
+                }
               }
               if ( _.findIndex(clicked, k => k.id === o.id) >= 0) {
                 o.itemClass += ' clicked'
@@ -78,8 +93,10 @@ class MultiDropDown extends React.Component {
               return o 
             }
           }
+          
         })
         return (
+          item.length > 0 ?
           <ul key={ii} className={data.length == (ii + 1) ? 'item last ' : 'item ' + this.state.itemClass} data-idx={ii} >
             {
               item.map((itemx, jj) => {
@@ -99,6 +116,7 @@ class MultiDropDown extends React.Component {
               })
             }
           </ul>
+          : ''
         )
       }
     })

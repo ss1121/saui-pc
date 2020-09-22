@@ -13,11 +13,17 @@ class EnterTag extends React.Component {
   }
   render() {
     const state = this.state
+    let disabled = false
+    let place = state.placeholde
+    if (state.value && state.value.length >= state.max) {
+      disabled = true
+      place = ''
+    }
     return (
       <div id={_.uniqueId('entertag')} className={'entertag ' + this.state.containerClass}>
         {!state.inputVals && state.value ? this.mapGetVals(state.value) : ''}
         {
-          <input type='text' className='form_control' maxLength='200' disabled={state.value && state.value.length >= state.max ? true : false} placeholder={state.placeholder} />
+          <input type='text' className='form_control' maxLength='200' disabled={disabled} placeholder={place} />
         }
         {state.inputVals ? <i className='item-close'></i> : ''}
       </div>
@@ -62,11 +68,12 @@ export default function (params) {
         e.stopPropagation()
         if (e.currentTarget.className == 'item-close') {
           //点击删除
-          const vals = parseInt($(this).text())
+          const vals = $(this).parent().text()
           const that = this
           ctx.$deletevalues({
             title: vals
           })
+          
         }
       })
       $(dom).find('.form_control').keyup(function(e){
@@ -75,8 +82,15 @@ export default function (params) {
         var code = theEvent.keyCode || theEvent.which || theEvent.charCode;  
         if (code === 13) {
           const vals = $(this).val()
+          // if(!vals) return
           ctx.$setvalues({title: vals})
           $(this).val('')
+          const odata = ctx.getValue()
+          if (_.findIndex(odata, o => o.title === vals) >= 0) {
+            ctx.$deletevalues({
+              title: vals
+            })
+          }
         }
       })
       status = false
@@ -91,4 +105,4 @@ export default function (params) {
   })
   instance.setProps(opts)
   return instance
-} 
+}

@@ -4,6 +4,7 @@ import enterTag from 'component/modules/enterTag'
 import dropdownList from 'component/modules/dropdownList'
 import multiList from 'component/modules/multiList'
 import {multiListData} from './data'
+import data from './data2'
 
 /**搜索 */
   let search = null
@@ -34,6 +35,7 @@ import {multiListData} from './data'
     max: 4,
     isRadio: false,
     checked: [{id: 27958, title: '广州'}],      //用来过滤已经存在的问题
+    listClass: 'item-poi',
     itemClick: function(val) {
       if (val.length <= 4) {
         dpop.setValue(val)
@@ -43,7 +45,7 @@ import {multiListData} from './data'
     }
   })
   dpop = drop({
-    onlyInput: true,
+    type: 'onlyInput',
     dropdownClass: 'xx',
     value: [{id: 27958, title: '广州'}],
     popContent: searchPopList.inst.render(),
@@ -61,13 +63,14 @@ import {multiListData} from './data'
   const searchPopList2 = dropdownList({
     data: multiListData.data.slice(0, 20),
     max: 4,
-    isShowRight: true,
     isRadio: false,
-    listClass: 'checkRight',
+    // isShowRight: true,
+    // listClass: 'checkRight',
     itemClick: function(val) {
       if (val.length <= 4) {
         dpop2.setValue(val)
-        dpop.clearInput('.xx')
+        dpop2.clearInput('.xx')
+        dpop2.hide()
       }
     }
   })
@@ -98,8 +101,8 @@ import {multiListData} from './data'
     }
   })
   dpop3 = drop({
+    type: 'onlyClick',
     value: [{id: 28131, title: '龙岗'}, {id: 28132, title: '盐田'}],
-    isInput: false,
     popContent: levels.render(),
     dropdownClass: 'pop-noscroll-width',
     updateInitFunc: function() {
@@ -112,7 +115,15 @@ import {multiListData} from './data'
   })
 /**目的地控件 end*/
 /**回车生成标签*/
-const enterTagInst = enterTag({value: [{title: '我是回车生成的大爷'}]})
+const enterTagInst = enterTag({
+  value: [{title: '我是回车生成的大爷'}],
+  repeatDataFunc: function() {
+    console.log('数据重复');
+  },
+  removeRepeatDataFunc: function() {
+    console.log('移除数据重复');
+  }
+})
 /**回车生成标签 end*/
 function pages() {
   const drop = form({
