@@ -1,23 +1,27 @@
 /*
   下拉控件
 */
+.item-tag-list
+  margin-bottom: -2px
 .valus-close
   background: $color-bg-special
   border: 1px solid $color-line-input
+  border-radius: 2px
   color: $color-text-title
   cursor pointer
-  display: inline-block
+  display: inline-flex
   padding: 3px 8px 3px 10px
-  margin-right: 3px
+  margin-right: 2px
   position: relative
+  margin-bottom: 2px
+  line-height: 20px
   [class*='close']
-    ss-icon($icon-del, false, $borderColor, $isFlex: inline-block, $pseudo: after)
+    ss-icon($icon-del, false, $color-text, $isFlex: inline-block, $pseudo: after)
     color: $color-text
-    margin-left: 5px
+    margin-left: auto
     &:after
-      position: inherit
-      top: inherit
-      right: inherit
+      margin-left: 5px
+      
     &:hover
       &:after
         color: $color-aux-fail
@@ -141,10 +145,11 @@
     &:hover, &.clicked
       background: $color-bg-special
       color: $color-primary
-    &:after
-      content: $arrow-right
-      margin-left: auto
-     &.disabled
+    &.has-child
+      &:after
+        content: $arrow-right
+        margin-left: auto
+    &.disabled
        color: $color-text-disabled
        .item-icon
          &:before

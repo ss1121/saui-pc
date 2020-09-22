@@ -21,7 +21,7 @@ class EnterTag extends React.Component {
     }
     return (
       <div id={_.uniqueId('entertag')} className={'entertag ' + this.state.containerClass}>
-        {!state.inputVals && state.value ? this.mapGetVals(state.value) : ''}
+        {!state.inputVals && state.value ? <div className='item-tag-list'>{this.mapGetVals(state.value)}</div> : ''}
         {
           <input type='text' className='form_control' maxLength='200' disabled={disabled} placeholder={place} />
         }

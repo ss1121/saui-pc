@@ -18,7 +18,7 @@ class DropPop extends React.Component {
     return (
       <div id={_.uniqueId('dropdown')} className={'dropdown ' + this.state.dropdownClass}>
         <div className='dropdown-head-input'>
-          {!state.inputVals ? this.mapGetVals(state.value) : ''}
+          {!state.inputVals ? <div className='item-tag-list'>{this.mapGetVals(state.value)}</div> : ''}
           {
             !state.inputVals ?
               <input type='text' className={'form_control' + noPopCls} maxLength='200' readOnly={isRead} placeholder={!noPopCls ? state.placeholder : ''}/>

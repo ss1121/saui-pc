@@ -4,7 +4,7 @@ import enterTag from 'component/modules/enterTag'
 import dropdownList from 'component/modules/dropdownList'
 import multiList from 'component/modules/multiList'
 import {multiListData} from './data'
-import data from './data2'
+import data from './data3'
 
 /**搜索 */
   let search = null
@@ -94,19 +94,19 @@ import data from './data2'
 /**目的地控件 */
   let dpop3 = null
   const levels = multiList({
-    checked: [{id: 28131, title: '龙岗'}, {id: 28132, title: '盐田'}],
-    data: multiListData.data,
+    checked: [{id: 32369, title: '龙岗'}, {id: 32370, title: '盐田'}],
+    data: data,
     itemClick: function(val) {
       if (val.length <= 4) dpop3.setValue(val)
     }
   })
   dpop3 = drop({
     type: 'onlyClick',
-    value: [{id: 28131, title: '龙岗'}, {id: 28132, title: '盐田'}],
+    value: [{id: 32369, title: '龙岗'}, {id: 32370, title: '盐田'}],
     popContent: levels.render(),
     dropdownClass: 'pop-noscroll-width',
     updateInitFunc: function() {
-      levels.$reset(multiListData.data)
+      levels.$reset(data)
     },
     delVals: function(val){
       //删除上面的选中值，pop层里的层级组件要跟着更新

@@ -1,4 +1,6 @@
-
+/**
+ * 适用于所有层级数据放在同一级里，
+ */
 import list from 'component/modules/list'
 
 const adapterData = (data) => {
@@ -58,11 +60,13 @@ class MultiDropDown extends React.Component {
         item = _.filter(item, o => {
           o.itemClass = ''
           o.iconClass = ''
+          let isChecked = _.findIndex(checked, k => k.id === o.id)
           if (cidx == ii && id) {
             //获取下一级的数据
             if (o.parentId === id) {
+              // const xx = _.findIndex(data[ii + 1], x => x.parentId === o.id) xx < 0 ?  o.itemClass += ' abc' : ''
               if (o.isSelectedPoi === 1) {
-                if (_.findIndex(checked, k => k.id === o.id) >= 0) {
+                if (isChecked >= 0) {
                   o.iconClass += ' active'
                 }
                 else {
@@ -78,7 +82,7 @@ class MultiDropDown extends React.Component {
             //other 上n层数据
             if (!storeIdx[ii].id || o.parentId === storeIdx[ii].id) {
               if (o.isSelectedPoi === 1) {
-                if (_.findIndex(checked, k => k.id === o.id) >= 0) {
+                if (isChecked >= 0) {
                   o.iconClass += ' active'
                 }
                 else {
@@ -93,21 +97,18 @@ class MultiDropDown extends React.Component {
               return o 
             }
           }
-          
         })
         return (
           item.length > 0 ?
           <ul key={ii} className={data.length == (ii + 1) ? 'item last ' : 'item ' + this.state.itemClass} data-idx={ii} >
             {
               item.map((itemx, jj) => {
-                let itc =  itemx.itemClass ? 'item-li' + itemx.itemClass : 'item-li'
-                let ic  =  itemx.iconClass ? 'item-icon' + itemx.iconClass : 'item-icon'
-                // let itc =  ? itemx.itemClass ? 'item-li check' + itemx.itemClass : 'item-li check' : itemx.itemClass ? 'item-li' + itemx.itemClass : 'item-li'
+                let itc =  itemx.hasChild === 1 ? ' has-child' : ''
                 return (
-                  <li key={_.uniqueId('d-item-item')} className={itc} data-id={itemx.id} data-parentId={itemx.parentId}>
+                  <li key={_.uniqueId('d-item-item')} className={'item-li' + itc + itemx.itemClass} data-id={itemx.id} data-parentId={itemx.parentId} data-poiId={itemx.poiId}>
                     {
                       itemx.isSelectedPoi === 1 ? 
-                        <span className={ic}></span>
+                        <span className={'item-icon'+ itemx.iconClass}></span>
                       : ''
                     }
                     {itemx.navTitle}
@@ -177,52 +178,45 @@ export default function(params) {
   let opts = Object.assign(dft, params)
   instance.setProps(opts)
   instance.rendered = function(dom) {
-    $(dom).off('click').on('click', '.item-li, .item-icon', function(e) {
+    $(dom).off('click').on('click', '.item-li', function(e) {
       e.stopPropagation()
-      if (e.target.className === 'item-li') {
-        const id = parseInt($(this).attr('data-id'))
-        const cidx = parseInt($(this).parents('.item').attr('data-idx'))
-        if ($(this).siblings().hasClass('clicked')){
-          const ii = _.findIndex(opts.storeClickedLevel, o => o.cidx === cidx)
-          if (ii > -1 ) {
-            opts.storeClickedLevel.splice(ii, 1)
-            opts.storeClickedLevel.push({id: id, cidx: cidx})
-          }
-        }
-        else {
+      const id = parseInt($(this).attr('data-id'))
+      const cidx = parseInt($(this).parents('.item').attr('data-idx'))
+      if ($(this).siblings().hasClass('clicked')){
+        const ii = _.findIndex(opts.storeClickedLevel, o => o.cidx === cidx)
+        if (ii > -1 ) {
+          opts.storeClickedLevel.splice(ii)
           opts.storeClickedLevel.push({id: id, cidx: cidx})
         }
-        instance.$change({id: id, cidx: cidx, clicked: opts.storeClickedLevel})
       }
-      else if (e.target.className === 'item-icon' || e.target.className === 'item-icon active') {
-        const id = parseInt($(this).parent('.item-li').attr('data-id'))
-        const val = $(this).parent().text()
-        if (opts.checked.length < opts.max) {
-          if ($(this).hasClass('active')){
-            const ii = _.findIndex(opts.checked, o => o.id === id)
-            opts.checked.splice(ii, 1)
-          }
-          else {
-            opts.checked.push({id: id, title: val})
-          }
-          typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
+      else {
+        opts.storeClickedLevel.push({id: id, cidx: cidx})
+      }
+      instance.$change({id: id, cidx: cidx, clicked: opts.storeClickedLevel})
+    })
+    .on('click', '.item-icon', function(e) {
+      e.stopPropagation()
+      const id = parseInt($(this).parent('.item-li').attr('data-id'))
+      const val = $(this).parent().text()
+      if (opts.checked.length < opts.max) {
+        if ($(this).hasClass('active')){
+          const ii = _.findIndex(opts.checked, o => o.id === id)
+          opts.checked.splice(ii, 1)
         }
         else {
-          if ($(this).hasClass('active')){
-            const ii = _.findIndex(opts.checked, o => o.id === id)
-            opts.checked.splice(ii, 1)
-            typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
-          }
+          opts.checked.push({id: id, title: val})
         }
-        instance.$changeval({checked: opts.checked})
+        typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
       }
+      else {
+        if ($(this).hasClass('active')){
+          const ii = _.findIndex(opts.checked, o => o.id === id)
+          opts.checked.splice(ii, 1)
+          typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
+        }
+      }
+      instance.$changeval({checked: opts.checked})
     })
   }
   return instance
 }
-
-// class SingleItem extends React.Component {
-//   render() {
-//     return <li onClick={this.props.onClick} className='item-li' data-id={this.props.id} data-level={this.props.customLevel}>{this.props.navTitle}</li>
-//   }
-// }

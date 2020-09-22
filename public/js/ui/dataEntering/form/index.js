@@ -29,21 +29,21 @@ function pages() {
     </div>
     , function(dom) {
       //多行文本
-      // checkTextareaNum(formWrap, 'textarea', 200)
-      // $(document).click(function () {
-      //   $(".item-pop-list").removeClass('active');
-      // });
-      // //搜索框
-      // $(dom).find('.pages-search .form_control').keyup(function(e){
-      //   e.stopPropagation()
-      //   if ($(this).val() != '') {
-      //     $(this).parents('.pages-search').find(".item-pop-list").addClass('active')
-      //     searchPopList.$uplist(searchList())
-      //   }
-      //   else {
-      //     searchPopList.$uplist([]).$upclass('')
-      //   }
-      // })
+      checkTextareaNum(formWrap, 'textarea', 200)
+      $(document).click(function () {
+        $(".item-pop-list").removeClass('active');
+      });
+      //搜索框
+      $(dom).find('.pages-search .form_control').keyup(function(e){
+        e.stopPropagation()
+        if ($(this).val() != '') {
+          $(this).parents('.pages-search').find(".item-pop-list").addClass('active')
+          searchPopList.$uplist(searchList())
+        }
+        else {
+          searchPopList.$uplist([]).$upclass('')
+        }
+      })
       //自定义表单提示语
       $('.like-form .form_control').focus(function(e){
         e.stopPropagation()
@@ -54,7 +54,6 @@ function pages() {
       })
       $('#tt').focus(function (e) {
         e.stopPropagation()
-        console.log('============ abc');
         formWrap.removeWarn('tt')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
       }).blur(function (e) {
         e.stopPropagation()
