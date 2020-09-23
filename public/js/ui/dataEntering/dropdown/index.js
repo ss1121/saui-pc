@@ -100,13 +100,21 @@ import data from './data3'
       if (val.length <= 4) dpop3.setValue(val)
     }
   })
+  let status = false
   dpop3 = drop({
     type: 'onlyClick',
     value: [{id: 32369, title: '龙岗'}, {id: 32370, title: '盐田'}],
     popContent: levels.render(),
     dropdownClass: 'pop-noscroll-width',
     updateInitFunc: function() {
-      levels.$reset(data)
+      if (!status) {
+        dpop3.update({dropdownClass: '', popContent: <span className='nodata'>网络问题，请关闭再尝试。</span>})
+        status = true
+      }
+      else {
+        dpop3.update({dropdownClass: 'pop-noscroll-width', popContent: levels.render()})
+      }
+      // levels.$update({data: [{navTitle: '找不到数据！！！'}], listClass: 'axxx'})
     },
     delVals: function(val){
       //删除上面的选中值，pop层里的层级组件要跟着更新
@@ -183,5 +191,5 @@ function pages() {
     </div>
   )
   return <Pages/>
-} 
+}
 export default pages()

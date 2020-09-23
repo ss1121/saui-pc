@@ -172,4 +172,4 @@ function drop (params) {
 }
 export default function (opts) {
   return drop(opts)
-} 
+}
