@@ -92,7 +92,8 @@ class MultiDropDown extends React.Component {
                 }
               }
               if ( _.findIndex(clicked, k => k.id === o.id) >= 0) {
-                o.itemClass += ' clicked'
+                console.log(o);
+                o.hasChild === 1 ? o.itemClass += ' clicked' : ''
               }
               return o 
             }

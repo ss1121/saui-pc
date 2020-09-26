@@ -163,5 +163,32 @@ ss-tips-form('.fkp-input-error', inputTipsCfg)
       width: 56px
       text-align: center
 
+.input-arrow-lr
+  ss-display-flex(row nowrap, flex-start)
+  .item
+    ss-display-flex(row, center, center)
+    border: 1px solid $color-line-input
+    width: $inputHeight
+    height $inputHeight
+    &:after
+      font-size: 16px
+    &.disabled
+      color: $color-line-input
+      cursor: default
+  .item-left
+    border-right: none
+    border-radius: $br 0 0 $br
+    &:after
+      content: $arrow-left
+  .item-right
+    border-left: none
+    border-radius: 0 $br $br 0
+    &:after
+      content: $arrow-right
+  .form_control
+    width: 132px
+    text-align: center
+    border-radius: 0
+    font-size: 16px
 input,select,textarea
   placeholder()

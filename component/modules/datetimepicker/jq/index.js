@@ -116,6 +116,7 @@ function calendarMonth(opts){
 }
 
 function month(opts){
+  console.log(opts, '=========== abc');
   let { vStartDate, currentMonth, dislodge } = opts;
   let monthList = '';
   let vsd = new Date(vStartDate)
@@ -128,6 +129,7 @@ function month(opts){
     if(dislodge == 'after' && cMon.getTime() > tMon.getTime()){
       disabled = 'disabled';
     }
+    console.log(cMon.Format('yyyy-MM') , vStartDate);
     let active = cMon.Format('yyyy-MM') == vStartDate ? 'active' : '';
     monthList+= `<li class="datetimepicker-month"><button class="datetimepicker-month-btn ${ active }" data-date=${ cMon.Format('yyyy-MM' )} ${ disabled }>${ cMon.FormatZh('M月' )}</button></li>`
   }

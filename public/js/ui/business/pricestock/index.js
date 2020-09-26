@@ -1,5 +1,6 @@
 // import PriceCalendar from './priceCalendar'
 import { calendarx, popup } from 'component/client'
+import { lrMonth, month} from 'commonjs/datePicker'
 
 //hover事件 popup start
 function itemPopupFunc(data){
@@ -38,13 +39,67 @@ function calendarxFunc(data){
   }
 }
 
+// 自定义日历头部结构
+function catHeader(context) {
+  const Temp = Aotoo.wrap(
+    <div>
+      <div className="to-left"></div>
+      <div className="cur-month">
+        <div className="cur-month-text"></div>
+        <div className="cur-month-pop disN">
+          {/* 弹层内容 */}
+        </div>
+      </div>
+      <div className="to-right"></div>
+    </div>
+    ,function(dom) {
+      function setCurMonth(date) {
+        setTimeout(() => {
+          $('.cur-month-text').text(context.state.vStartDate)
+        }, 50);
+      }
+
+      $(dom).find('.cur-month').toggle(function() {
+        $('.cur-month-pop').toggleClass('disN')
+      })
+
+      $(dom).off('click', '.cur-month-pop').on('click', '.cur-month-pop', function(e) {
+        e.stopPropagation()
+        // do some thing
+      })
+
+      $(dom).find('.to-left').once('click', function() {
+        // context.prev()
+        // setCurMonth(context.state.vStartDate)
+      })
+      $(dom).find('.to-right').once('click', function() {
+        // context.next()
+        // setCurMonth(context.state.vStartDate)
+      })
+    }
+  )
+  return <Temp />
+}
+
 let today = new Date()
 const calendar = calendarx({
   startDate: today.Format('yyyy-MM-dd'),//日历开始月份会根据startDate的月份开始
-  endDate: new Date(today.getFullYear(),today.getMonth() + 1,28).Format('yyyy-MM-dd'),//日历开始月份会根据startDate的月份开始
-  type: 1,//type: 1(一个月) type: 2(暂时预留,暂时没用) type: 3(三个月)
-  cAdapter: calendarxFunc,        //这个是有数据的日期，显示在每个格子的结构
-  popup: itemPopupFunc,           //这个是鼠标移进来 出现的提示层
+  endDate:   new Date(today.getFullYear(),today.getMonth() + 1,28).Format('yyyy-MM-dd'),//日历开始月份会根据startDate的月份开始
+  type:      1,  //type: 1(一个月) type: 2(暂时预留,暂时没用) type: 3(三个月)
+  cAdapter:  calendarxFunc,        //这个是有数据的日期，显示在每个格子的结构
+  popup:     itemPopupFunc,           //这个是鼠标移进来 出现的提示层
+  header:    function(){
+    return (
+      <div className='calendar-header between'>
+        {lrMonth("priceDate", new Date().Format('yyyy-MM'), '请选择时间')}
+        <div>
+          <a href='javascript:;' className='icon-warning color-primary'>操作日志</a>
+          <a href='javascript:;' className='ss-button btn-default plain mlr-small'>批量开/关</a>
+          <a href='javascript:;' className='ss-button btn-default plain'>批量编辑</a>
+        </div>
+      </div>
+    )
+  },
   data:[//日期设置
     {
       date: new Date(today.getFullYear(),today.getMonth(),5).Format('yyyy-MM-dd'),//需要操作的日期
@@ -143,18 +198,25 @@ function pages() {
       <h2 className='item-title-lg'>价格库存</h2>
       <div className='item-space'>
         <h6 className='pages-title-sm'>套票名称：尊荣房含早晚餐-B套餐</h6>
-        <p className='icon-exlain'>近90天内须有可售排期方可发布上线</p>
+        <p className='icon-exlain color-info size-sm'>近90天内须有可售排期方可发布上线</p>
       </div>
-      <div className='border-default'>
+      {/* <div className='border-default'>
         <div className='item-space padding-small-lr bb-default'>
           <div>
             <a href='javascript:;' className='ss-button btn-default plain'>批量开/关</a>
             <a href='javascript:;' className='ss-button btn-default plain ml-10'>批量编辑</a>
           </div>
         </div>
+      </div> */}
         {calendar.render()}
-      </div>
     </div>
+    , function(dom) {
+      month($('#priceDate'), {
+        disabledSelect: true,
+        // startDate: new Date().Format('yyyy-MM-dd'),
+        // endDate: getDateStr(180),
+      })
+    }
   )
   return <Pages/>
 }

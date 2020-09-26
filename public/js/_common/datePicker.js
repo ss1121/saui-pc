@@ -8,6 +8,16 @@ const util = {
                     <span className="fkp-input-error"></span>
                 </label>
     },
+    lrMonth: function (id, val, placeholder, type = '') {
+        const cls = type == 'time' ? ' time' : ' '
+        return (
+            <div className='input-arrow-lr' id={id}>
+                <a href='javascript:;' className="item item-left disabled"></a>
+                <input  className="form_control" type="text" placeholder={placeholder || ''} defaultValue={val} readOnly />
+                <a href='javascript:;' className="item item-right"></a>
+            </div>
+        )
+    },
     single: function($obj, opt){
         let param = {
             type: 'default',
@@ -60,6 +70,7 @@ const util = {
     month: function ($obj, opt) {
         $obj.datepicker({
             type: 'month',
+            ...opt
         }).on('changeDate', function (e, date) {
             opt.cb && opt.cb(date)
         })
