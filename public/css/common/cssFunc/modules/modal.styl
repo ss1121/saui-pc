@@ -32,12 +32,13 @@ ss-modal-tips($config = false)
   .modal-body
     {config-content}
   .modal-footer
-    margin-top: cfg.$padding
+    margin-top: (cfg.$padding - 7px)      //title 带有行高
       
 ss-modal-options($config = false)
   cfg = merge({}, modalOptionsCfg, $config)
   min-width: cfg.$minWid
   max-width: cfg.$maxWid
+  margin: auto
   .modal-header
     line-height: cfg.$lineHeight    //32 - 18 = 14 /2 = 7
     padding: 0 cfg.$padding

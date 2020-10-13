@@ -43,6 +43,7 @@ ss-icon($content = '\e620', $fontSize = 12px, $color = inherit, $before = false,
       vertical-align: middle
   if ($activeColor)
     &:hover, &.active
+      cursor: pointer
       &:{$pseudo}
         color: $activeColor
   if ($disabledColor)

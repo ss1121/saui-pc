@@ -56,12 +56,15 @@ ss-func-customscroll($class = '.hlist', $config = false)
       border-radius: cfg.$br 
 
 //块状
-ss-func-display-div($displayDivCfg = displayDivCfg)
-  background: $displayDivCfg.$bg
-  border: $displayDivCfg.$border
-  border-radius: $displayDivCfg.$br
-  box-shadow: $displayDivCfg.$bs
-  padding: $displayDivCfg.$padding
+ss-func-display-div($class='.display', $config = false)
+  cfg = merge({}, displayDivCfg, $config)
+  {$class}
+    background: cfg.$bg if cfg.$bg
+    border: cfg.$border if cfg.$border
+    border-radius: cfg.$br if cfg.$br
+    box-shadow: cfg.$bs if cfg.$bs
+    color: cfg.$color if cfg.$color
+    padding: cfg.$padding if cfg.$padding
 
 
 

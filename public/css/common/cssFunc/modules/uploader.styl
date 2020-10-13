@@ -45,7 +45,15 @@ ss-uploader($class = '.uploader-wrapper',  $type = 'default', $config = false)
       right: @top
       font-size: 16px
       &:before
-        content: '\e7b8'
+        content: '\e7ab';
+        background: $color-text
+        width: 16px;
+        height: 16px;
+        border-radius: 100%;
+        color: #fff;
+      &:hover
+        &:before
+          background: $color-aux-fail 
     .upload-img, .upimg-wrap
       height: 100%
     .upimg-wrap

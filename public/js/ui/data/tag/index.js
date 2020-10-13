@@ -21,6 +21,14 @@ function pages() {
     { title: '悬浮标题', idf: 'btn5', itemClass: 'item-list' },
     { title: <div className='demo-display'><span className='ss-tag tag-grey ab-l sc-r'>封面</span></div>, parent: 'btn5'},
     { title: <div className='demo-display'><span className='ss-tag tag-default ab-l sc-r'>免费视频</span></div>, parent: 'btn5'},
+
+    { title: '块状提示', idf: 'btn6', itemClass: 'item-list' },
+    { 
+      title: (
+        <div className='display-tips'><h5 className='size color-title ss-relative'>封面 <i className='icon-del-primary ss-absolute-tr'></i></h5><p className='size-sm'>免费视频免费视频免费视频免费视频免费视频</p></div>
+      ),
+      parent: 'btn6'
+    },
   ]
 
   const tree = Aotoo.tree({

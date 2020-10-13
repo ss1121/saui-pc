@@ -21,14 +21,14 @@ class Modalx extends React.Component {
   render(){
     let { title, modal, mask } = this.state
     return (
-      <div className="modalx-mask" style={ mask }>
-        <div className='modalx-container'>
-          <div className="modalx-wrapper">
-            { title ? <div className="modalx-header">{ title }{close ? <span className="modalx-close"></span> : ''}</div> : '' }
-            <div className="modalx-body">{ modal }</div>
-            <div className="modalx-footer">
-              <button className="modalx-cancel btn-default">取消</button>
-              <button className="modalx-confirm btn-ff7e11">确定</button>
+      <div className="modal-bg" style={ mask }>
+        <div className='modal-container'>
+          <div className="modal tips">
+            { title ? <div className="modal-header">{ title }{close ? <span className="modal-close"></span> : ''}</div> : '' }
+            {modal ? <div className="modal-body">{ modal }</div> : ''}
+            <div className="modal-footer">
+              <button className="modal-cancel ss-button btn-grey plain item-btn">取消</button>
+              <button className="modal-confirm ss-button btn-default item-btn">确定</button>
             </div>
           </div>
         </div>
@@ -54,24 +54,24 @@ function index(opts){
       if(cb){
         cb();
       }
-      $('#'+mdId).find('.modalx-mask').show()
+      $('#'+mdId).find('.modal-bg').show()
     },
     hide: function (cb){
       if(cb){
         cb();
       }
-      $('#'+mdId).find('.modalx-mask').hide()
+      $('#'+mdId).find('.modal-bg').hide()
     }
   })
   instance.on('rendered', function (options){
     const {dom, _opts, ctx} = options
-    $(dom).find('.modalx-confirm').once('click',function (e){
+    $(dom).find('.modal-confirm').once('click',function (e){
       let confirm = instance.curState ? instance.curState.confirm : opts.confirm
       if(confirm){
         confirm( dom, e )
       }
     })
-    $(dom).find('.modalx-cancel').once('click', function (e){
+    $(dom).find('.modal-cancel').once('click', function (e){
       instance.hide()
     })
   })
