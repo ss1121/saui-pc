@@ -9,13 +9,20 @@ inputTipsCfg = {
 
 .inputGroup
   margin-bottom: -($inputMb)
+  &[class*='mb']
+    margin-bottom: 0
+  &[class*='flex']
+    ss-display-flex(row wrap)
   &[class*='column']
-    >.inputItem, >.inputMultiply>.inputItem
+    >.inputItem, >.inputMultiply .inputItem, >.inputItemGroup
       flex-flow: column
   &[class*='content-p100']
-    >.inputItem, >.inputMultiply>.inputItem
+    >.inputItem, >.inputMultiply .inputItem
       >.fkp-content
         width: 100%
+  &[class*='mb-small']
+    >.inputItem, >.inputMultiply .inputItem
+      margin-bottom: $inputMb2
   
 
 //多数组
@@ -24,33 +31,48 @@ inputTipsCfg = {
     >.inputItem:not(:first-child)
       .fkp-title
         opacity 0
-  &[class*='flex']
+  &.item-only-title-none
+    >.inputItem:not(:first-child)
+      .fkp-title
+        display: none
+  &[class*='item-flex']
     ss-display-flex()
     &.between
       justify-content: space-between
-
-.inputItem, .radioGroup,.checkboxGroup
-  ss-display-flex(row wrap, flex-start)
-  font-size: $inputSize
-  margin-bottom: $inputMb
-  >.fkp-input-required
-    display: inline-block
-    line-height: $inputHeight
-    margin-right: 2px
-    &:before
-      content: '*'
-      color: $color-aux-fail
-  >.fkp-title
+  &[class*='contaniner-flex']
+    .fkp-contaniner
+      ss-display-flex(row wrap)
+  >.fkp-caption
     color: $inputTitleColor
     height: $inputHeight
     line-height: @height
     margin-right: $inputTitleMargin
     min-width: $inputTitleWid
+    ss-display-flex(row)
+
+.inputItem, .radioGroup, .checkboxGroup
+  ss-display-flex(row wrap, flex-start)
+  font-size: $inputSize
+  margin-bottom: $inputMb
+  .fkp-input-required
+    display: inline-block
+    line-height: $inputHeight
+    margin-right: $requiredSpace
+    &:before
+      content: '*'
+      color: $color-aux-fail
+  >.fkp-head
+    @extends .inputMultiply >.fkp-caption
     // text-align-last: justify
   >.fkp-content
     position: relative
   &.tb
     flex-flow: column
+  &.fkp-content-flex
+    input[type='text']
+      flex: 1
+    >.fkp-content
+      ss-display-flex(row, flex-start, center)
   &.fkp-content-flex1
     .fkp-content
       flex: 1
@@ -65,9 +87,14 @@ inputTipsCfg = {
     margin-bottom: 15px
   &.fkp-mb-monir
     margin-bottom: 10px
+  &.fkp-mb-0
+    margin-bottom: 0
   &.input-w
-    input
+    input,.fkp-content
       width: 180px
+  &.input-w-b
+    input
+      width: 260px
   &.input-w-lg
     input
       width: 380px
@@ -153,15 +180,18 @@ ss-tips-form('.fkp-input-error', inputTipsCfg)
         font-size: 16px
     .item-left
       border-right: none
+      border-radius: $br 0 0 $br
       &:after
         content: $inputMinusIcon
     .item-right
       border-left: none
+      border-radius: 0 $br $br 0
       &:after
         content: $inputAddIcon
     .form_control
       width: 56px
       text-align: center
+      border-radius: 0
 
 .input-arrow-lr
   ss-display-flex(row nowrap, flex-start)
@@ -192,3 +222,10 @@ ss-tips-form('.fkp-input-error', inputTipsCfg)
     font-size: 16px
 input,select,textarea
   placeholder()
+
+.split
+  text-indent: -999em;
+  width: 100%;
+  height: 1px;
+  background: $color-line-input
+  margin-bottom: $inputMb

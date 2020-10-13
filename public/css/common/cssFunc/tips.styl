@@ -4,6 +4,7 @@
 */
 //提示框
 tipsCfg = {
+  $bs: false
   $padding: $tips-padding-sm
   $size: $tips-size-sm
   $color: $tips-color
@@ -19,11 +20,14 @@ tipsCfg = {
 }
 //带箭头的提示框
 tipsArrowCfg = {
+  $bs: $box-shadow-tips
   $icon: false                    //icon是都否存在 存在时分两种情况，一，normal是提示框的定死的，用于表单验证，系统提示，二自定义
   $padding: $tips-padding-sm
   $size: $tips-size-sm
+  $arrowSize: $tips-size-sm
   $color: $tips-color
   $isNowrap: true                   //true:强制不换行, false: 固定宽度，超过换行
+  $fixedWidth: true                 //固定宽度
   $max-width: 480px
   $spc: true                     //是否特殊，白色背景，灰色边框，false时，背景与边框由iconColor演变
 
@@ -38,15 +42,19 @@ ss-tips($class = '.ss-tips', $config = false)
   cfg = merge({}, tipsCfg, $config)
   {$class}
     border: 1px solid
+    border-radius: cfg.$br if cfg.$br
+    box-shadow: cfg.$bs if cfg.$bs
     font-size: cfg.$size
     padding: cfg.$padding
-    if (cfg.$isNowrap == true)
-      white-space: nowrap;
+    if (cfg.$fixedWidth)
+      if (cfg.$isNowrap == true)
+        white-space: nowrap;
+      else 
+        width: cfg.$max-width     //固定宽度，超过换行
+        white-space: normal
+        text-align: left
     else 
-      width: cfg.$max-width     //固定宽度，超过换行
-      white-space: normal
-      text-align: left
-      
+      max-width: cfg.$max-width     //固定宽度，超过换行
     if (cfg.$spc == true )       
       background-color: $tipsx-bg
       border-color: $tipsx-bc
@@ -60,6 +68,7 @@ ss-tips($class = '.ss-tips', $config = false)
         &.error
           background-color: lighten($tips-icon-fail-color, 90%)
           border-color: lighten($tips-icon-fail-color, 70%)
+          box-shadow: $box-shadow-pop
           if (cfg.$isFlex == true)
             ss-display-flex(row, flex-start, center)
           else 
@@ -70,6 +79,7 @@ ss-tips($class = '.ss-tips', $config = false)
         &.warning
           background-color: lighten($tips-icon-color, 90%)
           border-color: lighten($tips-icon-color, 70%)
+          box-shadow: $box-shadow-pop
           if (cfg.$isFlex == true)
             ss-display-flex(row, flex-start, center)
           else 
@@ -80,6 +90,7 @@ ss-tips($class = '.ss-tips', $config = false)
         &.success
           background-color: lighten($tips-icon-sucess-color, 90%)
           border-color: lighten($tips-icon-sucess-color, 70%)
+          box-shadow: $box-shadow-pop
           if (cfg.$isFlex == true)
             ss-display-flex(row, flex-start, center)
           else 
@@ -134,19 +145,23 @@ ss-arrow-direction($direction = top, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg
     z-index: $zidx-h + 1
     ss-triangle-hollow($direction, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2)
 //没有icon，但是有箭头  白色背景，灰色边框
+ss-tips-arrow-content($class = '.item-tips', $config = false)
+  cfg = merge({}, tipsArrowCfg, $config)      //合并基础参数与新的参数
+  {$class}
+    ss-arrow-direction(cfg.$direction, cfg.$arrowSize, cfg.$arrowBc, cfg.$arrowBg, cfg.$arrowTop, cfg.$arrowLeft)
+    ss-tips('&', cfg)
+    z-index: $zidx-h
+
 ss-tips-arrow($class = 'ss-tips-arrow', $config = false)
   cfg = merge({}, tipsArrowCfg, $config)      //合并基础参数与新的参数
   {$class}
     display: inline-block
     position: relative
-    ss-arrow-direction(cfg.$direction, cfg.$size, cfg.$arrowBc, cfg.$arrowBg)
-    ss-tips('.item-tips', cfg)
+    ss-tips-arrow-content('.item-tips', cfg)
     .item-tips
       position: absolute
       left: 0
       top: "calc(100% + %s)" % (cfg.$size / 2)
-      box-shadow: $box-shadow-tips
-      z-index: $zidx-h
       display: none
     &:before
       display: none
@@ -155,4 +170,3 @@ ss-tips-arrow($class = 'ss-tips-arrow', $config = false)
         display: block
       &:before
         display: block
-        

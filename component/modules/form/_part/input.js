@@ -195,7 +195,7 @@ function mk_element(item, _i, ctx){
       _desc,
       _class,
       _union,
-      labelObj,
+      lableObj,
       P,
       index = _i,
       key
@@ -235,9 +235,8 @@ function mk_element(item, _i, ctx){
     const resault = rcbox(P)
     const clsName = state.show ? resault.groupClass : resault.groupClass + ' disN'
     return (
-      <div ref={resault.superID} key={"label" + _i} className={clsName}>
-        {P.profile.required ? <span className="fkp-input-required" /> : ''}
-        {resault.title ? <span className="fkp-title">{resault.title}</span> : ''}
+      <div ref={resault.superID} key={"lable" + _i} className={clsName}>
+        {P.profile.required ? <div className='fkp-head'><span className="fkp-input-required" />{resault.title ? <span className="fkp-title">{resault.title}</span> : ''}</div> : resault.title ? <span className="fkp-title fkp-head">{resault.title}</span> : ''}
         <div className='fkp-content'>
           {resault.fill}
           <span className="fkp-input-error" />
@@ -251,15 +250,14 @@ function mk_element(item, _i, ctx){
     const myClsName = _class + ' for-' + (P.id||P.name||'')
     const clsName = state.show ? myClsName : myClsName + ' disN'
     return (
-      <label ref={(P.id||P.name)} key={"label"+_i} className={clsName}>
-        {P.profile.required ? <span className="fkp-input-required" /> : ''}
-        {_title ? <span className="fkp-title">{_title}</span> : ''}
+      <lable ref={(P.id||P.name)} key={"lable"+_i} className={clsName}>
+        {P.profile.required ? <div className='fkp-head'><span className="fkp-input-required" />{_title ? <span className="fkp-title">{_title}</span> : ''}</div> : _title ? <span className="fkp-title fkp-head">{_title}</span> : ''}
         <div className='fkp-content'>
           {ctx::whatTypeElement(P)}
           {<span className="fkp-input-error" />}
           {_desc ? <span className="fkp-desc">{_desc}</span> : ''}
         </div>
-      </label>
+      </lable>
     )
   })()
 }

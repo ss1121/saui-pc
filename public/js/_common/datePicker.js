@@ -1,19 +1,19 @@
 import 'component/modules/datetimepicker/jq'
 
 const util = {
-    jsxFun: function (id, val, placeholder, type = '') {
+    jsxFun: function (id, val, placeholder, type = '', isError ) {
         const cls = type == 'time' ? ' time' : ' '
         return  <label className={"form-datepicker ss-display" + cls}>
                     <input id={id} className="form_control" type="text" placeholder={placeholder || ''} defaultValue={val} readOnly />
-                    <span className="fkp-input-error"></span>
+                    {!isError ? <span className="fkp-input-error"></span> : ''}
                 </label>
     },
     lrMonth: function (id, val, placeholder, type = '') {
         const cls = type == 'time' ? ' time' : ' '
         return (
-            <div className='input-arrow-lr' id={id}>
+            <div className='input-arrow-lr'>
                 <a href='javascript:;' className="item item-left disabled"></a>
-                <input  className="form_control" type="text" placeholder={placeholder || ''} defaultValue={val} readOnly />
+                <input  id={id}  className="form_control" type="text" placeholder={placeholder || ''} defaultValue={val} readOnly />
                 <a href='javascript:;' className="item item-right"></a>
             </div>
         )
@@ -83,7 +83,7 @@ const util = {
         let param = {
             type: 'default',
             timelist: true,
-            disabledSelect: true,
+            ...opt
         }
         if (opt.startDate) {
             param.startDate = opt.startDate;

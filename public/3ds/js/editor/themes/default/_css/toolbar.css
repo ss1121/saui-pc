@@ -1,14 +1,14 @@
 /* 工具栏 */
-.edui-default .edui-toolbar {
+/* .edui-default .edui-toolbar {
     cursor: default;
     -webkit-user-select: none;
     -moz-user-select: none;
     padding: 1px;
-    overflow: hidden; /*全屏下单独一行不占位*/
+    overflow: hidden;
     zoom: 1;
     width:auto;
     height:auto;
-}
+} */
 
 .edui-default .edui-toolbar .edui-button,
 .edui-default .edui-toolbar .edui-splitbutton,

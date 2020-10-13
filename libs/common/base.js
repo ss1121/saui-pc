@@ -185,5 +185,6 @@ module.exports = {
   grabString: grabString,
   objtypeof: getObjType,
   isObject: isObject,
-  inherits: inherits
+  inherits: inherits,
+  smd: require('./simplemd')
 }

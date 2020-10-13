@@ -24,6 +24,16 @@ greyCfg = {
   $pcolor: $color-text
 }
 
+failCfg = {
+  $bgc: $color-aux-fail
+  $pcolor: $color-aux-fail
+}
+
+successCfg = {
+  $bgc: $color-aux-success
+  $pcolor: $color-aux-success
+}
+
 .ss-tag
   border: 1px solid transparent
   box-sizing: border-box
@@ -71,3 +81,6 @@ ss-tagFunc('.tag-default')
 ss-tagFunc('.tag-primary', primaryCfg)
 ss-tagFunc('.tag-minor', minorCfg)
 ss-tagFunc('.tag-grey', greyCfg)
+
+ss-tagFunc('.tag-fail', failCfg)
+ss-tagFunc('.tag-success', successCfg)

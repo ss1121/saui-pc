@@ -1,3 +1,7 @@
+vendors = official
+/*
+  如果日历里有popup,需要在业务上引用popup样式, '.popup-box-2'
+*/
 .calendar
   width: 100%
   border: 1px solid $color-line-secondary
@@ -44,16 +48,42 @@
     border-top: 2px solid $color-line
     width: (1 / 7) * 100% - 2%
     margin-left: 2%
-    height: 68px
+    height: 120px
     position: relative
-    padding: 8px 10px
+    padding: 10px
     &.calendar-disabled
       color: $color-text-disabled 
+    &.calendar-optional
+      &:hover
+        border-color: $color-aux-warning
+        background-color: fade-out(#FF7400, .9)
+        .popup-box-2
+          display: block
+    &:nth-child(7n)
+      .popup-box-2
+        right: 0;
+        left: inherit;
+        &:before
+          right: 25px
+          left: inherit;
+    .popup-box-2
+      display: none
+      position: absolute
+      top: 100%
     >div
       z-index: 3
     .cdh-date
       font-weight: bold
       font-size: $size-title-sm
+  .calendar-day-head
+    ss-display-flex(row nowrap, space-between, center)
+  .item-lr
+    ss-display-flex(row nowrap, flex-start, center)
+    font-size: $size-sm
+    margin-top: 2px
+    .item-title
+      min-width: 80px
+      color: $color-text
 //   &.calendar-noleft
 //     width: 694px;
 //     border: 2px solid #f8f8f8
@@ -188,7 +218,7 @@
 //           z-index: 1
 //       &:nth-child(7n)
 //         // color: #000
-//         .popup-wrap
+//         .popup-box-2
 //           right: 0;
 //           left: inherit;
 //           &:before
@@ -234,9 +264,9 @@
 //     .calendar-optional
 //       cursor: pointer
 //       &:hover
-//         .popup-wrap
+//         .popup-box-2
 //           display: block
-//     .popup-wrap
+//     .popup-box-2
 //       display: none
 //       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 

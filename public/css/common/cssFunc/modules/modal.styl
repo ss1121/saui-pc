@@ -44,6 +44,8 @@ ss-modal-options($config = false)
     border-bottom: 1px solid $color-line
   .modal-body
     padding: cfg.$padding
+    &.no-padding
+      padding: 0
   .modal-footer
     justify-content: flex-end
     padding: 0 cfg.$padding cfg.$padding
@@ -53,13 +55,16 @@ ss-modal($class = '.modal', $type = 'tips', $config = false, $config2 = false)
     background: #fff
     box-shadow: $box-shadow-tips
     border-radius:$br-lg
-    max-height: $modalMaxHei
+    // max-height: $modalMaxHei
+    max-height: 90%
     min-height: 140px
+    ss-display-flex(column)
     .modal-header
       ss-display-flex(row nowrap, space-between, center)
-      {config-title}
-    // .modal-scroll
-    //   ss-func-customscroll($height: 706px, $min-height: 100px) //820 - 114 = 706
+      {config-title-modal}
+    .modal-body
+      flex: 1
+      ss-func-customscroll('&', {$height: 100%, $min-height: 32px})
     .modal-footer
       ss-display-flex(row nowrap, center, center)
       .item-btn
@@ -77,15 +82,15 @@ ss-modal($class = '.modal', $type = 'tips', $config = false, $config2 = false)
         ss-modal-tips($config)
       &.options
         ss-modal-options($config2)
-
-    @media (min-width: 1366px) and (max-width: 1440px) 
-      max-height: $modalMaxHei-2
-      // .modal-scroll
-      //   max-height: 566px // 680 - 114 = 566
-    @media (min-width: 800px) and (max-width: 1366px) 
-      max-height: $modalMaxHei-3
-      // .modal-scroll
-      //   max-height: 436px // 550 - 114 = 436
+  
+    // @media (min-width: 1366px) and (max-width: 1440px) 
+    //   max-height: $modalMaxHei-2
+    //   // .modal-scroll
+    //   //   max-height: 566px // 680 - 114 = 566
+    // @media (min-width: 800px) and (max-width: 1366px) 
+    //   max-height: $modalMaxHei-3
+    //   // .modal-scroll
+    //   //   max-height: 436px // 550 - 114 = 436
 
 modal-bg($class = '.ss-bg')
   {$class}
