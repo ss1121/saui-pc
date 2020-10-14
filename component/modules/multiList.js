@@ -92,8 +92,7 @@ class MultiDropDown extends React.Component {
                 }
               }
               if ( _.findIndex(clicked, k => k.id === o.id) >= 0) {
-                console.log(o);
-                o.hasChild === 1 ? o.itemClass += ' clicked' : ''
+                o.itemClass += ' clicked'
               }
               return o 
             }
@@ -183,10 +182,12 @@ export default function(params) {
       e.stopPropagation()
       const id = parseInt($(this).attr('data-id'))
       const cidx = parseInt($(this).parents('.item').attr('data-idx'))
-      const ii = _.findIndex(opts.storeClickedLevel, o => o.cidx === cidx)
-      if (ii > -1 ) {
-        opts.storeClickedLevel.splice(ii)
-        opts.storeClickedLevel.push({id: id, cidx: cidx})
+      if ($(this).siblings().hasClass('clicked')){
+        const ii = _.findIndex(opts.storeClickedLevel, o => o.cidx === cidx)
+        if (ii > -1 ) {
+          opts.storeClickedLevel.splice(ii)
+          opts.storeClickedLevel.push({id: id, cidx: cidx})
+        }
       }
       else {
         opts.storeClickedLevel.push({id: id, cidx: cidx})
@@ -196,24 +197,28 @@ export default function(params) {
     .on('click', '.item-icon', function(e) {
       e.stopPropagation()
       const id = parseInt($(this).parent('.item-li').attr('data-id'))
+      const poiId = parseInt($(this).parent('.item-li').attr('data-poiId'))
       const val = $(this).parent().text()
-      if (opts.checked.length < opts.max) {
+      let checkVal = instance.curState.checked ? instance.curState.checked : opts.checked
+      if (checkVal.length < opts.max) {
         if ($(this).hasClass('active')){
-          const ii = _.findIndex(opts.checked, o => o.id === id)
-          opts.checked.splice(ii, 1)
+          const ii = _.findIndex(checkVal, o => o.id === id)
+          checkVal.splice(ii, 1)
         }
         else {
-          opts.checked.push({id: id, title: val})
+          checkVal.push({id: id, title: val, poiId: poiId})
         }
-        typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
+        
+        typeof params.itemClick === 'function' ? params.itemClick.call(this, checkVal) : ''
       }
       else {
         if ($(this).hasClass('active')){
-          const ii = _.findIndex(opts.checked, o => o.id === id)
-          opts.checked.splice(ii, 1)
-          typeof params.itemClick === 'function' ? params.itemClick.call(this, opts.checked) : ''
+          const ii = _.findIndex(checkVal, o => o.id === id)
+          checkVal.splice(ii, 1)
+          typeof params.itemClick === 'function' ? params.itemClick.call(this, checkVal) : ''
         }
       }
+      opts.checked = checkVal
       instance.$changeval({checked: opts.checked})
     })
   }
