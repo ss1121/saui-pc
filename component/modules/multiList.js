@@ -183,12 +183,10 @@ export default function(params) {
       e.stopPropagation()
       const id = parseInt($(this).attr('data-id'))
       const cidx = parseInt($(this).parents('.item').attr('data-idx'))
-      if ($(this).siblings().hasClass('clicked')){
-        const ii = _.findIndex(opts.storeClickedLevel, o => o.cidx === cidx)
-        if (ii > -1 ) {
-          opts.storeClickedLevel.splice(ii)
-          opts.storeClickedLevel.push({id: id, cidx: cidx})
-        }
+      const ii = _.findIndex(opts.storeClickedLevel, o => o.cidx === cidx)
+      if (ii > -1 ) {
+        opts.storeClickedLevel.splice(ii)
+        opts.storeClickedLevel.push({id: id, cidx: cidx})
       }
       else {
         opts.storeClickedLevel.push({id: id, cidx: cidx})

@@ -16,12 +16,12 @@ popConfig =  {
   &.top
     ss-arrow-direction(top, 6px, $tipsx-bc, $tipsx-bg, -3px, 10px)
   &.bottom
-    ss-arrow-direction(top, 6px, $tipsx-bc, $tipsx-bg, calc(100% - 3px), 10px)
-  &.arrow-bottom
-    &:before
-      transform: rotateZ(135deg);
-      top: inherit
-      bottom: calc(100%)
+    ss-arrow-direction(top, 6px, $tipsx-bc, $tipsx-bg, calc(100% - 4px), 10px, $transform: rotate(135deg))
+  // &.arrow-bottom
+  //   &:before
+  //     transform: rotateZ(135deg);
+  //     top: inherit
+  //     bottom: calc(100%)
 
 ss-tips('.popup-box', popConfig)
 

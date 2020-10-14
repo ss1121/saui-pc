@@ -136,14 +136,14 @@ ss-tips-like-form($class= '.form-tips', $class2 = '.ss-form-tips', $config = fal
 
 
 //箭头的方向
-ss-arrow-direction($direction = top, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2, $top = calc(100%), $left = 45%)
+ss-arrow-direction($direction = top, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2, $top = calc(100%), $left = 45%, $transform = rotate(-45deg))
   &:before
     content: ''
     position: absolute
     top: $top
     left: $left
     z-index: $zidx-h + 1
-    ss-triangle-hollow($direction, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2)
+    ss-triangle-hollow($direction, $tips-arrow-size-sm, $tipsx-bc-2, $tipsx-bg-2, $transform)
 //没有icon，但是有箭头  白色背景，灰色边框
 ss-tips-arrow-content($class = '.item-tips', $config = false)
   cfg = merge({}, tipsArrowCfg, $config)      //合并基础参数与新的参数

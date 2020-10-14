@@ -7,6 +7,7 @@ let Popup = function (element, opts){
   that.wrapper = $(`<div class="popup-wrapper ${that.param.wrapClass}">${ that.param.content || '' }</div>`).appendTo('body');
   that.wrapper.css({
     position: 'absolute',
+    'z-index': 1,
     'display': 'none',
     ...that.param.wrapCss
   });
@@ -36,17 +37,29 @@ let Popup = function (element, opts){
     }
   }else if(that.param.type == 'click'){
     let show = true;
-    that.element.once('click', function (e){
+    function changeShow(e){
       if(typeof that.param.method == 'function'){
         that.param.method(e,show)
       }
-      if(show){
+      if(show){        
         that.show();
         show = false;
       }else{
         that.hide()
         show = true;
       }
+    }
+    that.element.once('click',async function (e){
+      if (that.param.beforePopup){
+        let isAccountNormal = await that.param.beforePopup()       //用于校验主账户状态,账号正常isAccountNormal=true 
+        if (isAccountNormal) {
+          changeShow(e)
+        }
+      }else{
+        changeShow(e)
+      }
+      
+      
     })
     window.bindDocument([that.element[0], that.wrapper[0]], function (){
       that.hide();
@@ -93,10 +106,14 @@ Popup.prototype = {
     let wrapTop;
     if(elePosition.top + eleHeight + wrapHeight > winHeight){
       wrapTop = elePosition.top - wrapHeight
-      that.activeName = 'pop-title-arrow active arrow-bottom'
+      // that.activeName = 'pop-title-arrow active arrow-bottom'
+      that.wrapperClass = ''
+      that.wrapperClass += ' bottom'      //20200828 lgh  如果是左右的呢，组件需要待优化 先注释
     }else{
       wrapTop = elePosition.top + eleHeight
-      that.activeName = 'pop-title-arrow active'
+      that.wrapperClass = ''
+      that.wrapperClass += ' top'
+      // that.activeName = 'pop-title-arrow active'
     }
     let hoverClass = that.param.hoverClass
     if(hoverClass) that.activeName += (hoverClass ? ' ' + hoverClass : '')
@@ -105,11 +122,13 @@ Popup.prototype = {
       left: elePosition.left + wrapWidth > winWidth ? elePosition.left - wrapWidth + eleWidth : elePosition.left,
       top: wrapTop
     }
+    that.wrapperClass ? that.wrapper.addClass(that.wrapperClass) : ''
     that.wrapper.css(direct ? pos[direct] : df)
   },
   hide: function (){
     let that = this
     that.element.removeClass(that.activeName)
+    that.wrapper.removeClass(that.wrapperClass)
     that.wrapper.css('display','none')
   },
   update: function (dom){

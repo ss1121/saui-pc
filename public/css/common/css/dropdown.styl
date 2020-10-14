@@ -31,8 +31,9 @@
 .entertag
   border: 1px solid $color-line-input
   border-radius: 3px
-  padding: 3px
-  ss-display-flex(row wrap, flex-start, center)
+  padding: 3px 3px 1px 3px
+  // ss-display-flex(row wrap, flex-start, center)
+  display: block
   input[type='text']
     border: none
     background: transparent
@@ -41,6 +42,9 @@
     line-height: 26px;
     width: auto
     flex: 1
+    display: inline
+    &.disabled
+      display: none
 
 .dropdown
   [class*='head-input']
@@ -49,6 +53,8 @@
     .dropdown-pop
       min-width: auto
       overflow: hidden
+  .item-tag-list
+    display: inline
   .dropdown-head-input
     >.item-close
       ss-icon($icon-del, false, $borderColor, $isFlex: inline-block, $pseudo: after)
@@ -65,7 +71,7 @@
     box-shadow: $box-shadow-pop
     background: #fff
     line-height: 32px
-    z-index $zidx-ft
+    z-index $zidx-l 
     display: none
     ss-func-customscroll('&', {$height: 258px, $min-height: 32px})
     &.active
@@ -76,19 +82,18 @@
     .nofind
       color: $color-aux-fail
       padding: 0 10px
-<<<<<<< Updated upstream
-=======
     .pop-list
       .nofind
         color: $color-aux-fail
-        padding: 8px 10px
->>>>>>> Stashed changes
+        // padding: 8px 10px
 
 .pop-list
   color: $color-text-title
   em 
     font-weight: normal
     font-style: normal
+    color: $color-primary
+  em
     color: $color-primary
   >.item
     padding: 0 10px
@@ -114,6 +119,12 @@
           content: '\e7ea'
           color: $color-primary
           margin-left: auto
+  // &.norml
+  //   line-height: 20px
+  //   >.item
+  //     padding: 8px 10px
+
+
 
 
 

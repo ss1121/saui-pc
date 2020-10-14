@@ -28,13 +28,15 @@
   &[class*='tick']
     .rcItem
       ss-form-checkbox-radio(2)
-  .rcItem
-    @extends .c-checkandradio
-    align-items: center
+  &:not([class*='tick'])
+    .rcItem
+      @extends .c-checkandradio
+      align-items: center
 .checkboxGroup
   &[class*='tick']
     .rcItem
       ss-form-checkbox-radio(2)
-  .rcItem
-    @extends .c-checkandradio
-    align-items: center
+  &:not([class*='tick'])
+    .rcItem
+      @extends .c-checkandradio
+      align-items: center
