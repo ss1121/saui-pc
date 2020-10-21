@@ -1,4 +1,4 @@
-//loading 以commonjs/loading为准
+//loading
 class Loading extends React.Component {
   constructor(props) {
     super(props)
@@ -7,10 +7,16 @@ class Loading extends React.Component {
   render() {
     return (
       <div className={!this.state.show ? 'disN' : ('loading-wrap ' + this.state.type)}>
-        <div className={'loading-body ' + this.state.size}>
-          <div className='loading-circle'></div>
-          <div className='loading-logo'></div>
-        </div>
+        {
+          this.state.type == 'absolute' ?
+            <div className='icon-loading color-primary'></div> : 
+          (
+            <div className={'loading-body ' + this.state.size}>
+              <div className='loading-circle'></div>
+              <div className='loading-logo'></div>
+            </div>
+          )
+        }
         {this.state.title != '' ? <p className='loading-txt'>{this.state.title}</p> : ''}
       </div>
     )
@@ -40,7 +46,7 @@ const Action = {
 function loading(params) {
   let dft = {
     title: '加载中......',    //title为空是不显示标题
-    type: 'tb',   //lr 左右结构 tb上下结构
+    type: 'tb',   //lr 左右结构 tb上下结构  局部absolute
     size: 'normal',   //normal普通大小 small是小loading
     show: false
   }

@@ -43,10 +43,10 @@ function pages() {
       $(dom).find('.click-load-3').click(function(e) {
         e.stopPropagation()
         loadx.$reset()        //如果页面有多个加载，可通过reset重置
-        loadx.$update({title: '', size: 'small', show: true})
+        loadx.$update({title: '', size: 'small', show: true, type: 'absolute'})
         setTimeout(() => {
           loadx.$hide()
-        }, 2000);
+        }, 10000000);
       })
     }
   )

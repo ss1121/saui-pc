@@ -957,7 +957,7 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-splitborder {
-    width: 1px;
+    /* width: 1px; */
     height: 20px;
 }
 
@@ -1745,7 +1745,7 @@ div.edui-box {
 }
 /*分隔线*/
 .edui-default .edui-toolbar .edui-separator {
-    width: 2px;
+    /* width: 2px; */
     height: 20px;
     margin: 2px 4px 2px 3px;
     background: url(../images/icons.png) -181px 0;
