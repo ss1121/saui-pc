@@ -4,6 +4,7 @@
 */
 //提示框
 tipsCfg = {
+  $br: $br
   $bs: false
   $padding: $tips-padding-sm
   $size: $tips-size-sm
@@ -35,6 +36,8 @@ tipsArrowCfg = {
   $direction: top
   $arrowBc: $tipsx-bc
   $arrowBg: $tipsx-bg
+  $arrowTop: -6px
+  $arrowLeft: 10px
 }
 
 //纯粹
@@ -170,3 +173,11 @@ ss-tips-arrow($class = 'ss-tips-arrow', $config = false)
         display: block
       &:before
         display: block
+    &.top
+      .item-tips
+        bottom: calc(100% + 6px)
+        top: inherit
+        &:before
+          bottom: cfg.$arrowTop
+          top: inherit
+          transform: rotate(135deg)
