@@ -53,7 +53,7 @@ class Modal extends PopClass {
     setTimeout(()=>{
       $('body').removeClass('modal-open')
       $(container[0]).remove()
-    },500)
+    },200)
   }
 
   // 执行动画
