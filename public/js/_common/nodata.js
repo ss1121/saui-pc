@@ -16,7 +16,7 @@ const noDataConfig = (param) => {
         <div className='item-pic'><img src={img} /></div>
         {title ? <p className='item-title'>{title}</p> : ''}
         {desc ? <span className='item-desc'>{desc}</span> : ''}
-        {showBtn ? <a href='javascript:;' className='ss-button btn-default item-btn click-nodata-btn'>{btnText}</a> : ''}
+        {showBtn ? typeof btnText === 'string' ? <a href='javascript:;' className='ss-button btn-default item-btn click-nodata-btn'>{btnText}</a> : btnText : ''}
       </div>
     )
     return <Wrap />

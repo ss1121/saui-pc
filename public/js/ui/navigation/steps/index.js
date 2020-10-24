@@ -50,13 +50,13 @@ function pages() {
     values = values || []
     stepsInst[id] = adapterForm(id, values)
     return [
-      {title: <div className='demo-steps-form ml14'>{stepsInst[id].render()}</div>}
+      {title: <div className='demo-steps-form ml-14'>{stepsInst[id].render()}</div>}
     ]
   }
 
   const stepsLike = list({
     data: stepsLikeData(),
-    footer: <p className='ss-item last'><a href='javascript:;' className='ss-button btn-default plain click-addBtn ml14'>新增表单</a></p>,
+    footer: <p className='ss-item last'><a href='javascript:;' className='ss-button btn-default plain click-addBtn ml-14'>新增表单</a></p>,
     listClass: 'steps-list-column-dot',
     itemClass: 'ss-item'
   })

@@ -34,8 +34,13 @@
 @import '../common/cssFunc/pages/adminrouter'
 //input 偏业务
 @import '../common/css/input'
+@import '../common/css/pages/*'
 //路由 布局
 ss-admin()
+.routerGroup
+  >.routerMenus
+    >.hlist
+      padding-bottom: 30px
 .admin-header
   padding-left: 30px
 .wrap
@@ -59,6 +64,7 @@ ss-pop('.ss-pop-normal', {$item: false, $scrollCfg: false})
 
 ss-loading-func()
 
+ss-uploader('.logo-wrap')
 
 //tabs
 tabshead2 = {
@@ -221,9 +227,10 @@ ss-func-like-form()
       &:hover
         {bgActive}
 
-.ml14
+.ml-14
   margin-left: 14px
-
+.ml-10
+  margin-left: 10px
 ss-func-steps-list-column-dot()
 
 //自定义表格

@@ -1,11 +1,17 @@
 import { modalConfig } from '../../modal/modalConfig'
-import {upld, upld2} from './upload'
+import {upld, upld2, movie, crop} from './upload'
 
 function pages() {
   const tree = Aotoo.tree({
     data: [
       { title: '图片上传', idf: 'btn1', itemClass: 'item-list' },
       { title: upld.render(), parent: 'btn1', itemClass: '' },
+
+      { title: '图片裁剪', idf: 'btn4', itemClass: 'item-list' },
+      { title: crop.render(), parent: 'btn4', itemClass: '' },
+
+      { title: '视频上传', idf: 'btn3', itemClass: 'item-list' },
+      { title: movie.render(), parent: 'btn3', itemClass: '' },
 
       { title: '文件上传', idf: 'btn2', itemClass: 'item-list' },
       { title: upld2.render(), parent: 'btn2', itemClass: '' },

@@ -216,6 +216,15 @@ export default [
 	},
   {
     "defaultIco": "",
+    "id": 193000,
+    "parentId": 192,
+    "preCode": "error",
+    "sourceName": "404",
+    "systemCode": "9",
+    "targetUrl": "error",
+	},
+  {
+    "defaultIco": "",
     "id": 19300,
     "parentId": 192,
     "preCode": "login",
