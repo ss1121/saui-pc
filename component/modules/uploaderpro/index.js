@@ -4,6 +4,56 @@ import cropper from '../cropper'
 import popup from '../popup'
 import Loading from '../Loading'
 
+let injectTimmer
+let injectFailed = true
+let waitForQueue = []
+
+Aotoo.inject.css([
+  '/js/t/cropper/cropper.css',
+])
+
+// 参考说明网址: https://blog.csdn.net/weixin_38023551/article/details/78792400
+// https://github.com/fengyuanchen/jquery-cropper
+Aotoo.inject.js([
+  '/js/t/webuploader',
+  '/js/t/cropper/cropper',
+  '/js/t/cropper/cropper_jq'
+], waitForInject)
+
+function waitForInject(callback) {
+  if (Aotoo.isClient) {
+    if (typeof callback === 'function') {
+      if (!injectFailed) {
+        callback()
+      } else {
+        waitForQueue.push(callback)
+      }
+    } else {
+      if (callback === 'waiting') {
+        injectTimmer = setTimeout(() => {
+          waitForInject('waiting')
+        }, 200);
+      } else {
+        clearTimeout(injectTimmer)
+        if (injectFailed) {
+          injectFailed = false
+          setTimeout(() => {
+            if (waitForQueue && waitForQueue.length) {
+              const method = waitForQueue.shift()
+              method()
+              if (waitForQueue && waitForQueue.length) {
+                injectFailed = true
+                waitForInject()
+              }
+            }
+          }, 100);
+        }
+      }
+    }
+  }
+}
+
+// group1/M00/01/A4/wKgeyV9oayaARZ9NAAC6l4v-vLo56.jpeg
 function getPicInfo(src,imgSize) {
   let _Idx = src.lastIndexOf('_');
   let dotIdx = src.lastIndexOf('.');
@@ -16,6 +66,27 @@ function getPicInfo(src,imgSize) {
   }
   return { main: src, min, file };
 }
+
+function getFileType(filename) {
+  const imgs = ['.jpg', '.jpeg', '.png', '.gif', '.wep', '.tiff']
+  const mvs = ['.mp4', '.m4v']
+  const files = ['.pdf', '.doc', '.docx']
+  if (filename) {
+    filename = filename.toLowerCase()
+    let nameary = filename.split('.')
+    let tail = '.'+nameary[nameary.length-1]
+    if (imgs.indexOf(tail)>-1) {
+      return 'image'
+    }
+    if (mvs.indexOf(tail)>-1) {
+      return 'movie'
+    }
+    if (files.indexOf(tail)>-1) {
+      return 'file'
+    }
+  }
+}
+
 function _calc(width,height,pWdith,pHeight){
   let imgclass = 'perwidth100', proportion = '';
   let propHeight = (width * pHeight / pWdith) //计算比例尺寸的高度 如16:9,(图片宽度 * 比例高度 / 比例宽度)
@@ -87,15 +158,31 @@ class Uploader extends React.Component {
       let imgList = [];
       data.map((item,i) => {
         let { min } = getPicInfo( filePath + item.src, imgSize)
+        let mvsrc = ''
+        if (item.mvsrc && (item.mvsrc.indexOf('http') === 0 || item.mvsrc.indexOf('//')===0)) {
+          mvsrc = item.mvsrc
+        } else {
+          mvsrc = item.mvsrc ? filePath + item.mvsrc : null
+        }
+        let mvid = item.mvid || ''
         let { imgclass, warning } = calculate( proport,{ src: item.src, width: item.width || 0, height: item.height || 0 })
         imgList.push(
-          <li className={'upitem' + (hasDesc ? ' upitem-desc' : '')} key={ 'img'+i } data-src={ min } data-width={ item.width } data-height={ item.height } data-id={ item.id } data-original={item.original || ''}>
-            <div className="upload-border" style={{ width: btnSize.width,height: (btnType == 'poster' || btnType == 'cards') ? '' : btnSize.height }}>
+          <li className={'upitem' + (hasDesc ? ' upitem-desc' : '')} key={ 'img'+i } data-mvid={mvid} data-mvsrc={mvsrc} data-src={ min } data-width={ item.width } data-height={ item.height } data-id={ item.id } data-original={item.original || ''}>
+            {/* <div className="upload-border" style={{ width: btnSize.width,height: (btnType == 'poster' || btnType == 'cards') ? '' : btnSize.height }}> */}
+            <div className="upload-border" style={{ width: btnSize.width, height: btnSize.height }}>
               <div className="upload-img">
                 <i className={ btnType == 'default' ? warning : ''}></i>
-                <div className="upimg-wrap">
-                  <img className={ btnType == 'default' ? imgclass : btnType == 'logo' ? '' : 'perwidth100' } draggable="false" src={ min } />
-                </div>
+                {
+                mvsrc ? <video src={mvsrc} controls="controls" style={{position: 'relative', width: '100%', height: '100%', zIndex: 2}}></video>
+                : 
+                (
+                  <div className="upimg-wrap" data-src={min}>
+                    <img className={ btnType == 'default' ? imgclass : btnType == 'logo' ? '' : 'perwidth100' } draggable="false" src={ min } />
+                    <div className="media-cover" style={{width: '100%', height: "100%"}}></div>
+                  </div>
+                )
+                }
+                
                 <a href='javascript:;' className="updelete"></a>
                 { hasDesc ? <div className="upload-desc-wrap">
                   <input type="text" className={ "upload-desc" + (descWarning[i] || descError[i] ? ' upload-desc-input-error' : '')} value={ desc[i] || '' } onChange={this.handleChange.bind(this,i)} placeholder="图片描述20字内" maxLength="20"/>
@@ -207,12 +294,27 @@ const Actions = {
   },
   PUSH: function (ostate, data){
     let curState = this.curState
-    curState.data.push(data);  
-    curState.desc.push('');
-    curState.descWarning.push(false);
-    curState.descWarningText.push('');
-    curState.descError.push(false);
-    curState.descErrorText.push('');
+    if (_.isArray(data)) {
+      let len = data.length
+      let desc = new Array(len).fill().map(()=>'')
+      let descWarning = new Array(len).fill().map(() => false)
+      let descWarningText = new Array(len).fill().map(() => '')
+      let descError = new Array(len).fill().map(() => false)
+      let descErrorText = new Array(len).fill().map(() => '')
+      curState.data = curState.data.concat(data)
+      curState.desc = curState.desc.concat(desc)
+      curState.descWarning = curState.descWarning.concat(descWarning)
+      curState.descWarningText = curState.descWarningText.concat(descWarningText)
+      curState.descError = curState.descError.concat(descError)
+      curState.descErrorText = curState.descErrorText.concat(descErrorText)
+    } else {
+      curState.data.push(data);  
+      curState.desc.push('');
+      curState.descWarning.push(false);
+      curState.descWarningText.push('');
+      curState.descError.push(false);
+      curState.descErrorText.push('');
+    }
     for(let i=0,l=curState.loading.length;i<l;i++){
       if(curState.loading[i]){
         curState.loading.splice(i,1);
@@ -223,7 +325,13 @@ const Actions = {
   },
   UPDATE: function (ostate, data){
     let curState = this.curState
-    curState.data[data.index] = data.data
+    if (data.datas) {
+      Object.keys(data.datas).forEach(idx=>{
+        curState.data[idx] = data.datas[idx]
+      })
+    } else {
+      curState.data[data.index] = data.data
+    }
     return curState
   },
   LOADING: function (ostate, opts){
@@ -250,6 +358,7 @@ const Actions = {
         }else{
           curState.data[i].progress = '100%'
           curState.data[i].src = pgs.src
+          curState.data[i].mvsrc = pgs.mvsrc
         }
       }
     })
@@ -494,13 +603,13 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
     example.uploader = _inst;
     
     example.loaded = true;
-    example.emit('loaded', { uploader: _inst })
+    example.emit('loaded', { uploader: _inst, config: cfg })
   }
   let _updata = example.getData().data;
-  function cropwrap(parents){
-    let previewCfg = cfg.crop.previewCfg;
+  function cropwrap(parents, option={}){
+    let previewCfg = cfg.crop.previewCfg||[];
     let preview = [];
-    let url = parents ? parents.attr('data-original') : undefined;
+    let url = parents ? (parents.attr('data-original')||parents.attr('data-src')) : undefined;
     let id = parents ? parents.attr('data-id') : undefined;
     let crop = cropper(
       {
@@ -517,32 +626,39 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
       )
     })
     let Cropwrap = Aotoo.wrap(
-      <div className="modal">
-        <div className='modal-head cropHead title-bg2'>
+      <div className="modal options">
+        <div className='modal-header cropHead title-bg2'>
           <h5>{ cfg.cropTitle }</h5>
-          <i className='close'></i>
+          <i className='icon-del-primary click-cancel close'></i>
         </div>
         <div className="modal-body cropWrap">
           <div className="crop-content" style={{ display: url ? 'block' : 'none' }}>
             <div className="crop-area">{ crop.render() }</div>
-            <button className="crop-upload-button crop-upload-again">+ 重新上传</button>
+            {/* <button className="crop-upload-button crop-upload-again">+ 重新上传</button> */}
           </div>
           <div className="crop-upload" style={{ display: !url ? 'flex' : 'none' }}>
             <div className="crop-upload-left">
-              <button className="crop-upload-button">+ 选择图片</button>
+              {/* <button className="crop-upload-button">+ 选择图片</button> */}
+              <button className="ss-button btn-default crop-upload-button">+ 选择图片</button>
             </div>
             <div className="crop-uoload-right">
-              <p className="crropper-text">拖拽或缩放虚线框，<br />生成自己满意的图片</p>
               <ul className="cropper-preview-list">
                 { preview }
               </ul>
+              <p className="crropper-text">拖拽或缩放虚线框，<br />生成自己满意的图片</p>
             </div>
           </div>
-          <p className="crop-upload-tips"> 上传图片宽度不得小于 { cfg.crop.imgSize.width } X { cfg.crop.imgSize.height }像素<span></span></p>
+          {/* <p className="crop-upload-tips"> 上传图片尺寸不符，建议上传图片宽度不得小于 { cfg.crop.imgSize.width } X { cfg.crop.imgSize.height }像素<span></span></p> */}
+          <p className="crop-upload-tips"> 尺寸不符，限宽度在 { cfg.crop.imgSize.width } px以上<span></span></p>
           <input className="crop-upload-file" type="file" accept={ cfg.upConfig.uploaderConfig.accept.mimeTypes } />
         </div>
-        <div className='modal-foot cropFoot'>
-          <button className='modal-foot-btn' disabled="disabled">保存并关闭</button>
+        <div className='modal-footer cropFoot'>
+          <button className='ss-button btn-grey plain crop-upload-button mr-auto crop-upload-again disabled'>重新上传</button>
+          {/* <button className={url ? 'ss-button btn-grey plain crop-upload-button mr-auto crop-upload-again' : 'ss-button btn-grey plain crop-upload-button mr-auto disabled'} data-url={url}>重新上传</button> */}
+          <div>
+            <button className='close ss-button btn-grey plain'>取消</button>
+            <button className='modal-foot-btn ss-button btn-default ml-10 disabled' disabled="disabled">确定</button>
+          </div>
         </div>
       </div>
       ,function (dd){
@@ -552,22 +668,36 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
             crop.reupload(url)
           },200)
         }
-        let again = false;
+
+        let again = option.againOpen||false;
+        if (again) {
+          $(dd).find('.crop-upload-again').removeClass('disabled')
+        }
         $(dd).find('.crop-upload-button').once('click',function (){
-          if($(this).hasClass('crop-upload-again')){
-            again = true;
-          }else{
-            again = false;
+          $(dd).find('.crop-upload-tips').hide()
+          if($(this).hasClass('crop-upload-again') && !again){
+            return 
           }
+          // if($(this).hasClass('crop-upload-again')){
+          //   again = true;
+          // }else{
+          //   again = false;
+          // }
           $(dd).find('.crop-upload-file').click()
         })
-        $(dd).find('.crop-upload-file').once('change',function (){
+
+        let cropChange = false
+        $(dd).find('.crop-upload-file').once('change',async function (){
           let that = this
+          cropChange = true
+          console.log('======= 4444');
           let _files = that.files;
           let content = $(dd).find('.crop-content');
           let upload = $(dd).find('.crop-upload');
           let button = $(dd).find('.modal-foot-btn');
-          if(_files){
+          if(_files && _files[0]){
+            let picinfo = await getMediafileInfo(_files[0])
+
             let fileType = cfg.upConfig.uploaderConfig.accept.mimeTypes.split(',')
             let correct = false;
             fileType.map(item => {
@@ -576,11 +706,18 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
               }
             })
             if(!correct){
-              tips('文件类型不正确请重新上传', { type: 'error' });
+              // tips('文件类型不正确请重新上传', { type: 'error' });
+              $(dd).find('.crop-upload-tips').html('文件类型不正确请重新上传')
+              $(dd).find('.crop-upload-tips').show()
+              $(dd).find('.crop-upload-file').reset()
+              // $(dd).find('.crop-upload-again').addClass('disabled')
               return false
             }
             if(_files[0].size > cfg.upConfig.uploaderConfig.fileSingleSizeLimit){
-              tips('文件大小不能超过' + cfg.upConfig.limitDesc, { type: 'error' })
+              // tips('文件大小不能超过' + cfg.upConfig.limitDesc, { type: 'error' })
+              $(dd).find('.crop-upload-tips').html('大小不符，限' + cfg.upConfig.limitDesc + '内')
+              $(dd).find('.crop-upload-tips').show()
+              $(dd).find('.crop-upload-file').reset()
               return false;
             }
             if (window.FileReader) {
@@ -594,10 +731,14 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
                     let imgHeight = img.height;
                     let imgSize = cfg.crop.imgSize
                     if(imgWidth >= imgSize.width && imgHeight >= imgSize.height){
+                      $(dd).find('.modal-foot-btn').removeClass('disabled')
                       if(!url){
                         crop.$setimg(e.target.result);
                       }
                       if(!again){//如果是中间的上传按钮
+                        again = true
+                        $(dd).find('.crop-upload-again').removeClass('disabled')
+                        $(dd).find('.crop-upload-again').removeClass('disabled')
                         content.show()
                         $(dd).find('.crop-upload-tips').hide()
                         upload.hide()
@@ -608,7 +749,9 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
                         // crop.$setimg(e.target.result);
                       }
                     }else{
-                      $(dd).find('.crop-upload-tips span').html('，当前尺寸为:' + imgWidth + ' X ' + imgHeight + '像素')
+                      // $(dd).find('.crop-upload-tips span').html('，当前尺寸为:' + imgWidth + ' X ' + imgHeight + '像素')
+                      // $(dd).find('.crop-upload-again').addClass('disabled')
+                      $(dd).find('.crop-upload-tips span').html('，请取消或重新选择')
                       $(dd).find('.crop-upload-tips').show()
                     }
                   })
@@ -620,11 +763,17 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
         $(dd).find('.modal-foot-btn').once('click',function (){
           const cropConfig = cfg.crop
           const cfgImgSize = cropConfig.imgSize
+          if (!cropChange) {
+            $(dd).find('.close').trigger('click')
+            return
+          }
           crop.validCrop(function(cropImgData){
             if (cropImgData.width < cfgImgSize.width ) {
               let { width, height } = crop.getData()
-              $(dd).find('.crop-upload-tips span').html('，当前尺寸为:' + (0 | width) + ' X ' + (0 | height) + '像素')
+              // $(dd).find('.crop-upload-tips span').html('，当前尺寸为:' + (0 | width) + ' X ' + (0 | height) + '像素')
+              $(dd).find('.crop-upload-tips span').html('，请取消或重新选择')
               $(dd).find('.crop-upload-tips').show()
+              // $(dd).find('.crop-upload-file').reset()
               return false
             }
             if(parents){
@@ -650,33 +799,94 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
               example.uploader.addFiles(files)
               $(dd).find('.crop-upload-file').val('');
               $(dd).find('.close').trigger('click');
-              
-              example.uploader.off('uploadSuccess').on('uploadSuccess',function (file,ret){
-                if(ret.code == '00'){
-                  example.$warning(false);
-                  example.$error(false);
-                  // if(parents){
-                  //   example.$delete(parents.index())
-                  // }
-                  let image = new Image()
-                  $(image).on('load',function (){
-                    if(parents){
-                      example.$update({ data: { src: ret.data.filePath, width: image.width, height: image.height, id: file.id }, index: parents.index() })
-                      parents.find('.upload-border').removeClass('disN');
-                      parents.find('.upitem-loading').addClass('disN');
-                    }else{
-                      example.$push({ src: ret.data.filePath, width: image.width, height: image.height, id: file.id,original:$(dd).find('.cropImg').attr('src') })
-                      if(example.getData().data.length == cfg.upConfig.uploaderConfig.fileNumLimit){
-                        $(dom).find('.addFiles').addClass('disN')
+
+              example.uploader.off('uploadSuccess').on('uploadSuccess',function (file, ret){
+                console.log('========= 111');
+                example.emit('uploadSuccess', {ret});
+                example.value = ret
+                if(ret.code == '000'){
+                  let tmp = {}
+                  let $tmp = []
+                  let index = -1
+                  if (parents) {
+                    index = parents.index()
+                  }
+
+                  ret.data.map((pic, ii) => {
+                    let image = new Image()
+                    let src = cfg.filePath + pic.url
+                    let $index = index + ii
+                    image.src = src
+                    image.onload = function (params) {
+                      if (parents) {
+                        tmp[$index] = {
+                          // mvsrc: pic.url,
+                          src: pic.url,
+                          width: image.width,
+                          height: image.height,
+                          id: file.id
+                        }
+                        if (ii === ret.data.length-1) {
+                          example.$update({
+                            datas: tmp
+                          })
+                          parents.find('.upload-border').removeClass('disN');
+                          parents.find('.upitem-loading').addClass('disN');
+                        }
+                      } else {
+                        $tmp.push({
+                          src: pic.url,
+                          width: image.width,
+                          height: image.height,
+                          id: file.id,
+                          original: src
+                        })
+
+                        if (ii === ret.data.length - 1) {
+                          example.$push($tmp)
+                          setTimeout(() => {
+                            if (example.getData().data.length == cfg.upConfig.uploaderConfig.fileNumLimit) {
+                              $(dom).find('.addFiles').addClass('disN')
+                              cropChange = false
+                            }
+                          }, 100);
+                        }
                       }
                     }
-                    $(dd).find('.close').trigger('click')
                   })
-                  image.src = cfg.filePath+ret.data.filePath
+
+                  // // if(parents){
+                  // //   example.$delete(parents.index())
+                  // // }
+                  // let image = new Image()
+                  // $(image).on('load',function (){
+                  //   if(parents){
+                  //     example.$update({
+                  //       data: {
+                  //         mvsrc: ret.data.mvPath, 
+                  //         src: ret.data.filePath,
+                  //         width: image.width,
+                  //         height: image.height,
+                  //         id: file.id
+                  //       },
+                  //       index: parents.index()
+                  //     })
+                  //     parents.find('.upload-border').removeClass('disN');
+                  //     parents.find('.upitem-loading').addClass('disN');
+                  //   }else{
+                  //     example.$push({ src: ret.data.filePath, width: image.width, height: image.height, id: file.id,original:$(dd).find('.cropImg').attr('src') })
+                  //     if(example.getData().data.length == cfg.upConfig.uploaderConfig.fileNumLimit){
+                  //       $(dom).find('.addFiles').addClass('disN')
+                  //     }
+                  //   }
+                  //   $(dd).find('.close').trigger('click')
+                  // })
+                  // image.src = cfg.filePath+ret.data.filePath
+
                 }else{
                   if(ret.subCode == '0065'){
                     tips('您上传的图片不符合格式要求，请重新上传', { type: 'error' })
-                  }else{z
+                  }else{
                     tips(ret.subMsg, { type: 'error' })
                   }
                   if(parents){
@@ -790,7 +1000,9 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
     $(dom).find('.upimg-wrap').once('click',function (){
       if(cfg.crop){
         let parents = $(this).parents('.upitem')
-        modal(cropwrap(parents),{
+        let url = (parents.attr('data-original')||parents.attr('data-src'))
+        console.log('======= aaa');
+        modal(cropwrap(parents, {againOpen: true} ), {
           width: (cfg.crop.modalWidth ? cfg.crop.modalWidth + 'px' : false) || '750px',
           bgClose: true,
           closeBtn: '.close'
@@ -801,40 +1013,75 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
     })
   }
   if(cfg.preview){
-    $(dom).find('.upimg-wrap').once('mouseenter',function (e){
-      let parent = $(this).parents('.upitem')
-      parent.css({zIndex: 3})
-      let { imgclass, warning } = calculate( cfg.proport, { src: parent.attr('data-src'), width: parent.attr('data-width'), height: parent.attr('data-height') })
-      example.popup = popup(
-        <div className="uploader-popup">
-          <div className="uploader-popup-header">
-            <img className={ cfg.btnType == 'default' ? imgclass : 'perwidth100' } src={ parent.attr('data-src') } />
-          </div>
-          { warning != '' && cfg.btnType == 'default' ? <div className="uploader-popup-footer">{ cfg.popWarningText }</div> : null }
-        </div>,
-        {
-          position: $(this).parent(),
-          top: 20,
-          left: '95%',
+    if (_.isPlainObject(cfg.preview)) {
+      Object.keys(cfg.preview).forEach(evt=>{
+        // $(dom).find('.upimg-wrap').once('click', function(params) {
+        //   console.log('====== 4444');
+        // })
+        $(dom).off(evt).on(evt, '.upimg-wrap', function(e) {
+          e.stopPropagation()
+          e.preventDefault()
+          cfg.preview[evt](e, this, cfg)
+        })
+      })
+    } 
+    else if(_.isFunction(cfg.preview)){
+      cfg.preview(dom, cfg, example)
+    }
+    else {
+      // $(dom).find('.upimg-wrap').once('mouseenter',function (e){
+      $(dom).find('.upimg-wrap, input[type=file]').once('mouseenter', function (e) {
+        let parent = $(this).parents('.upitem')
+        parent.css({zIndex: 3})
+        let { imgclass, warning } = calculate( cfg.proport, { src: parent.attr('data-src'), width: parent.attr('data-width'), height: parent.attr('data-height') })
+        let previewBody = <img className={ cfg.btnType == 'default' ? imgclass : 'perwidth100' } src={ parent.attr('data-src') } />
+        if (cfg.preview === 'movie') {
+          let mvsrc = parent.attr('data-mvsrc')
+          mvsrc = cfg.filePath+mvsrc
+          previewBody = <video src={mvsrc} controls="controls" style={{width: '100%', height: '100%'}}></video>
         }
-      )
-      example.popup.addPopup()
-      parent.find('.popup').once('mouseleave',function (){
-        parent.css({zIndex: 1})
+        example.popup = popup(
+          <div className="uploader-popup">
+            <div className="uploader-popup-header">
+              {previewBody}
+              {/* <img className={ cfg.btnType == 'default' ? imgclass : 'perwidth100' } src={ parent.attr('data-src') } /> */}
+            </div>
+            { warning != '' && cfg.btnType == 'default' ? <div className="uploader-popup-footer">{ cfg.popWarningText }</div> : null }
+          </div>,
+          {
+            position: $(this).parent(),
+            top: 20,
+            left: '95%',
+          }
+        )
+        example.popup.addPopup()
+        parent.find('.popup').once('mouseleave',function (){
+          parent.css({zIndex: 1})
+          if(example.popup) example.popup.colsePopup()
+        })
+      }).parent().once('mouseleave',function (e){
+        e.stopPropagation()
+        $(this).parents('.upitem').css({zIndex: 1})
         if(example.popup) example.popup.colsePopup()
       })
-    }).parent().once('mouseleave',function (e){
-      e.stopPropagation()
-      $(this).parents('.upitem').css({zIndex: 1})
-      if(example.popup) example.popup.colsePopup()
-    })
+    }
   }
   /* 公共事件 */
+  let webuploader_timestamp = 0 // 拖拽超时，控制不触发上传
+  $(dom).find('.webuploader-button').once('mousedown', function () {
+    webuploader_timestamp = 0
+    webuploader_timestamp = (new Date()).getTime()
+  })
+
   $(dom).find('.webuploader-button').once('click',function (){
+    let tmp_timestamp = (new Date()).getTime()
+    if (tmp_timestamp - webuploader_timestamp > 300) return
+    
     let fileQueue = example.getData().data
     let fileNumLimit = cfg.upConfig.uploaderConfig.fileNumLimit;
     if(fileQueue.length < fileNumLimit){
       if(cfg.crop){
+        console.log('======= bbb');
         modal(cropwrap(),{
           width: (cfg.crop.modalWidth ? cfg.crop.modalWidth + 'px' : false) || '750px',
           bgClose: true,
@@ -847,22 +1094,139 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
       return false;
     }
   })
-  $(dom).find('.addfile').once('change',function (){
+
+  async function getMediafileInfo(targetFile) {
+    let ftype = getFileType(targetFile.name)
+    return new Promise((res, rej)=>{
+      let name = targetFile.name
+      let type = targetFile.type
+      let size = targetFile.size
+      let rtn = {name, type, size, ftype}
+      if (ftype !== 'image') {
+        if (ftype === 'movie') {
+          var videoUrl = URL.createObjectURL(targetFile);
+          var videoObj = document.createElement("video");
+          videoObj.onloadedmetadata = function (evt) {
+            URL.revokeObjectURL(videoUrl);
+            rtn.width = videoObj.videoWidth
+            rtn.height = videoObj.videoHeight
+            res(rtn)
+          };
+          videoObj.src = videoUrl;
+          videoObj.load();
+        } else {
+          res(rtn)
+        }
+      } else {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+          var data = e.target.result;
+          var image = new Image();
+          image.onload = function () {
+            var width = image.width;
+            var height = image.height;
+            var size = targetFile.size
+            rtn.width = width
+            rtn.height = height
+            res(rtn)
+          };
+          image.src = data;
+        };
+        reader.readAsDataURL(targetFile);
+      }
+    })
+  }
+  $(dom).find('.addfile').once('change', async function (){
     let _files = this.files;
     let that = $(this)
+
     if(_files){
-      let fileType = cfg.upConfig.uploaderConfig.accept.mimeTypes.split(',')
-      let correct = false;
-      fileType.map(item => {
-        if($.trim(item) == _files[0].type){
-          correct = true;
-        }
-      })
-      if(!correct){
+      let targetFile = _files[0]
+      let fileSize = targetFile.size
+      let fileType = targetFile.type
+      let fileTypes = cfg.upConfig.uploaderConfig.accept.mimeTypes.split(',')
+      let picInfo = await getMediafileInfo(targetFile)
+
+      if (fileSize > cfg.upConfig.uploaderConfig.fileSingleSizeLimit) {
+        tips('大小不符，限' + cfg.upConfig.limitDesc + '内', { type: 'error' });
+        that.val('');
+        return false
+      }
+
+      if (fileTypes.indexOf(fileType) === -1) {
         tips('文件类型不正确请重新上传', { type: 'error' });
         that.val('');
         return false
       }
+
+      if (picInfo) {
+        let ftype = picInfo.ftype
+        let mediaText = ftype ==='movie' ? '视频' : '图片'
+        let w = picInfo.width
+        let h = picInfo.height
+        let r = w/h
+
+        // let tw = (cfg.target&&cfg.target.width) || 0
+        // let th = (cfg.target&&cfg.target.height) || 0
+        // let tr = tw / th
+        // if (w < (tw * 0.7)) {
+        //   tips(`请上传${mediaText}宽度不小于${tw}px，建议${mediaText}尺寸为${tw}×${th}px`, {
+        //     type: 'error'
+        //   });
+        //   that.val('');
+        //   return false
+        // }
+        // if (cfg.target.width!=0 && cfg.target.height!=0) {
+          
+        // }
+        let cfgTarget = cfg.target
+        if (typeof cfgTarget === 'function') {
+          let res = cfgTarget(picInfo, tips)
+          // if (typeof res === 'boolean' && !res) {
+          //   tips(`请上传${mediaText}宽度不小于${tw}px，建议${mediaText}尺寸为${tw}×${th}px`, { type: 'error' });
+          //   that.val('');
+          //   return false
+          // }
+
+          if (typeof res === 'object') {
+            let state = res.state
+            let message = res.message
+            if (!state) {
+              tips(message, { type: 'error' });
+              that.val('');
+              return false
+            }
+          }
+        } else {
+          let tw = (cfg.target&&cfg.target.width) || 0
+          let th = (cfg.target&&cfg.target.height) || 0
+          let tr = tw / th
+          if (tr && w < (tw * 0.7)) {
+            // tips(`请上传${mediaText}宽度不小于${tw}px，建议${mediaText}尺寸为${tw}×${th}px`, {
+            tips(`尺寸不符，限宽度在${tw}px以上`, {
+              type: 'error'
+            });
+            that.val('');
+            return false
+          }
+        }
+      }
+
+      // fileSizeLimit: undefined, // 总大小
+      // fileSingleSizeLimit: 3 * 1024 * 1024, // 3M，单文件大小
+      
+      // let fileType = cfg.upConfig.uploaderConfig.accept.mimeTypes.split(',')
+      // let correct = false;
+      // fileType.map(item => {
+      //   if($.trim(item) == _files[0].type){
+      //     correct = true;
+      //   }
+      // })
+      // if(!correct){
+      //   tips('文件类型不正确请重新上传', { type: 'error' });
+      //   that.val('');
+      //   return false
+      // }
 
       let fileQueue = example.getData().data
       let filelist = [];
@@ -876,11 +1240,13 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
 
       for(let i=0,l=_files.length;i<l;i++){
         if(_files[i].size < cfg.upConfig.uploaderConfig.fileSingleSizeLimit){
-          filelist.push(_files[i])
           if(filelist.length > fileNumLimit - fileQueue.length){
             break;
           }
+          // tips('您上传的图片不符合格式要求，请重新上传', { type: 'error' })
           example.uploader.addFiles(_files[i])
+          filelist.push(_files[i])
+
           if(cfg.btnType != 'files'){
             example.$loading({num: i, bol: true })
           }
@@ -899,21 +1265,108 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
             example.$progress({ progress: percentage, id: file.id })
           })
           example.uploader.off('uploadSuccess').on('uploadSuccess',function (file,ret){
-            if(ret.code == '00'){
+            example.value = ret
+            console.log('======== 222');
+            example.emit('uploadSuccess', {ret})
+            if(ret.code == '000'){
               example.$warning(false);
               example.$error(false);
-              if(cfg.btnType !== 'files'){
-                let image = new Image()
-                $(image).on('load',function (){
-                  example.$push({ src: ret.data.filePath, width: image.width, height: image.height, id: file.id })
-                  if(example.getData().data.length >= fileNumLimit){
+
+              function updateState(params) {
+                setTimeout(() => {
+                  example.$push(params)
+                  if (example.getData().data.length == cfg.upConfig.uploaderConfig.fileNumLimit) {
                     $(dom).find('.addFiles').addClass('disN')
                   }
+                }, 100);
+              }
+              if(cfg.btnType !== 'files'){
+                let $tmp = []
+                ret.data.map((pic, ii) => {
+                  let picurl = pic.url
+                  let fileType = getFileType(picurl)
+                  let src = cfg.filePath + pic.url
+
+                  
+                  if (fileType === 'image') {
+                    let image = new Image()
+                    image.src = src
+                    $tmp.push({
+                      src: pic.url,
+                      width: image.width,
+                      height: image.height,
+                      id: file.id,
+                      original: src
+                    })
+
+                    // let image = new Image()
+                    // let src = cfg.filePath + pic.url
+                    // image.src = src
+                    // $(image).on('load', function () {
+                    //   $tmp.push({
+                    //     mvsrc: pic.url,
+                    //     src: pic.url,
+                    //     width: image.width,
+                    //     height: image.height,
+                    //     id: file.id,
+                    //     original: $(dd).find('.cropImg').attr('src')
+                    //   })
+                    //   if (ii === ret.data.length - 1) {
+                    //     updateState($tmp)
+                    //   }
+                    // })
+                  }
+
+
+
+                  if (fileType === 'movie') {
+                    $tmp.push({
+                      mvsrc: pic.url,
+                      mvid: pic.vodFileId,
+                      src: pic.url,
+                      id: file.id,
+                      original: src
+                    })
+                  }
+
+
+
+                  if (fileType === 'file') {
+                    $tmp.push({
+                      filesrc: pic.url,
+                      src: pic.url,
+                      id: file.id,
+                      original: src
+                    })
+                  }
+
+                  if (ii === ret.data.length - 1) {
+                    updateState($tmp)
+                  }
                 })
-                image.src = cfg.filePath+ret.data.filePath
+
+                // let image = new Image()
+                // $(image).on('load',function (){
+                //   example.$push({ 
+                //     mvsrc: ret.data.mvPath,
+                //     src: ret.data.filePath, 
+                //     width: image.width, 
+                //     height: image.height, 
+                //     id: file.id 
+                //   })
+                //   if(example.getData().data.length >= fileNumLimit){
+                //     $(dom).find('.addFiles').addClass('disN')
+                //   }
+                // })
+                // image.src = cfg.filePath+ret.data.filePath
+
               }else{
                 let id = file.id
-                example.$progress({ progress: 100, id: id, src: ret.data.filePath })
+                example.$progress({ 
+                  progress: 100, 
+                  id: id, 
+                  src: ret.data[0].url
+                })
                 setTimeout(function (){
                   example.$progress({ progress: '', id: id })
                 },5000)
@@ -939,30 +1392,93 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
             break;
           }
         }else{
-          tips('文件大小不能超过' + cfg.upConfig.limitDesc, { type: 'error' })
+          tips('大小不符，限' + cfg.upConfig.limitDesc + '内', { type: 'error' })
+          // example.$warning('文件大小不能超过' + cfg.upConfig.limitDesc)
           continue;
         }
       }
       that.val('');
     }
   })
-  $(dom).find('.upfile').once('change',function (){
+  $(dom).find('.upfile').once('change',async function(){
     let _files = this.files[0]
     let that = $(this)
     let index = that.parents('.upitem').index();
     let fileId = that.parents('.upitem').attr('data-id');
     if(_files){
-      let fileType = cfg.upConfig.uploaderConfig.accept.mimeTypes.split(',')
-      let correct = false;
-      fileType.map(item => {
-        if($.trim(item) == _files.type){
-          correct = true;
-        }
-      })
-      if(!correct){
-        tips('文件类型不正确请重新上传', { type: 'error' });
+      let targetFile = _files
+      let fileSize = targetFile.size
+      let fileType = targetFile.type
+      let fileTypes = cfg.upConfig.uploaderConfig.accept.mimeTypes.split(',')
+      let picInfo = await getMediafileInfo(targetFile)
+
+      if (fileSize > cfg.upConfig.uploaderConfig.fileSingleSizeLimit) {
+        tips('大小不符，限' + cfg.upConfig.limitDesc + '内', { type: 'error' });
+        that.val('');
         return false
       }
+
+      if (fileTypes.indexOf(fileType) === -1) {
+        tips('文件类型不正确请重新上传', { type: 'error' });
+        that.val('');
+        return false
+      }
+
+      if (picInfo) {
+        let ftype = picInfo.ftype
+        let mediaText = ftype ==='movie' ? '视频' : '图片'
+        let w = picInfo.width
+        let h = picInfo.height
+        let r = w/h
+
+        let cfgTarget = cfg.target
+        if (typeof cfgTarget === 'function') {
+          let res = cfgTarget(picInfo, tips)
+          // if (typeof res === 'boolean' && !res) {
+          //   tips(`请上传${mediaText}宽度不小于${tw}px，建议${mediaText}尺寸为${tw}×${th}px`, { type: 'error' });
+          //   that.val('');
+          //   return false
+          // }
+
+          if (typeof res === 'object') {
+            let state = res.state
+            let message = res.message
+            if (!state) {
+              tips(message, { type: 'error' });
+              that.val('');
+              return false
+            }
+          }
+        } else {
+          let tw = (cfg.target&&cfg.target.width) || 0
+          let th = (cfg.target&&cfg.target.height) || 0
+          let tr = tw / th
+          if (tr && w < (tw * 0.7)) {
+            // tips(`请上传${mediaText}宽度不小于${tw}px，建议${mediaText}尺寸为${tw}×${th}px`, {
+            tips(`尺寸不符，限宽度在${tw}px以上`, {
+              type: 'error'
+            });
+            that.val('');
+            return false
+          }
+        }
+      }
+
+      
+
+      // let fileType = cfg.upConfig.uploaderConfig.accept.mimeTypes.split(',')
+      // let correct = false;
+      // fileType.map(item => {
+      //   if($.trim(item) == _files.type){
+      //     correct = true;
+      //   }
+      // })
+      // if(!correct){
+      //   tips('文件类型不正确请重新上传', { type: 'error' });
+      //   return false
+      // }
+
+
       if(cfg.crop){
         if (window.FileReader) {    
           var reader = new FileReader();    
@@ -981,7 +1497,7 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
                     ...cfg.crop
                   }
                 )
-                
+                console.log('======= ccc');
                 modal(cropwrap(e.target.result),{
                   width: (cfg.crop.modalWidth ? cfg.crop.modalWidth + 'px' : false) || '750px',
                   bgClose: true,
@@ -1004,16 +1520,58 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
         that.parents('.upitem').find('.upload-border').addClass('disN');
         that.parents('.upitem').find('.upitem-loading').removeClass('disN');
         example.uploader.off('uploadSuccess').on('uploadSuccess',function (file,ret){
-          if(ret.code == '00'){
+          example.emit('uploadSuccess', {ret})
+          example.value = ret
+          if(ret.code == '000'){
+            console.log('===== 333');
             example.$warning(false);
             example.$error(false);
-            let image = new Image()
-            $(image).on('load',function (){
-              example.$update({ data: { src: ret.data.filePath, width: image.width, height: image.height, id: file.id }, index: index })
-              that.parents('.upitem').find('.upload-border').removeClass('disN');
-              that.parents('.upitem').find('.upitem-loading').addClass('disN');
+
+
+            let tmp = {}
+            ret.data.map((pic, ii) => {
+              let image = new Image()
+              let src = cfg.filePath + pic.url
+              let $index = index+ii
+              image.src = src
+              $(image).on('load', function (){
+                tmp[$index] = {
+                  // mvsrc: pic.url,
+                  src: pic.url,
+                  width: image.width,
+                  height: image.height,
+                  id: file.id
+                }
+                if (ii === ret.data.length - 1) {
+                  example.$update({
+                    datas: tmp
+                  })
+                  that.parents('.upitem').find('.upload-border').removeClass('disN');
+                  that.parents('.upitem').find('.upitem-loading').addClass('disN');
+                }
+              })
             })
-            image.src = cfg.filePath + ret.data.filePath
+
+
+
+
+
+            // let image = new Image()
+            // $(image).on('load',function (){
+            //   example.$update({ 
+            //     data: {
+            //       mvsrc: ret.data.mvPath,  
+            //       src: ret.data.filePath, 
+            //       width: image.width, 
+            //       height: image.height, 
+            //       id: file.id 
+            //     }, 
+            //     index: index 
+            //   })
+            //   that.parents('.upitem').find('.upload-border').removeClass('disN');
+            //   that.parents('.upitem').find('.upitem-loading').addClass('disN');
+            // })
+            // image.src = cfg.filePath + ret.data.filePath
           }else{
             if(ret.subCode == '0065'){
               tips('您上传的图片不符合格式要求，请重新上传', { type: 'error' })
@@ -1063,29 +1621,34 @@ function renderedMethod(wup, example, cfg, dom, opts, ctx){
 function init3DSLib(wup, example, cfg, dom, opts, ctx){
   renderedMethod(wup, example, cfg, dom, opts, ctx)
 }
-// 循环检测 WebUploader 是否存在
-function loopDetection(example, cfg, dom, opts, ctx){
-  clearTimeout(example.loopTimmer)
-  example.loopTimmer = setTimeout(function() {
-    if (typeof WebUploader !== 'undefined') {
-      init3DSLib(WebUploader, example, cfg, dom, opts, ctx)
-    } else {
-      loopDetection(example, cfg, dom, opts, ctx)
-    }
-  }, 50);
-}
 function renderedInject(example, cfg){
   return function(options){
     const {dom, opts, ctx} = options
     try {
-      Aotoo.inject.js('/js/t/webuploader', function(){
-        loopDetection(example, cfg, dom, opts, ctx)
+      waitForInject(()=>{
+        if (typeof WebUploader !== 'undefined') {
+          setTimeout(() => {
+            init3DSLib(WebUploader, example, cfg, dom, opts, ctx)
+          }, 100);
+        }
       })
     } catch (error) {
       console.error('component/uploaderpro->renderInject error');
       console.log(error);
     }
   }
+
+  // return function(options){
+  //   const {dom, opts, ctx} = options
+  //   try {
+  //     Aotoo.inject.js('/js/t/webuploader', function(){
+  //       loopDetection(example, cfg, dom, opts, ctx)
+  //     })
+  //   } catch (error) {
+  //     console.error('component/uploaderpro->renderInject error');
+  //     console.log(error);
+  //   }
+  // }
 }
 function index(opts){
   const instance = Aotoo(Uploader, Actions)
@@ -1152,11 +1715,14 @@ function index(opts){
       opts.preview = (type == 'default')
     }
   }else{
-    opts.upConfig.uploaderConfig.server = '/fastdfs/upload.do'
+    let ableWaterMasker = opts.water || 1
+    opts.upConfig.uploaderConfig.server = '/fastdfs/upload.do?isWatermark='+ ableWaterMasker
   }
   // 截图配置
+  let newCropConfig = opts.crop; delete opts.crop
   if(!opts.crop){
     if(type == 'logo'){
+      let oCrop = _.isObject(opts.crop) ? opts.crop : {}
       opts.crop = {
         width: 80,
         height: 80,
@@ -1177,25 +1743,51 @@ function index(opts){
         config: {
           strict: true,
           viewMode: 1,
-          aspectRatio: 1 / 1,
+          aspectRatio: 1,
           minCropBoxWidth: 0,
           minCropBoxHeight: 0,
         },
       }
+      if (oCrop.previewCfg) {
+        opts.crop.previewCfg = Object.assign(opts.crop.previewCfg, oCrop.previewCfg)
+        oCrop.previewCfg = undefined
+      }
+      if (oCrop.imgSize) {
+        opts.crop.imgSize = Object.assign(opts.crop.imgSize, oCrop.imgSize)
+        opts.crop.previewCfg[0].size.width = opts.crop.imgSize.width
+        opts.crop.previewCfg[0].size.height = opts.crop.imgSize.height
+        oCrop.imgSize = undefined
+      }
+      if (oCrop.config) {
+        opts.crop.config = Object.assign(opts.crop.config, oCrop.config)
+        oCrop.config = undefined
+      }
+      opts.crop = Object.assign({}, opts.crop, oCrop)
     }
+  }
+  if (opts.crop && newCropConfig) {
+    opts.crop = Object.assign({}, opts.crop, newCropConfig)
   }
   instance.loaded = false   // swiper.js 未完成载入
   instance.uploader = instance.uploader || undefined
   instance.popup = instance.popup || undefined
   instance.loopTimmer = undefined
+
+  // instance.on('uploadSuccess', function(){})  // 监听上传后的返回值
+
   instance.on('rendered', renderedInject(instance, opts))
   instance.setProps(opts)
   return instance
 }
 export default function upload(options){
+  let ableWaterMasker = options.water || 1
   let dft = {
     btnType: 'default',//default(默认),cards(名片),poster(海报),//logo(店铺logo)
     cropTitle: '上传图片',
+    target: {
+      width: 0,
+      height: 0
+    },
     upConfig:{
       limitDesc: '3M',
       fileType: 'JPG',
@@ -1222,7 +1814,7 @@ export default function upload(options){
         // },
         compress: {
           width: 1920,
-          height: 1920,
+          height: 1080,
         
           // 图片质量，只有type为`image/jpeg`的时候才有效。
           quality: 80,
@@ -1246,10 +1838,11 @@ export default function upload(options){
         // 自动上传。
         auto: false,
         fileNumLimit: 4,
-        fileSingleSizeLimit: 3 * 1024 * 1024,
+        fileSizeLimit: undefined,  // 总大小
+        fileSingleSizeLimit: 3 * 1024 * 1024, // 3M，单文件大小
         duplicate: true,
         swf: '/images/Uploader.swf',// swf文件路径
-        server: '/fastdfs/upload.do?isThumbnail=1&thumbnailSize=[{"w":375,"h":0},{"w":880,"h":0},{"w":570,"h":0},{"w":750,"h":0},{"w":250,"h":0}]',// 文件接收服务端。
+        server: '/fastdfs/upload.do?isWatermark='+ ableWaterMasker,// 文件接收服务端。
         accept: { // 只允许选择文件，可选。
           title: 'Images',
           extensions: 'jpg,jpeg,png',
