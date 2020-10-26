@@ -24,7 +24,7 @@ function pages() {
       title: '',
       input: [
         { id: 'code', type: 'text', placeholder: '请输入验证码' },
-        { id: 'codeImage', type: 'span', value: <img src='/images/saui-logo.png' />, itemClass: 'item-code'}
+        { id: 'codeImage', type: 'span', value: <img src='/images/ui/logo-main.png' />, itemClass: 'item-code'}
       ],
       multiplyClass: 'ss-relative'
     },
@@ -56,8 +56,8 @@ function pages() {
   const Login = Aotoo.wrap(
     <div className='pages-login'>
       <div className='pages-login-body'>
-        <img src='/images/saui-logo.png' className='pages-login-logo'/>
-        <img src='/images/logo-main.png' className='pages-login-pic' />
+        <img src='/images/ui/saui-logo.png' className='pages-login-logo'/>
+        <img src='/images/ui/logo-main.png' className='pages-login-pic' />
         {loginfrom.render()}
       </div>
       <p className='item-copyright'>Copyright © 2016-2018 组团助手 版权所有 粤ICP备17128641号 粤公安备44040402000069号</p>

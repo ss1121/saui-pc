@@ -8,11 +8,14 @@ defaultCfg = {
   $inputHei: 40px
   $br: $br-lg
   $formMl: 80px
+  $center: false
 }
 ss-login($class = '.login-form', $config = false)
   cfg = merge({}, defaultCfg, $config)
   .pages-login
     background: cfg.$bg
+    background-size: cover
+    background-position: 50% 50%
     width: 100%
     height: 100%
     position: relative
@@ -35,6 +38,7 @@ ss-login($class = '.login-form', $config = false)
     width: cfg.$width
     margin-left: cfg.$formMl if cfg.$formMl
     margin-bottom: -15px
+    ss-display-flex(column, center) if cfg.$center
     .checkboxGroup
       margin-bottom: 32px
     .inputItem
@@ -57,7 +61,7 @@ ss-login($class = '.login-form', $config = false)
       &.item-btn
         font-weight: bold
         font-size: 16px
-        margin-top: 40px
+        margin-top: 30px
     .fkp-content
       flex: 1
       @extends $column
@@ -74,5 +78,6 @@ ss-login($class = '.login-form', $config = false)
         flex: inherit
     .warning,.error
       margin-bottom: 10px
+      position: initial
     .ss-button
       box-shadow:1px 5px 10px 0px rgba(0,118,255,0.3);

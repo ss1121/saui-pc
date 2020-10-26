@@ -72,7 +72,7 @@ const $text_type = ['text', 'password', 'select', 'tel', 'date', 'span', 'textar
 const inputAttributs = {
   placeholder: '',
   name: '',
-  autoComplete: 'on',
+  autoComplete: 'off',
   id: '',
   disabled: '',
   value: '',
@@ -113,7 +113,7 @@ function getItemAllocation(data, index){
     type: 'text',
     value: '',
     placeholder: '',
-    autoComplete: ''
+    autoComplete: 'off'
   }
 
   let dftAttr = {   // attrs
