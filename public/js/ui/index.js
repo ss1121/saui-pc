@@ -30,7 +30,7 @@ import steps from './navigation/steps'
 
 //与业务挂钩页面 business
 import defaults from './business/defaults'
-import error from './business/404'
+// import error from './business/404'
 import login from './business/login'
 import pricestock from './business/pricestock'
 
@@ -56,7 +56,7 @@ const tmpRouter = {
   steps: steps,
 
   defaults: defaults,
-  error: error,
+  // error: error,
   login: login,
   pricestock: pricestock,
 }

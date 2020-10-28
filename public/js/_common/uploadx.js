@@ -18,8 +18,8 @@ function uploadCfg (param) {
   const inst = new Uploaderx({
     btnSize: btnSize,
     btnType: param.btnType || 'logo',
-    filePath: param.filePath || CONFIG.SITE.img,
-    // filePath:'http://14.18.238.135:8080/',
+    // filePath: param.filePath || CONFIG.SITE.img,
+    filePath:'/',
     warningText: '请上传图片',
     data: data || [],
     desc: [],

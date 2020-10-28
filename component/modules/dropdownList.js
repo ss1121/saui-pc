@@ -5,17 +5,36 @@ export default function (params) {
   const adapterPoi = (data, checked, type) => {
     data = data || ['abc', 'bcs', 'bsam', 'ssss']
     let checkedIds = checked || opts.checked
+    opts.checked = checkedIds
     return data.map((item, ii) => {
       //data-name 是用来展示右边的所属城级
-      const level = item.customLevel == 1 ? '省份' :  item.customLevel == 2 ? '城市' : '区县'
-      const itemClass = opts.isShowRight ? _.findIndex(checkedIds, o => o.id === item.id) >= 0 ? 'item-li active' : 'item-li' : _.findIndex(checkedIds, o => o.id === item.id) >= 0 && opts.isHideChecked ? 'disN' : 'item-li'
+      // const level = item.customLevel == 1 ? '省份' :  item.customLevel == 2 ? '城市' : '区县'
+      const itemClass = opts.isShowRight ? _.findIndex(checkedIds, o => o.id === item.poiId) >= 0 ? 'item-li active' : 'item-li' : _.findIndex(checkedIds, o => o.id === item.poiId) >= 0 && opts.isHideChecked ? 'disN' : 'item-li'
       return {
-        title: item.navTitleLinks,
-        attr: {name: level, ids: item.id, title: item.navTitle},
+        title: <p dangerouslySetInnerHTML={{__html: item.navTitleLinks}} />,
+        attr: {name: '', ids: item.poiId, title:item.navTitle},
         itemClass: itemClass
       }
     })
   }
+  //关联攻略方法
+  // const adapterGl = (data, checked) => {
+  //   data = data || []
+  //   let checkedIds = checked || opts.checked
+  //   return data.map((item, ii) => {
+  //     //data-name 是用来展示右边的所属城级
+  //     const itemClass = 'item-li'
+  //     return {
+  //       title: item.productName,
+  //       dot: [{
+  //         title: item.strategyNumber,
+  //         itemClass: 'color-info size12'
+  //       }],
+  //       attr: {ids: item.id, title: item.productName},
+  //       itemClass: itemClass
+  //     }
+  //   })
+  // }
   let dft = {
     data: [],             
     listClass: '',
@@ -32,10 +51,10 @@ export default function (params) {
   listInst.rendered = function(dom) {
     $(dom).off().on('click', '.item-li', function(e) {
       e.stopPropagation()
-      const id = parseInt($(this).attr('data-ids'))
+      opts.checked = listInst.saxer.get('value') ? listInst.saxer.get('value') : opts.checked 
+      const id = $(this).attr('data-ids')
       const title = $(this).attr('data-title')
       const idx = _.findIndex(opts.checked, item => {return item.id === id})
-      
       if (opts.checked.length >= 0 && !opts.isRadio) {
         if (opts.checked.length < opts.max) {
           //通过findindex来判断是否选中过，从而来判断是否来选中还是取消
@@ -65,10 +84,12 @@ export default function (params) {
   }
   return {
     inst: listInst,
-    adapterPoi: adapterPoi,
+    adapterPoi: opts.adapter,
+    // adapterGl: adapterGl
     // adpaterMulti: adpaterMulti,
   }
 }
+
 
   //显示多层数据方法  适用tree结构
   //1可选，2不可选
