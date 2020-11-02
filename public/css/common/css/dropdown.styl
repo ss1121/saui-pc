@@ -3,7 +3,7 @@
 */
 .item-tag-list
   margin-bottom: -2px
-  display: inline-block
+  display: inline;
 .valus-close
   background: $color-bg-special
   border: 1px solid $color-line-input
@@ -11,17 +11,21 @@
   color: $color-text-title
   cursor pointer
   display: inline-flex
-  padding: 3px 8px 3px 10px
+  padding: 0 8px 0 10px
   margin-right: 2px
   position: relative
   margin-bottom: 2px
-  line-height: 20px
+  line-height: 24px
+  &.ellipsis-1
+    .item-title
+      ss-textellipsis(1)
   [class*='close']
     ss-icon($icon-del, 16px, $color-text, $isFlex: inline-block, $pseudo: after, $activeColor: $color-aux-fail)
     color: $color-text
     margin-left: auto
     &:after
       margin-left: 5px
+      vertical-align: top;
   &:hover
     border-color: $color-primary 
     background: #fff
@@ -54,8 +58,6 @@
     .dropdown-pop
       min-width: auto
       overflow: hidden
-  .item-tag-list
-    display: inline
   .dropdown-head-input
     >.item-close
       ss-icon($icon-del, false, $borderColor, $isFlex: inline-block, $pseudo: after)

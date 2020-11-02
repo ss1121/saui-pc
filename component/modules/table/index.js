@@ -107,7 +107,7 @@ export function BTable(opts){
       showColumns: false,                  //显示隐藏列
 
       silentSort: true,                   // ajax交互的时候是否显示loadding加载信息
-
+      paginationLoop: false,
 
       singleSelect: false,                 //复选框只能选择一条记录
       clickToSelect: false,                //点击行即可选中单选/复选框
