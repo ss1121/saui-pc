@@ -22,7 +22,7 @@ import data from './data3'
     inputVals: true,
     popContent: searchPopList0.inst.render(),
     keyupFunc: function(val) {
-      searchPopList0.inst.$uplist(searchPopList0.adapterPoi(multiListData.data.slice(0, 20)))
+      searchPopList0.inst.$uplist('', searchPopList0.adapterPoi({data: multiListData.data.slice(0, 20)}))
       // searchPopList.$uplist([{title: '找不到： abc', itemClass: 'nofind'}])
       // searchPopList.$uplist([{title: '暂无任何目的城市', itemClass: 'nodata'}])
     }
@@ -52,7 +52,7 @@ import data from './data3'
     keyupFunc: function(val) {
       console.log('返回输入的值:', val)
       const valed = dpop.getValue()
-      searchPopList.inst.$uplist(searchPopList.adapterPoi(multiListData.data.slice(0, 20), valed))
+      searchPopList.inst.$uplist(searchPopList.adapterPoi({key: val, data: multiListData.data.slice(0, 20), checked: valed}))
       // searchPopList.$uplist([{title: '找不到： abc', itemClass: 'nofind'}])
       // searchPopList.$uplist([{title: '暂无任何目的城市', itemClass: 'nodata'}])
     }
@@ -64,6 +64,7 @@ import data from './data3'
     data: multiListData.data.slice(0, 20),
     max: 4,
     isRadio: false,
+    isHighlight: false,
     // isShowRight: true,
     // listClass: 'checkRight',
     itemClick: function(val) {
@@ -79,13 +80,13 @@ import data from './data3'
     dropdownClass: 'xx',
     delVals: function(val){
       //删除上面的选中值，pop层里的层级组件要跟着更新
-      searchPopList2.inst.$uplist(searchPopList2.adapterPoi(multiListData.data.slice(0, 20), val))
+      searchPopList2.inst.$uplist(searchPopList2.adapterPoi({key: val, data: multiListData.data.slice(0, 20)}))
     },
     updateInitFunc: function(val) {
       //选中值之后，再弹出pop会有选中效果
     },
     keyupFunc: function(val) {
-      searchPopList2.inst.$uplist(searchPopList2.adapterPoi(multiListData.data))
+      searchPopList2.inst.$uplist(searchPopList2.adapterPoi({key: val, data: multiListData.data}))
       // searchPopList2.inst.$update({data: searchPopList2.adapterPoi(multiListData.data), listClass: 'list-multi'})
     }
   })

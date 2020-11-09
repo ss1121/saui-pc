@@ -2,7 +2,18 @@ import list from 'component/modules/list'
 
 export default function (params) {
   //默认适配方法，关联poi方法，可传入
-  const adapterPoi = (data, checked, type) => {
+  function keywordscolorful(str, key){
+    if (key !== '') {
+      var reg = new RegExp("(" + key + ")", "g");
+      var newstr = str.replace(reg, "<em>$1</em>");
+      return newstr;
+    }
+  }
+  const adapterPoi = (params) => {
+    let data = params.data
+    let checked = params.checked
+    let type = params.type
+    let key = params.key || ''
     data = data || ['abc', 'bcs', 'bsam', 'ssss']
     let checkedIds = checked || opts.checked
     opts.checked = checkedIds
@@ -11,7 +22,8 @@ export default function (params) {
       // const level = item.customLevel == 1 ? '省份' :  item.customLevel == 2 ? '城市' : '区县'
       const itemClass = opts.isShowRight ? _.findIndex(checkedIds, o => o.id === item.poiId) >= 0 ? 'item-li active' : 'item-li' : _.findIndex(checkedIds, o => o.id === item.poiId) >= 0 && opts.isHideChecked ? 'disN' : 'item-li'
       return {
-        title: <p dangerouslySetInnerHTML={{__html: item.navTitleLinks}} />,
+        // title: keywordscolorful(item.navTitleLinks, key),
+        title: !opts.isHighlight ? <p dangerouslySetInnerHTML={{__html: keywordscolorful(item.navTitleLinks, key)}} /> : <p dangerouslySetInnerHTML={{__html: item.navTitleLinks}} />,
         attr: {name: '', ids: item.poiId, title:item.navTitle},
         itemClass: itemClass
       }
@@ -35,6 +47,7 @@ export default function (params) {
   //     }
   //   })
   // }
+  
   let dft = {
     data: [],             
     listClass: '',
@@ -43,11 +56,13 @@ export default function (params) {
     isShowRight: false,         //true时，选中值需要有状态，打勾  且再点击一次能取消选中值。类似多选  false时，选中值需要隐藏
     isHideChecked: false,       //是否隐藏选中过的值
     isRadio: true,             //是否隐藏选中过的值
-    adapter: adapterPoi
+    adapter: adapterPoi,
+    isHighlight: false           //是否高亮
   }
   let opts = Object.assign(dft, params)
+
   //弹出层内容-列表
-  const listInst = list({data: opts.data.length > 0 ? opts.adapter(opts.data) : [{title: '请输入'}], listClass: 'pop-list ' + opts.listClass})
+  const listInst = list({data: opts.data.length > 0 ? opts.adapter({data: opts.data}) : [{title: '请输入'}], listClass: 'pop-list ' + opts.listClass})
   listInst.rendered = function(dom) {
     $(dom).off().on('click', '.item-li', function(e) {
       e.stopPropagation()
